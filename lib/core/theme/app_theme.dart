@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+// F3F7F8
 class AppTheme {
   static const _primary = Color(0xFF0A5C75);
   static const _onPrimary = Color(0xFFFFFFFF);
@@ -151,7 +152,10 @@ class AppTheme {
         fillColor: colorScheme.surface,
         hintStyle: TextStyle(color: _textTertiary),
         labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: colorScheme.outline),
@@ -183,6 +187,23 @@ class AppTheme {
           ),
         ),
       ),
+      // outlined theme
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          side: BorderSide( 
+            color: colorScheme.primary,
+          ), 
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          textStyle: TextStyle(
+            fontSize: getResponsiveSize(24, 18),
+            fontWeight: FontWeight.w500,
+            fontFamily: 'Inter',
+          ),
+        ),
+      ),
+
       extensions: [
         CustomColors(
           primaryHover: const Color(0xFF084C61),
