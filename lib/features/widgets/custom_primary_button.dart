@@ -48,6 +48,9 @@ class CustomPrimaryButton extends StatelessWidget {
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: color ?? context.colorScheme.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
         ), //لو فيه ستايل اتبعت هياخده لو مفيش هيستخدم بتاع الثيم عادي
         child: IconTheme(
           data: IconThemeData(color: defaultColor, size: iconSize?.w ?? 20.w),
