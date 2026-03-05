@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lms_student/root/custom_nav_bar.dart';
 import 'package:lms_student/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
-import 'package:lms_student/features/home/home.dart';
+import 'package:lms_student/features/home/presentation/screens/home_screen.dart';
 import 'package:lms_student/test_screen.dart';
 
 class Root extends StatefulWidget {
@@ -17,10 +17,10 @@ class _RootState extends State<Root> {
   int currentIndex = 0;
 
   List<Widget> screens = [
-    TestScreen(),
+    HomeScreen(),
     RegisterScreen(),
     LoginScreen(),
-    Home(),
+    TestScreen(),
   ];
 
   void changePage(int index) {

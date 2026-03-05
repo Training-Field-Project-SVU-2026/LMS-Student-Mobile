@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:lms_student/core/extensions/context_extensions.dart';
 
 class CustomOutlinedButton extends StatelessWidget {
@@ -13,9 +15,10 @@ class CustomOutlinedButton extends StatelessWidget {
   final double? iconSize;
   final ButtonStyle? style;
   final TextStyle? textStyle;
+  final Color? color;
 
   const CustomOutlinedButton({
-    super.key,
+    Key? key,
     required this.text,
     this.prefixIcon,
     this.suffixIcon,
@@ -24,26 +27,29 @@ class CustomOutlinedButton extends StatelessWidget {
     this.height,
     this.iconPadding,
     this.iconSize,
-    this.style, 
+    this.style,
     this.textStyle,
-  });
+    this.color,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-    final Color defaultColor = style?.foregroundColor?.resolve({}) ?? context.colorScheme.primary;
+    // final Color defaultColor =
+    //     style?.foregroundColor?.resolve({}) ?? context.colorScheme.primary;
+    final Color defaultColor =
+        textStyle?.color ??
+        style?.foregroundColor?.resolve({}) ??
+        context.colorScheme.primary;
 
     return SizedBox(
       width: width?.w ?? 278.w,
       height: height?.h ?? 50.h,
       child: OutlinedButton(
+        style: style,
         onPressed: onTap,
-        style: style, 
+
         child: IconTheme(
-          data: IconThemeData(
-            color: defaultColor,
-            size: iconSize?.w ?? 20.w, 
-          ),
+          data: IconThemeData(color: defaultColor, size: iconSize?.w ?? 20.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -52,7 +58,7 @@ class CustomOutlinedButton extends StatelessWidget {
                 prefixIcon!,
                 SizedBox(width: iconPadding?.w ?? 8.w),
               ],
-              
+
               Flexible(
                 child: Text(
                   text,
@@ -61,7 +67,7 @@ class CustomOutlinedButton extends StatelessWidget {
                   ),
                 ),
               ),
-          
+
               // if suffix icon exists
               if (suffixIcon != null) ...[
                 SizedBox(width: iconPadding?.w ?? 8.w),

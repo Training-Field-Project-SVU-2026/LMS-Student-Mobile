@@ -14,10 +14,8 @@ class TestScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // backgroundColor: Colors.black,
         body: Center(
           child: ListView(
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomPrimaryButton(
                 text: 'taste test',
