@@ -111,23 +111,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 30.h),
                   CustomRichText(),
                   SizedBox(height: 20.h),
-                  Container(
-                    width: 300.w,
-                    decoration: BoxDecoration(
-                      color: context.colorScheme.surface.withValues(
-                        alpha: 0.04,
+                  Center(
+                    child: Container(
+                      width: 300.w,
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.surface.withValues(
+                          alpha: 0.04,
+                        ),
+                        borderRadius: BorderRadius.circular(20.r),
                       ),
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(16.w),
-                      child: Text(
-                        'Master Python, React, and more with expert-led courses designed specifically for mobilelearners.',
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.labelSmall!.copyWith(
-                          color: context.colorScheme.surface,
-                          fontWeight: FontWeight.normal,
+                      child: Padding(
+                        padding: EdgeInsets.all(16.w),
+                        child: Text(
+                          'Master Python, React, and more with expert-led courses designed specifically for mobilelearners PLPLPLPLPLPPLPPLPPLLPLPLPLPLPLPLPLPLPPLPLPLPLPLPLPLPLPLPLP.',
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.textTheme.labelSmall!.copyWith(
+                            color: context.colorScheme.surface,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ),
                     ),
