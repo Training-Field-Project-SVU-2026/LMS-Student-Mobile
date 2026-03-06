@@ -20,11 +20,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 65.h,
         // الـ Logo على الشمال
         title: Row(
           children: [
-            Icon(Icons.settings, color: Colors.green, size: 20),
-            SizedBox(width: 6),
+            Icon(Icons.settings, color: Colors.green, size: 20.sp),
+            SizedBox(width: 6.w),
             RichText(
               text: TextSpan(
                 children: [
@@ -68,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         actions: [
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
             child: CustomPrimaryButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: context.colorScheme.secondary,
@@ -85,9 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
-        backgroundColor: Colors.white,
+        backgroundColor: context.colorScheme.surface,
         elevation: 1,
-        shadowColor: Colors.grey.withOpacity(0.2),
+        shadowColor: context.colorScheme.onSurface.withValues(alpha: 0.2),
       ),
       body: ListView(
         padding: EdgeInsets.zero,
@@ -112,9 +113,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 20.h),
                   Container(
                     width: 300.w,
-                    height: 100.h,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.04),
+                      color: context.colorScheme.surface.withValues(
+                        alpha: 0.04,
+                      ),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Padding(
@@ -123,7 +125,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         'Master Python, React, and more with expert-led courses designed specifically for mobilelearners.',
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                        style: context.textTheme.labelSmall!.copyWith(
+                          color: context.colorScheme.surface,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                     ),
                   ),
@@ -141,8 +146,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       text: "Start Learning",
                       //Todo: GO TO LOGIN SCREEN
                       onTap: () {},
-                      suffixIcon: Icon(Icons.arrow_forward),
-                      iconSize: 25.w,
                     ),
                   ),
                   SizedBox(height: 20.h),
@@ -155,20 +158,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.circular(16.r),
                         ),
                         side: BorderSide(
-                          width: 2,
-                          color: context.colorScheme.onPrimary.withValues(
-                            alpha: 0.08,
+                          width: 4,
+                          color: context.colorScheme.surface.withValues(
+                            alpha: 0.2,
                           ),
                         ),
                       ),
                       onTap: () {},
                     ),
                   ),
+                  SizedBox(height: 40.h),
                   Center(
                     child: Image.asset(
                       "assets/images/Home.png",
+                      fit: BoxFit.contain,
                       width: 200.w,
-                      height: 200.h,
+                      height: 120.h,
                     ),
                   ),
                 ],
@@ -200,28 +205,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 SizedBox(height: 20.h),
-                SizedBox(
-                  height: 250.h,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 20,
-                    itemBuilder: (context, index) {
-                      return CourseCardVertical(
-                        title: 'intro to python ',
-                        imagePath:
-                            'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
-                        rating: 4.3,
-                        totalHours: 12,
-                        width: 180.w,
-                        description:
-                            'description description description description description description description description description description description description',
-                        instructorName: 'instructor name',
-                        lessonsCount: 12,
-                      );
-                    },
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: List.generate(
+                        20,
+                        (index) => CourseCardVertical(
+                          title: 'intro to python ',
+                          imagePath:
+                              'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
+                          rating: 4.3,
+                          totalHours: 12,
+                          width: 256,
+                          description:
+                              'description description description description description description description description description description description description',
+                          instructorName: 'instructor name',
+                          lessonsCount: 12,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(height: 20.h),
+                SizedBox(height: 40.h),
                 FeatureCard(
                   description:
                       'Test your knowledge on the go with real-time feedback and progress tracking.',

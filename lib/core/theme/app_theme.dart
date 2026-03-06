@@ -97,7 +97,7 @@ class AppTheme {
         color: colorScheme.onSurfaceVariant,
       ),
       labelSmall: base.copyWith(
-        fontSize: getResponsiveSize(14, 12),
+        fontSize: getResponsiveSize(12, 10),
         fontWeight: FontWeight.bold,
         color: colorScheme.primary,
       ),
@@ -191,9 +191,7 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: colorScheme.primary,
-          side: BorderSide( 
-            color: colorScheme.primary,
-          ), 
+          side: BorderSide(color: colorScheme.primary),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           textStyle: TextStyle(

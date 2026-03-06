@@ -20,7 +20,7 @@ class FeatureCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xffF3F5F6),
+        color: context.colorScheme.surface,
         borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
@@ -74,7 +74,7 @@ class FeatureCard extends StatelessWidget {
                 Text(
                   description,
                   style: context.textTheme.labelSmall!.copyWith(
-                    color: Color(0xff102A33).withValues(alpha: 0.4),
+                    color: context.colorScheme.onSurface.withValues(alpha: 0.4),
                   ),
                 ),
               ],

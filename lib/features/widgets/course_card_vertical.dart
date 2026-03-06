@@ -25,111 +25,124 @@ class CourseCardVertical extends StatelessWidget {
     this.totalHours,
     this.backgroundColor,
     this.width,
-    this.lessonsCount, 
+    this.lessonsCount,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width?.w ?? 200.w, 
-      margin: EdgeInsets.only(right: 16.w), 
+      width: width?.w ?? 256.w,
+      margin: EdgeInsets.only(right: 16.w),
       decoration: BoxDecoration(
         color: backgroundColor ?? context.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: context.colorScheme.primary.withValues(alpha: 0.05),
+          width: 2.w,
+        ),
         boxShadow: [
           BoxShadow(
-            color: context.colorScheme.onSecondary.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: context.colorScheme.onSurface.withValues(alpha: 0.05),
+            blurRadius: 8.r,
+            offset: Offset(0, 4.h),
           ),
-        ],)
-        ,
+        ],
+      ),
 
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12.r),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-           CustomImage(
-              imagePath: imagePath,
-              aspectRatio: 16 / 10,
-            ),
-            Padding(
-              padding: EdgeInsets.all(12.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //  title
-                  Text(
-                    title,
-                    style: context.textTheme.titleSmall?.copyWith(
-                      color: context.colorScheme.onSurfaceVariant,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-        
-                  // description
-                  if (description != null && description!.isNotEmpty) ...[
-                    SizedBox(height: 4.h),
+      child: Material(
+        color: Colors.transparent,
+        clipBehavior: Clip.antiAlias,
+        borderRadius: BorderRadius.circular(16.r),
+        child: InkWell(
+          onTap: onTap,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomImage(
+                imagePath: imagePath,
+                aspectRatio: 16 / 10,
+                width: double.infinity,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+              ),
+              Padding(
+                padding: EdgeInsets.all(12.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    //  title
                     Text(
-                      description!,
-                      style: context.textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.w400,
-                        color: context.colorScheme.onSurfaceVariant.withValues(
-                          alpha: 0.4,
-                        ),
-                      ), // استخدمت هنا خط تاني غير التايتل عشان اصغر واهدي مش يكونوا شبه بعض
+                      title,
+                      style: context.textTheme.titleSmall?.copyWith(
+                        color: context.colorScheme.onSurfaceVariant,
+                        height: 1.2,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ],
-        
-                  // instructor name
-                  if (instructorName != null) ...[
-                    SizedBox(height: 10.h),
-                    Text(
-                      instructorName!,
-                      style: context.textTheme.labelMedium?.copyWith(
-                        color: context.colorScheme.primary,
-                        fontWeight: FontWeight.normal,
+
+                    // description
+                    if (description != null && description!.isNotEmpty) ...[
+                      SizedBox(height: 6.h),
+                      Text(
+                        description!,
+                        style: context.textTheme.labelSmall?.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: context.colorScheme.onSurfaceVariant
+                              .withValues(alpha: 0.6),
+                        ), // استخدمت هنا خط تاني غير التايتل عشان اصغر واهدي مش يكونوا شبه بعض
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
-        
-                  SizedBox(height: 12.h),
-        
-                  // rating and total hours and lessons count
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.centerLeft,
-                    child: Row(
+                    ],
+
+                    // instructor name
+                    if (instructorName != null) ...[
+                      SizedBox(height: 8.h),
+                      Text(
+                        instructorName!,
+                        style: context.textTheme.labelSmall?.copyWith(
+                          color: context.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+
+                    SizedBox(height: 12.h),
+                    Wrap(
                       spacing: 8.w,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      runSpacing: 4.h,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         // rating
-                       if (rating != null) Row(
-                          children: [
-                            Icon(Icons.star, color: Colors.amber, size: 18.w),
-                            SizedBox(width: 4.w),
-                            Text(
-                              '$rating',
-                              style: context.textTheme.labelLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: context.colorScheme.onSurface,
+                        if (rating != null)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.star, color: Colors.amber, size: 14.w),
+                              SizedBox(width: 4.w),
+                              Text(
+                                '$rating',
+                                style: context.textTheme.labelSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: context.colorScheme.onSurface,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
                         // total hours
                         if (totalHours != null)
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
-                                Icons.access_time,
-                                color: context.colorScheme.onSurfaceVariant,
+                                Icons.access_time_rounded,
+                                color: context.colorScheme.onSurfaceVariant
+                                    .withValues(alpha: 0.8),
                                 size: 14.w,
                               ),
                               SizedBox(width: 4.w),
@@ -137,39 +150,40 @@ class CourseCardVertical extends StatelessWidget {
                                 '${totalHours!} h',
                                 style: context.textTheme.labelSmall?.copyWith(
                                   color: context.colorScheme.onSurfaceVariant
-                                      .withValues(alpha: 0.6),
+                                      .withValues(alpha: 0.8),
                                 ),
                               ),
                             ],
                           ),
-        
+
                         // lessons count
                         if (lessonsCount != null)
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
-                                Icons.circle_rounded,
+                                Icons.menu_book_rounded,
                                 color: context.colorScheme.onSurfaceVariant
-                                    .withValues(alpha: 0.6),
-                                size: 5.w,
+                                    .withValues(alpha: 0.8),
+                                size: 14.w,
                               ),
-                              SizedBox(width: 2.w),
+                              SizedBox(width: 4.w),
                               Text(
                                 '$lessonsCount lessons',
                                 style: context.textTheme.labelSmall?.copyWith(
                                   color: context.colorScheme.onSurfaceVariant
-                                      .withValues(alpha: 0.6),
+                                      .withValues(alpha: 0.8),
                                 ),
                               ),
                             ],
                           ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
