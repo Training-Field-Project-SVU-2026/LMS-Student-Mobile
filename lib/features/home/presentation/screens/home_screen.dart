@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/features/home/widgets/custom_rich_text.dart';
 import 'package:lms_student/features/home/widgets/feature_card.dart';
-import 'package:lms_student/features/widgets/course_card_horizontal.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
@@ -71,9 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: CustomPrimaryButton(
-              color: context.colorScheme.secondary,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: context.colorScheme.secondary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+              ),
               onTap: () {},
               text: "Login",
+              textStyle: TextStyle(color: context.colorScheme.onSurface),
+
               width: 120.w,
               height: 40.h,
             ),
@@ -124,8 +130,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 30.h),
                   Center(
                     child: CustomPrimaryButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: context.colorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                      ),
                       textStyle: TextStyle(color: context.colorScheme.primary),
-                      color: context.colorScheme.onPrimary,
+
                       text: "Start Learning",
                       //Todo: GO TO LOGIN SCREEN
                       onTap: () {},
@@ -139,6 +151,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       text: "Browse Courses",
                       textStyle: TextStyle(color: Colors.white),
                       style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
                         side: BorderSide(
                           width: 2,
                           color: context.colorScheme.onPrimary.withValues(
@@ -227,8 +242,131 @@ class _HomeScreenState extends State<HomeScreen> {
                   path: "assets/icons/DownloadableResources.png",
                   title: "Downloadable Resources",
                 ),
+                SizedBox(height: 40.h),
+                CustomOutlinedButton(
+                  text: "Join Us Today",
+                  textStyle: context.textTheme.labelSmall!.copyWith(
+                    color: context.colorScheme.primary,
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                    backgroundColor: context.colorScheme.primary.withValues(
+                      alpha: 0.05,
+                    ),
+                    side: BorderSide(
+                      width: 1,
+                      color: context.colorScheme.primary.withValues(
+                        alpha: 0.05,
+                      ),
+                    ),
+                  ),
+                  width: 150,
+                  height: 40,
+                  onTap: () {},
+                ),
+                SizedBox(height: 35.h),
+                Text(
+                  '''Ready to start your
+        journey?''',
+                  style: context.textTheme.displayMedium!.copyWith(
+                    color: context.colorScheme.onSurface,
+                  ),
+                ),
+                SizedBox(height: 35.h),
+                Text(
+                  '''Join 10k+ learners building the future of
+                    technology.''',
+                  style: context.textTheme.labelMedium!.copyWith(
+                    color: context.colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
+                ),
+                SizedBox(height: 35.h),
+                CustomPrimaryButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: context.colorScheme.secondary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                  ),
+                  textStyle: TextStyle(color: context.colorScheme.onSurface),
+
+                  text: "Create Free Account",
+                  //Todo: GO TO REGISTER SCREEN
+                  onTap: () {},
+                ),
+                SizedBox(height: 15.h),
+                Text(
+                  "   No credit card required to start learning.",
+                  style: context.textTheme.labelSmall!.copyWith(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: context.colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
+                ),
+                SizedBox(height: 80.h),
               ],
             ),
+          ),
+          Divider(color: context.colorScheme.onSurface.withValues(alpha: 0.1)),
+          SizedBox(height: 16.h),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    child: Container(
+                      width: 32.w,
+                      height: 32.h,
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.primary.withValues(
+                          alpha: 0.06,
+                        ),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.facebook,
+                        size: 15.w,
+                        color: context.colorScheme.primary.withValues(
+                          alpha: 0.4,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 16.w),
+                  InkWell(
+                    child: Container(
+                      width: 32.w,
+                      height: 32.h,
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.primary.withValues(
+                          alpha: 0.06,
+                        ),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.alternate_email,
+                        size: 15.w,
+                        color: context.colorScheme.primary.withValues(
+                          alpha: 0.4,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                "© 2024 SkillUp E-Learning Platforms. All rights reserved.",
+                style: context.textTheme.labelSmall!.copyWith(
+                  fontSize: 10.sp,
+                  color: context.colorScheme.onSurface.withValues(alpha: 0.6),
+                ),
+              ),
+            ],
           ),
         ],
       ),

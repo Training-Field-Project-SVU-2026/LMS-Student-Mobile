@@ -42,7 +42,7 @@ class CustomNavBar extends StatelessWidget {
                 context: context,
               ),
               navItem(
-                icon: CupertinoIcons.book,
+                icon: Icons.school_outlined,
                 label: context.tr("my_learning"),
                 index: 2,
                 context: context,
