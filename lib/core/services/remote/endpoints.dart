@@ -2,13 +2,13 @@
 class EndPoint {
 
   static String localUrl = "http://lcoalhost/api/";
-  static String remoteUrl = "https://IP_ADDRESS/api/";
+  static String remoteUrl = "https://lmsbackend-production-c2ea.up.railway.app/api";
 
   static String baseUrl = remoteUrl;  
   
     // auth 
   static String login = "auth/login";
-  static String register = "auth/register";
+  static String register = "/register/student/";  // 
   static String logout = "auth/logout";
   static String forgotPassword = "auth/forgot-password";
 

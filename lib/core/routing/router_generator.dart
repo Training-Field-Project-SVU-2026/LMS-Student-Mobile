@@ -7,18 +7,12 @@ import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
 import 'package:lms_student/root/root.dart';
-import 'package:lms_student/test_screen.dart';
+
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.homeScreen,
+    initialLocation: AppRoutes.registerScreen,
     routes: [
-      // for test
-      GoRoute(
-        path: '/test',
-        name: 'test_widgets',
-        builder: (context, state) => const TestScreen(),
-      ),
       GoRoute(
         path: AppRoutes.splashScreen,
         name: AppRoutes.splashScreen,
@@ -29,8 +23,8 @@ class RouterGenerator {
         path: AppRoutes.loginScreen,
         name: AppRoutes.loginScreen,
         builder: (context, state) {
-          return BlocProvider.value(
-            value: sl<AuthBloc>(),
+          return BlocProvider(
+            create: (context) => sl<AuthBloc>(), // كل مرة ياخد بلوك جديد 
             child: const LoginScreen(),
           );
         },

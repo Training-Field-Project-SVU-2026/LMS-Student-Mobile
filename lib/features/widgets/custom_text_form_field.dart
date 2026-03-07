@@ -25,8 +25,8 @@ class CustomTextFormField extends StatefulWidget {
     this.validator,
     this.keyboardType,
     this.textInputAction,
-    this.onChanged, 
-    this.width, 
+    this.onChanged,
+    this.width,
     this.height,
   });
 
@@ -36,26 +36,24 @@ class CustomTextFormField extends StatefulWidget {
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
   bool _obscureText = true;
- 
+
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(8.r),
-    boxShadow: [
-      BoxShadow(
-        color: context.colorScheme.outline.withValues(alpha: 0.25), 
-        blurRadius: 10, 
-        offset: const Offset(0, 4), 
+        borderRadius: BorderRadius.circular(8.r),
+        boxShadow: [
+          BoxShadow(
+            color: context.colorScheme.outline.withValues(alpha: 0.25),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-    ],
-  ),
       child: SizedBox(
         width: widget.width?.w ?? 324.w,
         //height: widget.height?.h ?? 51.h,
         child: TextFormField(
-      
           textAlignVertical: TextAlignVertical.center,
           controller: widget.controller,
           validator: widget.validator,
@@ -64,12 +62,23 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           textInputAction: widget.textInputAction,
           obscureText: widget.isPassword ? _obscureText : false,
           style: context.textTheme.bodyMedium,
-      
-      
+
+          
           decoration: InputDecoration(
             hintText: widget.hintText,
-            prefixIconColor: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-            suffixIconColor: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+            // hintStyle: context.textTheme.bodyMedium?.copyWith(
+            // color: context.colorScheme.primary
+            // ),
+            contentPadding: EdgeInsets.symmetric(
+              vertical: widget.height ?? 12.h,
+              horizontal: 12.w,
+            ),
+            prefixIconColor: context.colorScheme.onSurfaceVariant.withValues(
+              alpha: 0.7,
+            ),
+            suffixIconColor: context.colorScheme.onSurfaceVariant.withValues(
+              alpha: 0.7,
+            ),
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isPassword
                 ? IconButton(
