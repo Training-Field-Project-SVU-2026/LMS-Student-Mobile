@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:lms_student/core/errors/exceptions.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
 import 'package:lms_student/core/services/remote/api_interceptor.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
+import 'package:lms_student/core/errors/handle_dio_exception.dart';
 
 class DioConsumer extends ApiConsumer {
   final Dio dio;
@@ -35,7 +35,7 @@ class DioConsumer extends ApiConsumer {
       );
       return response.data;
     } on DioException catch (e) {
-      handleDioExceptions(e);
+      DioExceptionHandler.handleException(e);
     }
   }
 
@@ -50,7 +50,7 @@ class DioConsumer extends ApiConsumer {
       );
       return response.data;
     } on DioException catch (e) {
-      handleDioExceptions(e);
+      DioExceptionHandler.handleException(e);
     }
   }
 
@@ -69,7 +69,7 @@ class DioConsumer extends ApiConsumer {
       );
       return response.data;
     } on DioException catch (e) {
-      handleDioExceptions(e);
+      DioExceptionHandler.handleException(e);
     }
   }
 
@@ -88,7 +88,8 @@ class DioConsumer extends ApiConsumer {
       );
       return response.data;
     } on DioException catch (e) {
-      handleDioExceptions(e);
+      DioExceptionHandler.handleException(e);
     }
   }
+  
 }
