@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_student/features/auth/presentation/screens/widgets/auth_toggle_switch.dart';
 import 'package:lms_student/features/auth/utils/auth_validation.dart';
+import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
 
@@ -88,9 +91,11 @@ class LoginBody extends StatelessWidget {
                 ),
 
                 SizedBox(height: 24.h),
-                
+                AuthToggleSwitch(isLogin: true),
+
+                SizedBox(height: 25.h,),
                 CustomTextFormField(
-                  // controller: authBloc.loginEmailController,
+                  // controller: loginEmailController,
                   hintText: 'Email Address',
                   prefixIcon: Icon(Icons.email_outlined, size: 22.w),
                   keyboardType: TextInputType.emailAddress,
@@ -111,7 +116,7 @@ class LoginBody extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                      // Forgot password
+                       
                     },
                     child: Text(
                       "Forgot Password?",
@@ -153,6 +158,59 @@ class LoginBody extends StatelessWidget {
                 ),
 
                 SizedBox(height: 24.h),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50.w),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: context.colorScheme.outlineVariant
+                                .withValues(alpha: 0.15),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                          child: Text(
+                            "OR",
+                            style: context.textTheme.labelMedium?.copyWith(
+                              color: context.colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: context.colorScheme.outlineVariant
+                                .withValues(alpha: 0.15),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 30.h),
+
+                  Align(
+                    child: CustomOutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                        side: BorderSide(color: context.colorScheme.outline),
+                      ),
+                      width: 400.w,
+                      text: 'Continue With Google',
+                      onTap: () {
+                        // Google Sign In
+                      },
+                      prefixIcon: SvgPicture.asset(
+                        "assets/icons/google.svg",
+                        width: 20,
+                      ),
+                    ),
+                  ),
+                
+                SizedBox(height: 50.h,),
                 
                 Center(
                   child: GestureDetector(

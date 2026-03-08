@@ -23,9 +23,7 @@ Future<void> setupServiceLocator() async {
 
   // Features - Auth
   sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(apiConsumer: sl()),
+    () => AuthRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
-  sl.registerFactory(() => AuthBloc(authRepository: sl()));
-
-  
+  sl.registerFactory(() => AuthBloc(authRepository: sl()/*,cacheHelper: sl()*/));
 }

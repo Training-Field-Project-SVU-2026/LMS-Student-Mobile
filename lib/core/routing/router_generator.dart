@@ -11,7 +11,7 @@ import 'package:lms_student/root/root.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.registerScreen,
+    initialLocation: AppRoutes.loginScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
@@ -23,8 +23,8 @@ class RouterGenerator {
         path: AppRoutes.loginScreen,
         name: AppRoutes.loginScreen,
         builder: (context, state) {
-          return BlocProvider(
-            create: (context) => sl<AuthBloc>(), // كل مرة ياخد بلوك جديد 
+          return BlocProvider.value(
+            value: sl<AuthBloc>(),
             child: const LoginScreen(),
           );
         },

@@ -15,6 +15,14 @@ class LoginResponseModel {
     required this.isSuccess,
   });
 
+  Map<String, dynamic> toJson() {
+  return {
+    'message': message,
+    'access': accessToken,     
+    'refresh': refreshToken,    
+    'user': user.toJson(),      
+  };
+}
   factory LoginResponseModel.fromJson(Map<String, dynamic> json, int statusCode) {
     final isSuccess = statusCode == 200;
     

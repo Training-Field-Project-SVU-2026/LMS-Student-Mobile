@@ -6,9 +6,9 @@ import 'package:lms_student/core/services/remote/endpoints.dart';
 class ApiInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    options.headers[ApiKey.token] =
-        CacheHelper().getData(key: ApiKey.token) != null
-            ? 'Bearer ${CacheHelper().getData(key: ApiKey.token)}'
+    options.headers[ApiKey.accessToken] =
+        CacheHelper().getData(key: ApiKey.accessToken) != null
+            ? 'Bearer ${CacheHelper().getData(key: ApiKey.accessToken)}'
             : null;
     super.onRequest(options, handler);
   }

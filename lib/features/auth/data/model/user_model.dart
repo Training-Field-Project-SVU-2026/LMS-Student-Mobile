@@ -17,6 +17,18 @@ class UserModel {
     this.isVerified,
   });
 
+  Map<String, dynamic> toJson() {
+  return {
+    'first_name': firstName,
+    'last_name': lastName,
+    'email': email,
+    'role': role,
+    'slug': slug,
+    'is_active': isActive,
+    'is_verified': isVerified,
+  };
+}
+
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       firstName: json['first_name'] ?? '',

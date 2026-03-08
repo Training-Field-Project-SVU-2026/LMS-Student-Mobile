@@ -17,7 +17,7 @@ class RegisterBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = context.read<AuthBloc>();
-    
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
@@ -29,10 +29,7 @@ class RegisterBody extends StatelessWidget {
           );
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
           );
         }
       },
@@ -41,18 +38,20 @@ class RegisterBody extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Form(
-              key: authBloc.formKey,
+              key: authBloc.registerFormKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 30.h),
-                  
+
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
                       padding: EdgeInsets.all(8.w),
                       decoration: BoxDecoration(
-                        color: context.colorScheme.primary.withValues(alpha: 0.1),
+                        color: context.colorScheme.primary.withValues(
+                          alpha: 0.1,
+                        ),
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: Icon(
@@ -62,7 +61,7 @@ class RegisterBody extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
+
                   SizedBox(height: 20.h),
                   Text(
                     "Start Your Journey",
@@ -78,9 +77,9 @@ class RegisterBody extends StatelessWidget {
                       color: context.colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  
+
                   SizedBox(height: 30.h),
-                  
+
                   Row(
                     children: [
                       Expanded(
@@ -102,7 +101,7 @@ class RegisterBody extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   SizedBox(height: 16.h),
                   CustomTextFormField(
                     controller: authBloc.emailController,
@@ -110,7 +109,7 @@ class RegisterBody extends StatelessWidget {
                     prefixIcon: Icon(Icons.email_outlined, size: 22.w),
                     validator: (value) => validateEmail(value),
                   ),
-                  
+
                   SizedBox(height: 16.h),
                   CustomTextFormField(
                     controller: authBloc.passwordController,
@@ -119,7 +118,7 @@ class RegisterBody extends StatelessWidget {
                     prefixIcon: Icon(Icons.lock_outline, size: 22.w),
                     validator: (value) => validatePassword(value),
                   ),
-                  
+
                   SizedBox(height: 16.h),
                   CustomTextFormField(
                     controller: authBloc.confirmPasswordController,
@@ -136,21 +135,26 @@ class RegisterBody extends StatelessWidget {
                       return null;
                     },
                   ),
-                  
+
                   SizedBox(height: 30.h),
+
                   
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading = state is AuthLoading;
-                      
+
                       return Align(
                         alignment: Alignment.center,
                         child: CustomPrimaryButton(
-                          text: isLoading ? 'Creating Account...' : 'Create Account',
-                          onTap: isLoading ? null : () {
-                            FocusScope.of(context).unfocus();
-                            context.read<AuthBloc>().add(RegisterEvent());
-                          },
+                          text: isLoading
+                              ? 'Creating Account...'
+                              : 'Create Account',
+                          onTap: isLoading
+                              ? null
+                              : () {
+                                  FocusScope.of(context).unfocus();
+                                  context.read<AuthBloc>().add(RegisterEvent());
+                                },
                           suffixIcon: isLoading
                               ? SizedBox(
                                   width: 20.w,
@@ -166,50 +170,74 @@ class RegisterBody extends StatelessWidget {
                                   color: context.colorScheme.onPrimary,
                                   size: 20.w,
                                 ),
-                          width: 250.w,
+                          width: 287.w,
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                16,
+                              ), 
+                            ),
+                          ),
                         ),
                       );
                     },
                   ),
-                  
-                  SizedBox(height: 25.h),
-                  
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Divider(color: context.colorScheme.outlineVariant),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                        child: Text(
-                          "OR",
-                          style: context.textTheme.labelMedium,
+
+                  SizedBox(height: 30.h),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50.w),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: context.colorScheme.outlineVariant
+                                .withValues(alpha: 0.15),
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Divider(color: context.colorScheme.outlineVariant),
-                      ),
-                    ],
-                  ),
-                  
-                  SizedBox(height: 25.h),
-                  
-                  CustomOutlinedButton(
-                    text: 'Continue With Google',
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Google Sign In coming soon!'),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                          child: Text(
+                            "OR",
+                            style: context.textTheme.labelMedium?.copyWith(
+                              color: context.colorScheme.primary,
+                            ),
+                          ),
                         ),
-                      );
-                    },
-                    prefixIcon: SvgPicture.asset(
-                      "assets/icons/google.svg"
+                        Expanded(
+                          child: Divider(
+                            color: context.colorScheme.outlineVariant
+                                .withValues(alpha: 0.15),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  
-                  SizedBox(height: 20.h),
-                  
+
+                  SizedBox(height: 30.h),
+
+                  Align(
+                    child: CustomOutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                        side: BorderSide(color: context.colorScheme.outline),
+                      ),
+                      width: 287.w,
+                      text: 'Continue With Google',
+                      onTap: () {
+                        // Google Sign In
+                      },
+                      prefixIcon: SvgPicture.asset(
+                        "assets/icons/google.svg",
+                        width: 20,
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 100.h),
+
                   Center(
                     child: TextButton(
                       onPressed: () {
