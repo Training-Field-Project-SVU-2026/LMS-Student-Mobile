@@ -14,7 +14,7 @@ class RegisterScreen extends StatelessWidget {
       create: (context) => sl<AuthBloc>(),
       child: Scaffold(
         backgroundColor: context.colorScheme.background,
-        body: RegisterBody(),
+        body: const RegisterBody(),
       ),
     );
   }

@@ -29,6 +29,7 @@ class LoginBody extends StatelessWidget {
             ),
           );
           context.go(AppRoutes.homeScreen);
+
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -42,7 +43,7 @@ class LoginBody extends StatelessWidget {
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Form(
-            // key: authBloc.loginFormKey,
+            key: authBloc.loginFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -65,7 +66,7 @@ class LoginBody extends StatelessWidget {
                       ),
                       SizedBox(height: 12.h),
                       Text(
-                        "Commit Ma3ana",
+                        "Eight Names App 😎",
                         style: context.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: context.colorScheme.primary
@@ -91,11 +92,12 @@ class LoginBody extends StatelessWidget {
                 ),
 
                 SizedBox(height: 24.h),
+
                 AuthToggleSwitch(isLogin: true),
 
                 SizedBox(height: 25.h,),
                 CustomTextFormField(
-                  // controller: loginEmailController,
+                  controller: authBloc.emailController,
                   hintText: 'Email Address',
                   prefixIcon: Icon(Icons.email_outlined, size: 22.w),
                   keyboardType: TextInputType.emailAddress,
@@ -105,18 +107,19 @@ class LoginBody extends StatelessWidget {
                 SizedBox(height: 16.h),
                 
                 CustomTextFormField(
-                  //controller: authBloc.loginPasswordController,
+                  controller: authBloc.passwordController,
                   hintText: 'Password',
                   isPassword: true,
                   prefixIcon: Icon(Icons.lock_outline, size: 22.w),
                   validator: (value) => validatePassword(value),
+                  keyboardType: TextInputType.visiblePassword,
                 ),
                 
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                       
+                       // go to forget password screen
                     },
                     child: Text(
                       "Forgot Password?",
@@ -137,7 +140,7 @@ class LoginBody extends StatelessWidget {
                       text: isLoading ? 'Signing In...' : 'Sign In',
                       onTap: isLoading ? null : () {
                         FocusScope.of(context).unfocus();
-                        // context.read<AuthBloc>().add(LoginEvent());
+                         context.read<AuthBloc>().add(LoginEvent());
                       },
                       suffixIcon: isLoading
                           ? SizedBox(

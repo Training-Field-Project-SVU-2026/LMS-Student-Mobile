@@ -35,7 +35,8 @@ class ApiKey {
   static String accessToken = "access";
   static String refreshToken = "refresh";
   static String user = "user";
-  // static String student = "student";
-  // static String student = "student";
+  
+  static String statusCode = "status"; // dummy 
+  static String errorMessage = "error_message";  //dummy
   // static String student = "student";
 }

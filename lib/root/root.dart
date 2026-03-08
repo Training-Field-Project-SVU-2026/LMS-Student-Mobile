@@ -3,7 +3,6 @@ import 'package:lms_student/features/home/presentation/screens/home_screen_after
 import 'package:lms_student/root/custom_nav_bar.dart';
 import 'package:lms_student/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
-import 'package:lms_student/test_screen.dart';
 
 class Root extends StatefulWidget {
   const Root({super.key});
@@ -20,7 +19,6 @@ class _RootState extends State<Root> {
     HomeScreenAfterLogin(),
     RegisterScreen(),
     LoginScreen(),
-    TestScreen(),
   ];
 
   void changePage(int index) {

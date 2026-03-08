@@ -13,7 +13,7 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => sl<AuthBloc>(),
       child: Scaffold(
-        backgroundColor: context.colorScheme.surface,
+        backgroundColor: context.colorScheme.background,
         body: const LoginBody(),
       ),
     );
