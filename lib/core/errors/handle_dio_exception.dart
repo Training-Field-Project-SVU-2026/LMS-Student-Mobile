@@ -9,7 +9,7 @@ class DioExceptionHandler {
       print('Response Data: ${e.response?.data}');
       
       // bring message from server 
-      final serverMessage = e.response?.data['message'] ?? 'Registration failed';
+      final serverMessage = e.response?.data['message'] ?? 'Failed';
       
       switch (e.response?.statusCode) {
         case 400:

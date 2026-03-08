@@ -1,4 +1,4 @@
-class StudentModel {
+class UserModel {
   final String firstName;
   final String lastName;
   final String email;
@@ -7,7 +7,7 @@ class StudentModel {
   final bool? isActive;
   final bool? isVerified;
 
-  StudentModel({
+  UserModel({
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -17,8 +17,8 @@ class StudentModel {
     this.isVerified,
   });
 
-  factory StudentModel.fromJson(Map<String, dynamic> json) {
-    return StudentModel(
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
       firstName: json['first_name'] ?? '',
       lastName: json['last_name'] ?? '',
       email: json['email'] ?? '',

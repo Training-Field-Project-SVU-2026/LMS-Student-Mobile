@@ -1,8 +1,8 @@
-import 'package:lms_student/features/auth/data/model/student_model.dart';
+import 'package:lms_student/features/auth/data/model/user_model.dart';
 
 class RegisterResponseModel {
   final String message;
-  final StudentModel? student;
+  final UserModel? student;
   final bool isSuccess;
 
   RegisterResponseModel({
@@ -12,22 +12,15 @@ class RegisterResponseModel {
   });
 
   factory RegisterResponseModel.fromJson(Map<String, dynamic> json ,int statusCode) {
-   final isSuccess = statusCode == 201;
+   final isSuccess = (statusCode == 201 || statusCode == 200);
 
     return RegisterResponseModel(
       message: json['message'] ?? '',
-      student: json['student'] != null ? StudentModel.fromJson(json['student']) : null,
+      student: json['student'] != null ? UserModel.fromJson(json['student']) : null,
       isSuccess: isSuccess,
     );
   }
 
-  // // in error or will make an error model separately
-  // factory RegisterResponseModel.error(String message) {
-  //   return RegisterResponseModel(
-  //     message: message,
-  //     student: null,
-  //     isSuccess: false,
-  //   );
-  // }
+  
 }
 
