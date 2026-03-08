@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 import 'package:lms_student/features/home/widgets/custom_rich_text.dart';
 import 'package:lms_student/features/home/widgets/feature_card.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
@@ -16,6 +18,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // ✅ إضافة سطر واحد بس هنا
+    context.read<CoursesBloc>().add(FetchCoursesEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -207,28 +216,55 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 SizedBox(height: 20.h),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: IntrinsicHeight(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: List.generate(
-                        20,
-                        (index) => CourseCardVertical(
-                          title: 'intro to python ',
-                          imagePath:
-                              'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
-                          rating: 4.3,
-                          totalHours: 12,
-                          width: 256,
-                          description:
-                              'description description description description description description description description description description description description',
-                          instructorName: 'instructor name',
-                          lessonsCount: 12,
+                BlocBuilder<CoursesBloc, CoursesState>(
+                  builder: (context, state) {
+                    // 🔵 حالة التحميل
+                    if (state is CoursesLoading) {
+                      return Container(
+                        height: 280.h,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+
+                    // 🔴 حالة الخطأ
+                    if (state is CoursesError) {
+                      return Container(
+                        height: 280.h,
+                        child: Center(child: Text('حدث خطأ: ${state.message}')),
+                      );
+                    }
+
+                    // 🟢 حالة نجاح جلب البيانات
+                    if (state is CoursesLoaded) {
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: state.courses.map((course) {
+                              return CourseCardVertical(
+                                title: course.title,
+                                imagePath: course.image,
+                                rating: 4.3,
+                                totalHours: 12,
+                                width: 256,
+                                description: course.description,
+                                instructorName: course.instructorName,
+                                lessonsCount: 12,
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      );
+                    }
+
+                    // 🟡 لو لسبب ما مطلعش أي حالة من اللي فوق
+                    // (نادراً ما يحصل)
+                    return Container(
+                      height: 280.h,
+                      child: Center(child: Text('برجاء الانتظار...')),
+                    );
+                  },
                 ),
                 SizedBox(height: 40.h),
                 FeatureCard(

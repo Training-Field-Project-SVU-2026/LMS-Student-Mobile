@@ -11,12 +11,17 @@ class RegisterResponseModel {
     required this.isSuccess,
   });
 
-  factory RegisterResponseModel.fromJson(Map<String, dynamic> json ,int statusCode) {
-   final isSuccess = statusCode == 201;
+  factory RegisterResponseModel.fromJson(
+    Map<String, dynamic> json,
+    int statusCode,
+  ) {
+    final isSuccess = statusCode == 201;
 
     return RegisterResponseModel(
       message: json['message'] ?? '',
-      student: json['student'] != null ? StudentModel.fromJson(json['student']) : null,
+      student: json['student'] != null
+          ? StudentModel.fromJson(json['student'])
+          : null,
       isSuccess: isSuccess,
     );
   }
@@ -30,4 +35,3 @@ class RegisterResponseModel {
   //   );
   // }
 }
-

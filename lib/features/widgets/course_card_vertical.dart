@@ -61,7 +61,7 @@ class CourseCardVertical extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomImage(
-                imagePath: imagePath,
+                imagePath: imagePath ?? 'https://pin.it/LGTOMZqFS',
                 aspectRatio: 16 / 10,
                 width: double.infinity,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),

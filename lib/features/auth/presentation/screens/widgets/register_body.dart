@@ -99,7 +99,9 @@ class _RegisterBodyState extends State<RegisterBody> {
                   Text(
                     "Create an account and commit to growth",
                     style: context.textTheme.bodyMedium?.copyWith(
-                      color: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                      color: context.colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.7,
+                      ),
                     ),
                   ),
 
@@ -246,22 +248,23 @@ class _RegisterBodyState extends State<RegisterBody> {
                       children: [
                         Expanded(
                           child: Divider(
-                            color: context.colorScheme.outlineVariant.withValues(
-                              alpha: 0.15,
-                            ),
+                            color: context.colorScheme.outlineVariant
+                                .withValues(alpha: 0.15),
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          child: Text("OR", style: context.textTheme.labelMedium?.copyWith(
-                            color: context.colorScheme.primary,
-                          )),
+                          child: Text(
+                            "OR",
+                            style: context.textTheme.labelMedium?.copyWith(
+                              color: context.colorScheme.primary,
+                            ),
+                          ),
                         ),
                         Expanded(
                           child: Divider(
-                            color: context.colorScheme.outlineVariant.withValues(
-                              alpha: 0.15,
-                            ),
+                            color: context.colorScheme.outlineVariant
+                                .withValues(alpha: 0.15),
                           ),
                         ),
                       ],
@@ -276,9 +279,7 @@ class _RegisterBodyState extends State<RegisterBody> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16.r),
                         ),
-                        side: BorderSide(
-                          color: context.colorScheme.outline,
-                        ),
+                        side: BorderSide(color: context.colorScheme.outline),
                       ),
                       width: 287.w,
                       text: 'Continue With Google',
@@ -304,7 +305,8 @@ class _RegisterBodyState extends State<RegisterBody> {
                         text: TextSpan(
                           text: "Already Have An Account? ",
                           style: context.textTheme.bodyMedium?.copyWith(
-                            color: context.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                            color: context.colorScheme.outlineVariant
+                                .withValues(alpha: 0.5),
                           ),
                           children: [
                             TextSpan(
