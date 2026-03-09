@@ -16,27 +16,52 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AuthRepositoryImpl({required this.apiConsumer, required this.cacheHelper});
 
-  @override
-  Future<Either<RegisterResponseModel, String>> register(
-    RegisterRequestModel request,
-  ) async {
-    try {
-      final response = await apiConsumer.post(
-        EndPoint.register,
-        data: request.toJson(),
-      );
+  // @override
+  // Future<Either<RegisterResponseModel, String>> register(
+  //   RegisterRequestModel request,
+  // ) async {
+  //   try {
+  //     final response = await apiConsumer.post(
+  //       EndPoint.register,
+  //       data: request.toJson(),
+  //     );
 
-      return Left(
-        RegisterResponseModel.fromJson(response.data, response.statusCode ?? 0),
-      );
-    } on DioException catch (e) {
-      return Right(DioExceptionHandler.handleException(e));
-    } catch (e) {
-      return Right(
-        'An unexpected error occurred in registration : ${e.toString()}',
-      );
-    }
+  //     return Left(
+  //       RegisterResponseModel.fromJson(response.data, response.statusCode ?? 0),
+  //     );
+  //   } on DioException catch (e) {
+  //     return Right(DioExceptionHandler.handleException(e));
+  //   } catch (e) {
+  //     return Right(
+  //       'An unexpected error occurred in registration : ${e.toString()}',
+  //     );
+  //   }
+  // }
+  @override
+Future<Either<RegisterResponseModel, String>> register(
+  RegisterRequestModel request,
+) async {
+  try {
+    final responseData = await apiConsumer.post(
+      EndPoint.register,
+      data: request.toJson(),
+    );
+    
+    print('✅ Response data: $responseData');
+
+    return Left(
+      RegisterResponseModel.fromJson(
+        responseData,  // ✅ دي بقا data مش response كامل
+        200,  // مؤقت
+      ),
+    );
+    
+  } on DioException catch (e) {
+    return Right(DioExceptionHandler.handleException(e));
+  } catch (e) {
+    return Right('An unexpected error occurred: ${e.toString()}');
   }
+}
 
   @override
   Future<Either<LoginResponseModel, String>> login(

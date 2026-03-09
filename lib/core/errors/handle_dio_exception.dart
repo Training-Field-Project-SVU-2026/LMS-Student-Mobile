@@ -1,40 +1,60 @@
 import 'package:dio/dio.dart';
+import 'package:lms_student/core/errors/error_model.dart';
 
 class DioExceptionHandler {
   static String handleException(DioException e) {
     
-    // server error with response 
     if (e.response != null) {
       print('Status Code: ${e.response?.statusCode}');
       print('Response Data: ${e.response?.data}');
       
-      // bring message from server 
-      final serverMessage = e.response?.data['message'] ?? 'Failed';
-      
-      switch (e.response?.statusCode) {
-        case 400:
-          return 'Bad request: $serverMessage';
-        case 401:
-          return 'Unauthorized: $serverMessage';
-        case 403:
-          return 'Forbidden: $serverMessage';
-        case 404:
-          return 'Not found: $serverMessage';
-        case 409:
-          return 'Conflict: $serverMessage'; // زي الايميل موجود
-        case 422:
-          return 'Validation error: $serverMessage';
-        case 500:
-          return 'Server error, please try again later';
-        case 502:
-        case 503:
-          return 'Service unavailable, please try again later';
-        default:
-          return serverMessage;
+      try {
+        // استخدم ErrorModel عشان تجيب الرسالة
+        final errorModel = ErrorModel.fromJson(
+          e.response?.data ?? {},
+        );
+        
+        final serverMessage = errorModel.message;
+        
+        switch (e.response?.statusCode) {
+          case 400:
+            return 'Bad request: $serverMessage';
+          case 401:
+            return 'Unauthorized: $serverMessage';
+          case 403:
+            return 'Forbidden: $serverMessage';
+          case 404:
+            return 'Not found: $serverMessage';
+          case 409:
+            return 'Conflict: $serverMessage'; 
+          case 422:
+            return 'Validation error: $serverMessage';
+          case 500:
+            return 'Server error, please try again later';
+          case 502:
+          case 503:
+            return 'Service unavailable, please try again later';
+          default:
+            return serverMessage;
+        }
+      } catch (err) {
+        print('Error parsing error response: $err');
+        
+        // لو فشل الـ parsing، جرب تجيب message مباشرة
+        try {
+          if (e.response?.data is Map) {
+            final data = e.response?.data as Map;
+            if (data.containsKey('message')) {
+              return data['message'].toString();
+            }
+          }
+        } catch (_) {}
+        
+        return 'Server error (${e.response?.statusCode})';
       }
     }
     
-    // network error or other dio exceptions without response
+    // network error handling
     switch (e.type) {
       case DioExceptionType.connectionError:
       case DioExceptionType.connectionTimeout:

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_student/features/auth/presentation/screens/widgets/auth_toggle_switch.dart';
 import 'package:lms_student/features/auth/utils/auth_validation.dart';
 import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
@@ -78,6 +79,8 @@ class RegisterBody extends StatelessWidget {
                     ),
                   ),
 
+                  SizedBox(height: 20.h),
+                  AuthToggleSwitch(isLogin: false),
                   SizedBox(height: 30.h),
 
                   Row(
@@ -138,7 +141,6 @@ class RegisterBody extends StatelessWidget {
 
                   SizedBox(height: 30.h),
 
-                  
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading = state is AuthLoading;
@@ -173,9 +175,7 @@ class RegisterBody extends StatelessWidget {
                           width: 287.w,
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                16,
-                              ), 
+                              borderRadius: BorderRadius.circular(16),
                             ),
                           ),
                         ),

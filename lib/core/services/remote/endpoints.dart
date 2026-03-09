@@ -7,7 +7,7 @@ class EndPoint {
   static String baseUrl = remoteUrl;  
   
     // auth 
-  static String login = "/login";
+  static String login = "/login/";
   static String register = "/register/student/";  // 
   static String logout = "auth/logout";
   static String forgotPassword = "auth/forgot-password";
@@ -25,18 +25,16 @@ class ApiKey {
   static String lastName = "last_name";
   static String email = "email";
   static String password = "password";
-
   static String role = "role";
   static String slug = "slug";
   static String isActive = "is_active";
   static String isVerified = "is_verified";
-
   static String student = "student";
   static String accessToken = "access";
   static String refreshToken = "refresh";
   static String user = "user";
   
-  static String statusCode = "status"; // dummy 
-  static String errorMessage = "error_message";  //dummy
-  // static String student = "student";
+  // مش محتاج دول أصلاً!
+  // static String statusCode = "status"; 
+  // static String errorMessage = "error_message";
 }

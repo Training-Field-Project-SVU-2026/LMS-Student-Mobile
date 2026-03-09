@@ -12,4 +12,6 @@ class RegisterEvent extends AuthEvent {}
 
 class LoginEvent extends AuthEvent {}
 
+class ForgetPasswordEvent extends AuthEvent {}
+
 class ClearFormEvent extends AuthEvent {}

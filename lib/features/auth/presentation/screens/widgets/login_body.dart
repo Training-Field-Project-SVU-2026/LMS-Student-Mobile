@@ -29,13 +29,9 @@ class LoginBody extends StatelessWidget {
             ),
           );
           context.go(AppRoutes.homeScreen);
-
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
           );
         }
       },
@@ -48,28 +44,33 @@ class LoginBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: 40.h),
-                
+
                 Center(
                   child: Column(
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(10.w),
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: Icon(
-                          Icons.code,
-                          color: context.colorScheme.primary,
-                          size: 35.w,
-                        ),
+                      // Container(
+                      //   padding: EdgeInsets.all(10.w),
+                      //   decoration: BoxDecoration(
+                      //     color: context.colorScheme.primary.withValues(alpha: 0.1),
+                      //     borderRadius: BorderRadius.circular(12.r),
+                      //   ),
+                      //   child: Icon(
+                      //     Icons.code,
+                      //     color: context.colorScheme.primary,
+                      //     size: 35.w,
+                      //   ),
+                      // ),
+                      SizedBox(
+                        width: 100.w,
+                        height: 100.h,
+                        child: Image.network("https://i.pinimg.com/736x/13/6a/40/136a404d2a248920b807f8929f6a1b5b.jpg"),
                       ),
                       SizedBox(height: 12.h),
                       Text(
                         "Eight Names App 😎",
                         style: context.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: context.colorScheme.primary
+                          color: context.colorScheme.primary,
                         ),
                       ),
                     ],
@@ -80,14 +81,14 @@ class LoginBody extends StatelessWidget {
                 Text(
                   "Welcome Back!",
                   style: context.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   "Sign in to continue your learning path",
                   style: context.textTheme.bodyMedium?.copyWith(
-                    color: context.colorScheme.onSurfaceVariant
+                    color: context.colorScheme.onSurfaceVariant,
                   ),
                 ),
 
@@ -95,7 +96,7 @@ class LoginBody extends StatelessWidget {
 
                 AuthToggleSwitch(isLogin: true),
 
-                SizedBox(height: 25.h,),
+                SizedBox(height: 25.h),
                 CustomTextFormField(
                   controller: authBloc.emailController,
                   hintText: 'Email Address',
@@ -103,9 +104,9 @@ class LoginBody extends StatelessWidget {
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) => validateEmail(value),
                 ),
-                
+
                 SizedBox(height: 16.h),
-                
+
                 CustomTextFormField(
                   controller: authBloc.passwordController,
                   hintText: 'Password',
@@ -114,34 +115,36 @@ class LoginBody extends StatelessWidget {
                   validator: (value) => validatePassword(value),
                   keyboardType: TextInputType.visiblePassword,
                 ),
-                
+
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                       // go to forget password screen
+                      // go to forget password screen
                     },
                     child: Text(
                       "Forgot Password?",
                       style: context.textTheme.labelMedium?.copyWith(
-                        color: context.colorScheme.primary
+                        color: context.colorScheme.primary,
                       ),
                     ),
                   ),
                 ),
 
                 SizedBox(height: 24.h),
-                
+
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     final isLoading = state is AuthLoading;
-                    
+
                     return CustomPrimaryButton(
                       text: isLoading ? 'Signing In...' : 'Sign In',
-                      onTap: isLoading ? null : () {
-                        FocusScope.of(context).unfocus();
-                         context.read<AuthBloc>().add(LoginEvent());
-                      },
+                      onTap: isLoading
+                          ? null
+                          : () {
+                              FocusScope.of(context).unfocus();
+                              context.read<AuthBloc>().add(LoginEvent());
+                            },
                       suffixIcon: isLoading
                           ? SizedBox(
                               width: 20.w,
@@ -162,59 +165,61 @@ class LoginBody extends StatelessWidget {
 
                 SizedBox(height: 24.h),
 
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 50.w),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            color: context.colorScheme.outlineVariant
-                                .withValues(alpha: 0.15),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 50.w),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          color: context.colorScheme.outlineVariant.withValues(
+                            alpha: 0.15,
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          child: Text(
-                            "OR",
-                            style: context.textTheme.labelMedium?.copyWith(
-                              color: context.colorScheme.primary,
-                            ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: Text(
+                          "OR",
+                          style: context.textTheme.labelMedium?.copyWith(
+                            color: context.colorScheme.primary,
                           ),
                         ),
-                        Expanded(
-                          child: Divider(
-                            color: context.colorScheme.outlineVariant
-                                .withValues(alpha: 0.15),
+                      ),
+                      Expanded(
+                        child: Divider(
+                          color: context.colorScheme.outlineVariant.withValues(
+                            alpha: 0.15,
                           ),
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 30.h),
+
+                Align(
+                  child: CustomOutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      side: BorderSide(color: context.colorScheme.outline),
+                    ),
+                    width: 400.w,
+                    text: 'Continue With Google',
+                    onTap: () {
+                      // Google Sign In
+                    },
+                    prefixIcon: SvgPicture.asset(
+                      "assets/icons/google.svg",
+                      width: 20,
                     ),
                   ),
+                ),
 
-                  SizedBox(height: 30.h),
+                SizedBox(height: 50.h),
 
-                  Align(
-                    child: CustomOutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
-                        ),
-                        side: BorderSide(color: context.colorScheme.outline),
-                      ),
-                      width: 400.w,
-                      text: 'Continue With Google',
-                      onTap: () {
-                        // Google Sign In
-                      },
-                      prefixIcon: SvgPicture.asset(
-                        "assets/icons/google.svg",
-                        width: 20,
-                      ),
-                    ),
-                  ),
-                
-                SizedBox(height: 50.h,),
-                
                 Center(
                   child: GestureDetector(
                     onTap: () {
@@ -237,7 +242,7 @@ class LoginBody extends StatelessWidget {
                     ),
                   ),
                 ),
-                
+
                 SizedBox(height: 20.h),
               ],
             ),

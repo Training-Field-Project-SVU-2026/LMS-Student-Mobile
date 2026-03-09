@@ -4,14 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/di/service_locator.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_student/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
 import 'package:lms_student/root/root.dart';
 
-
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.loginScreen,
+    initialLocation: AppRoutes.forgotPasswordScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
@@ -26,6 +26,16 @@ class RouterGenerator {
           return BlocProvider.value(
             value: sl<AuthBloc>(),
             child: const LoginScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.forgotPasswordScreen,
+        name: AppRoutes.forgotPasswordScreen,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: sl<AuthBloc>(),
+            child: const ForgotPasswordScreen(),
           );
         },
       ),

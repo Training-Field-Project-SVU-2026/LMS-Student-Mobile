@@ -15,6 +15,7 @@ mixin FormControllersMixin {
   // Form Keys
   final registerFormKey = GlobalKey<FormState>();
   final loginFormKey = GlobalKey<FormState>();
+  final forgetPasswordFormKey = GlobalKey<FormState>();
 
   //Register
   bool validateRegisterForm() {
