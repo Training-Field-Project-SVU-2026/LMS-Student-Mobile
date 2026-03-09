@@ -7,14 +7,14 @@ class EndPoint {
   static String baseUrl = remoteUrl;  
   
     // auth 
-  static String login = "/login";
-  static String register = "/register/student/";  // 
-  static String logout = "auth/logout";
-  static String forgotPassword = "auth/forgot-password";
+  static String login = "/auth/login/";
+  static String register = "/auth/register/student/";
+  static String logout = "/auth/logout";
+  static String forgotPassword = "/auth/forgot-password";
 
 
   static String getUserDataEndPoint(String id) {
-    return "user/get-user/$id";
+    return "/user/get-user/$id";
   }
 
 }
@@ -35,7 +35,7 @@ class ApiKey {
   static String accessToken = "access";
   static String refreshToken = "refresh";
   static String user = "user";
-  
+  static String isLoggedIn = "is_logged_in";
   static String statusCode = "status"; // dummy 
   static String errorMessage = "error_message";  //dummy
   // static String student = "student";

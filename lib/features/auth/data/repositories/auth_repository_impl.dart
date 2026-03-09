@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:lms_student/core/errors/handle_dio_exception.dart';
@@ -48,29 +49,22 @@ class AuthRepositoryImpl implements AuthRepository {
         data: request.toJson(),
       );
 
-      final loginResponse = LoginResponseModel.fromJson(
-        response.data, 
-        response.statusCode ?? 0,
-      );
+      final loginResponse = LoginResponseModel.fromJson(response, 200);
 
-      
       if (loginResponse.isSuccess) {
         await cacheHelper.saveData(
-          key: 'access_token', 
+          key: ApiKey.accessToken,
           value: loginResponse.accessToken,
         );
         await cacheHelper.saveData(
-          key: 'refresh_token', 
+          key: ApiKey.refreshToken,
           value: loginResponse.refreshToken,
         );
         await cacheHelper.saveData(
-          key: 'user', 
-          value: loginResponse.user.toJson(),
+          key: ApiKey.user,
+          value: loginResponse.user.toJson().toString(),
         );
-        await cacheHelper.saveData(
-          key: 'is_logged_in', 
-          value: true,
-        );
+        await cacheHelper.saveData(key: ApiKey.isLoggedIn, value: true);
       }
 
       return Left(loginResponse);
