@@ -43,18 +43,15 @@ class _RootState extends State<Root> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<CoursesBloc>(),
-      child: Scaffold(
-        body: PageView(
-          controller: controller,
-          physics: const NeverScrollableScrollPhysics(),
-          children: screens,
-        ),
-        bottomNavigationBar: CustomNavBar(
-          currentIndex: currentIndex,
-          onTap: changePage,
-        ),
+    return Scaffold(
+      body: PageView(
+        controller: controller,
+        physics: const NeverScrollableScrollPhysics(),
+        children: screens,
+      ),
+      bottomNavigationBar: CustomNavBar(
+        currentIndex: currentIndex,
+        onTap: changePage,
       ),
     );
   }

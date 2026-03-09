@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Padding(
                         padding: EdgeInsets.all(16.w),
                         child: Text(
-                          'Master Python, React, and more with expert-led courses designed specifically for mobilelearners PLPLPLPLPLPPLPPLPPLLPLPLPLPLPLPLPLPLPPLPLPLPLPLPLPLPLPLPLP.',
+                          'Master Python, React, and more with expert-led courses designed specifically for mobilelearners.',
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: context.textTheme.labelSmall!.copyWith(
