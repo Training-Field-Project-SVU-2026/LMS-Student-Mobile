@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
@@ -24,9 +23,17 @@ class RegisterBody extends StatelessWidget {
         if (state is AuthSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Registration successful!'),
+              content: Text('Verification Code Sent!'),
               backgroundColor: Colors.green,
             ),
+          );
+
+          context.go(
+            AppRoutes.verifyOtpScreen,
+            extra: {
+              'email': authBloc.emailController.text.trim(),
+              'source': 'register',
+            },
           );
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(

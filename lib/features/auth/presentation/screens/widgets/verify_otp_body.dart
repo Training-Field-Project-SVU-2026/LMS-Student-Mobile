@@ -1,0 +1,234 @@
+// lib/features/auth/presentation/screens/verify_otp_screen/widgets/verify_otp_body.dart
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
+import '../../../../../../core/extensions/context_extensions.dart';
+import '../../../../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../../../../features/widgets/custom_primary_button.dart';
+
+class VerifyOtpBody extends StatelessWidget {
+  final String email;
+  const VerifyOtpBody({super.key, required this.email});
+
+  @override
+  Widget build(BuildContext context) {
+    print('📧 Email in screen: $email'); 
+
+    final authBloc = context.read<AuthBloc>();
+
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthSuccess) {
+          // here we have to check from where the user came from to navigate to the correct screen
+          context.go(AppRoutes.loginScreen);
+        }
+      },
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: Column(
+            children: [
+              SizedBox(height: 20.h),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  onPressed: () => context.go(AppRoutes.loginScreen),
+                  icon: CircleAvatar(
+                    backgroundColor: context.colorScheme.primary.withValues(
+                      alpha: 0.1,
+                    ),
+                    child: Icon(
+                      Icons.arrow_back_ios_new,
+                      size: 18.w,
+                      color: context.colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 20.h),
+
+              Container(
+                padding: EdgeInsets.all(15.w),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: context.colorScheme.primary.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Icon(
+                  Icons.verified_user_outlined,
+                  size: 40.w,
+                  color: context.colorScheme.primary,
+                ),
+              ),
+
+              SizedBox(height: 24.h),
+              Text(
+                "Verify OTP",
+                style: context.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 12.h),
+              Text(
+                "We sent a verification code to your email address. Enter it below to continue.",
+                textAlign: TextAlign.center,
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: context.colorScheme.onSurfaceVariant.withValues(
+                    alpha: 0.5,
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 40.h),
+              
+              Form(
+                key: authBloc.otpFormKey,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(
+                    6,
+                    (index) => _buildOtpBox(context, index, authBloc),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 32.h),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.timer_outlined,
+                    size: 18.w,
+                    color: context.colorScheme.primary,
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    "Code expires in 01:00",
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: context.colorScheme.primary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 16.h),
+
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    // TODO: Implement Resend OTP logic
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Didn't receive the code? ",
+                      style: context.textTheme.bodyMedium,
+                      children: [
+                        TextSpan(
+                          text: "Resend",
+                          style: TextStyle(
+                            color: context.colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 40.h),
+              Container(
+                width: double.infinity,
+                height: 160.h,
+                decoration: BoxDecoration(
+                  color: context.colorScheme.primary.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.shield_outlined,
+                    size: 60.w,
+                    color: context.colorScheme.primary.withValues(alpha: 0.3),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 40.h),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  final isLoading = state is AuthLoading;
+                  return CustomPrimaryButton(
+                    text: isLoading ? "Verifying..." : "Verify OTP",
+                    onTap: isLoading
+                        ? null
+                        : () {
+                            print(
+                              '🔑 OTP entered: ${authBloc.getOtpCode()}',
+                            ); // 👈 أضيفي ده
+                            print('📧 Email: $email');
+
+                            // wait here
+                            authBloc.add(
+                              VerifyEmailEvent(
+                                email: email,
+                                otp: authBloc.getOtpCode(),
+                              ),
+                            ); //؟؟
+                          },
+                    suffixIcon: Icon(
+                      Icons.verified,
+                      size: 18.w,
+                      color: Colors.white,
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20.h),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOtpBox(BuildContext context, int index, AuthBloc authBloc) {
+    return Container(
+      width: 45.w,
+      height: 55.h,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15.r),
+        border: Border.all(
+          color: Colors.grey.withValues(alpha: 0.2),
+          width: 1.5,
+        ),
+      ),
+      child: Center(
+        child: TextFormField(
+          controller: authBloc.otpControllers[index],
+          onChanged: (value) {
+            if (value.length == 1) FocusScope.of(context).nextFocus();
+            if (value.isEmpty) FocusScope.of(context).previousFocus();
+          },
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          maxLength: 1,
+          decoration: const InputDecoration(
+            counterText: "",
+            border: InputBorder.none,
+          ),
+          style: context.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+}

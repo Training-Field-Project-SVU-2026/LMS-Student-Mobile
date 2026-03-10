@@ -7,11 +7,12 @@ import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
+import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_student/root/root.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.loginScreen,
+    initialLocation: AppRoutes.registerScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
@@ -26,6 +27,20 @@ class RouterGenerator {
           return BlocProvider.value(
             value: sl<AuthBloc>(),
             child: const LoginScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.verifyOtpScreen,
+        name: AppRoutes.verifyOtpScreen,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final email = extra?['email'] ?? '';
+          print('📧 Email in router: $email'); // 👈 أضيفي ده
+
+          return BlocProvider.value(
+            value: sl<AuthBloc>(),
+            child: VerifyOtpScreen(email: email),
           );
         },
       ),

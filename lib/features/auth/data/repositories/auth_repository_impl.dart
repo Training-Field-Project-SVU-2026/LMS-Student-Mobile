@@ -8,6 +8,7 @@ import 'package:lms_student/features/auth/data/model/login_request_model.dart';
 import 'package:lms_student/features/auth/data/model/login_response_model.dart';
 import 'package:lms_student/features/auth/data/model/register_request_model.dart';
 import 'package:lms_student/features/auth/data/model/register_response_model.dart';
+import 'package:lms_student/features/auth/data/model/verify_email_request_model.dart';
 import 'package:lms_student/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -67,6 +68,23 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(DioExceptionHandler.handleException(e));
     } catch (e) {
       return Right('An unexpected error occurred in Login : ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<String> verifyEmail(VerifyEmailRequestModel request) async {
+    try {
+      final response = await apiConsumer.post(
+        EndPoint.verifyEmail,
+        data: request.toJson(),
+      );
+
+      print(response);
+      return response.toString(); //
+    } on DioException catch (e) {
+      return DioExceptionHandler.handleException(e);
+    } catch (e) {
+      return 'An unexpected error occurred in Verify Email : ${e.toString()}';
     }
   }
 }

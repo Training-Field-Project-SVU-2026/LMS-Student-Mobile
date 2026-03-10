@@ -6,16 +6,22 @@ mixin FormControllersMixin {
   // Shared between login and register
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  
-  // Register 
+
+  // Register
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  // Otp
+  final List<TextEditingController> otpControllers = List.generate(
+    6,
+    (index) => TextEditingController(),
+  );
   // Form Keys
   final registerFormKey = GlobalKey<FormState>();
   final loginFormKey = GlobalKey<FormState>();
   final forgetPasswordFormKey = GlobalKey<FormState>();
+  final otpFormKey = GlobalKey<FormState>();
 
   //Register
   bool validateRegisterForm() {
@@ -26,16 +32,16 @@ mixin FormControllersMixin {
     return RegisterRequestModel(
       firstName: firstNameController.text.trim(),
       lastName: lastNameController.text.trim(),
-      email: emailController.text.trim(),      
-      password: passwordController.text.trim(), 
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
     );
   }
 
   void clearRegisterControllers() {
     firstNameController.clear();
     lastNameController.clear();
-    emailController.clear();      
-    passwordController.clear();   
+    emailController.clear();
+    passwordController.clear();
     confirmPasswordController.clear();
   }
 
@@ -46,14 +52,29 @@ mixin FormControllersMixin {
 
   LoginRequestModel getLoginRequest() {
     return LoginRequestModel(
-      email: emailController.text.trim(),      
+      email: emailController.text.trim(),
       password: passwordController.text.trim(),
     );
   }
 
   void clearLoginControllers() {
-    emailController.clear();    
-    passwordController.clear(); 
+    emailController.clear();
+    passwordController.clear();
+  }
+
+  //verify email
+  String getOtpCode() {
+    return otpControllers.map((c) => c.text).join();
+  }
+
+  bool validateOtpForm() {
+    return otpFormKey.currentState?.validate() ?? false;
+  }
+
+  void clearOtpControllers() {
+    for (var controller in otpControllers) {
+      controller.clear();
+    }
   }
 
   // Dispose all
@@ -63,5 +84,8 @@ mixin FormControllersMixin {
     firstNameController.dispose();
     lastNameController.dispose();
     confirmPasswordController.dispose();
+    for (var controller in otpControllers) {
+      controller.dispose();
+    }
   }
 }
