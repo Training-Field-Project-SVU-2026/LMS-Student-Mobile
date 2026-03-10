@@ -26,8 +26,8 @@ class RouterGenerator {
         path: AppRoutes.loginScreen,
         name: AppRoutes.loginScreen,
         builder: (context, state) {
-          return BlocProvider.value(
-            value: sl<AuthBloc>(),
+          return BlocProvider(
+            create: (context) => sl<AuthBloc>(),
             child: const LoginScreen(),
           );
         },
@@ -36,8 +36,8 @@ class RouterGenerator {
         path: AppRoutes.forgotPasswordScreen,
         name: AppRoutes.forgotPasswordScreen,
         builder: (context, state) {
-          return BlocProvider.value(
-            value: sl<AuthBloc>(),
+          return BlocProvider(
+            create: (context) => sl<AuthBloc>(),
             child: const ForgotPasswordScreen(),
           );
         },
@@ -46,8 +46,8 @@ class RouterGenerator {
         path: AppRoutes.registerScreen,
         name: AppRoutes.registerScreen,
         builder: (context, state) {
-          return BlocProvider.value(
-            value: sl<AuthBloc>(),
+          return BlocProvider(
+            create: (context) => sl<AuthBloc>(),
             child: const RegisterScreen(),
           );
         },
@@ -56,8 +56,8 @@ class RouterGenerator {
         path: AppRoutes.homeScreen,
         name: AppRoutes.homeScreen,
         builder: (context, state) {
-          return BlocProvider.value(
-            value: sl<CoursesBloc>(),
+          return BlocProvider(
+            create: (context) => sl<CoursesBloc>(),
             child: const HomeScreen(),
           );
         },
@@ -74,7 +74,7 @@ class RouterGenerator {
         name: AppRoutes.homeScreenAfterLogin,
         builder: (context, state) {
           return MultiBlocProvider(
-            providers: [BlocProvider.value(value: sl<CoursesBloc>())],
+            providers: [BlocProvider(create: (context) => sl<CoursesBloc>())],
             child: const Root(),
           );
         },
