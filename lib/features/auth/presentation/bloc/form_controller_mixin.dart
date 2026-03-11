@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lms_student/features/auth/data/model/register_request_model.dart';
 import 'package:lms_student/features/auth/data/model/login_request_model.dart';
+import 'package:lms_student/features/auth/data/model/reset_password_request_model.dart';
 
 mixin FormControllersMixin {
   // Shared between login and register
@@ -17,11 +18,34 @@ mixin FormControllersMixin {
     6,
     (index) => TextEditingController(),
   );
+
+  // reset password
+  final otpController = TextEditingController();
+  final newPasswordController = TextEditingController();
+  final confirmNewPasswordController = TextEditingController();
+  bool validateResetPasswordForm() {
+  return resetPasswordFormKey.currentState?.validate() ?? false;
+}
+
+ResetPasswordRequestModel getResetPasswordRequest() {
+  return ResetPasswordRequestModel(
+    otp: otpController.text.trim(),
+    newPassword: newPasswordController.text.trim(),
+  );
+}
+
+void clearResetPasswordControllers() {
+  otpController.clear();
+  newPasswordController.clear();
+  confirmNewPasswordController.clear();
+}
+
   // Form Keys
   final registerFormKey = GlobalKey<FormState>();
   final loginFormKey = GlobalKey<FormState>();
   final forgetPasswordFormKey = GlobalKey<FormState>();
   final otpFormKey = GlobalKey<FormState>();
+  final resetPasswordFormKey = GlobalKey<FormState>();
 
   //Register
   bool validateRegisterForm() {
@@ -87,5 +111,8 @@ mixin FormControllersMixin {
     for (var controller in otpControllers) {
       controller.dispose();
     }
+    otpController.dispose();
+    newPasswordController.dispose();
+    confirmNewPasswordController.dispose();
   }
 }

@@ -8,6 +8,7 @@ import 'package:lms_student/features/auth/data/model/login_request_model.dart';
 import 'package:lms_student/features/auth/data/model/login_response_model.dart';
 import 'package:lms_student/features/auth/data/model/register_request_model.dart';
 import 'package:lms_student/features/auth/data/model/register_response_model.dart';
+import 'package:lms_student/features/auth/data/model/reset_password_request_model.dart';
 import 'package:lms_student/features/auth/data/model/verify_email_request_model.dart';
 import 'package:lms_student/features/auth/domain/repositories/auth_repository.dart';
 
@@ -101,5 +102,37 @@ class AuthRepositoryImpl implements AuthRepository {
     } catch (e) {
       return 'An unexpected error occurred in Resend OTP : ${e.toString()}';
     }
+  }
+
+  @override
+  Future<String> forgotPassword(String email) async {
+    try {
+      final response = await apiConsumer.post(
+        EndPoint.forgotPassword,
+        data: {"email": email},
+      );
+
+      return response.toString();
+    } on DioException catch (e) {
+      return DioExceptionHandler.handleException(e);
+    } catch (e) {
+      return 'An unexpected error occurred in Resend OTP (Forgot password): ${e.toString()}';
+    }
+  }
+
+  @override
+  Future<String> resetPassword(ResetPasswordRequestModel request) async {
+     try {
+      final response = await apiConsumer.post(
+        EndPoint.resetPassword,
+        data: request.toJson()
+      );
+
+      return response.toString();
+    } on DioException catch (e) {
+      return DioExceptionHandler.handleException(e);
+    } catch (e) {
+      return 'An unexpected error occurred in Reset password: ${e.toString()}';
+    }  
   }
 }

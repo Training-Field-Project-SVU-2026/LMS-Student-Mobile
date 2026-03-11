@@ -6,19 +6,14 @@ class RegisterEvent extends AuthEvent {}
 
 class LoginEvent extends AuthEvent {}
 
-class ForgetPasswordEvent extends AuthEvent {}
-
 class ClearFormEvent extends AuthEvent {}
 
-// wanna understand why 
+// wanna understand why
 class VerifyEmailEvent extends AuthEvent {
- final String email;  
+  final String email;
   final String otp;
-  
-  VerifyEmailEvent({
-    required this.email,
-    required this.otp,
-  });
+
+  VerifyEmailEvent({required this.email, required this.otp});
 }
 
 class ResendOtpEvent extends AuthEvent {
@@ -27,3 +22,15 @@ class ResendOtpEvent extends AuthEvent {
   ResendOtpEvent({required this.email});
 }
 
+class ForgotPasswordEvent extends AuthEvent {
+  final String email;
+
+  ForgotPasswordEvent({required this.email});
+}
+
+class ResetPasswordEvent extends AuthEvent {
+  final ResetPasswordRequestModel requestModel;
+
+  ResetPasswordEvent({required this.requestModel});
+
+}

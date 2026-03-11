@@ -16,9 +16,12 @@ class AuthError extends AuthState {
   AuthError({required this.message});
 }
 
-class ForgetPasswordEmailSent extends AuthState {}
-
 class ResendSuccess extends AuthState {
   final String message;
   ResendSuccess(this.message);
+}
+
+class ForgotPasswordSuccess extends AuthState{
+  final String message;
+  ForgotPasswordSuccess(this.message);
 }

@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lms_student/core/services/local/cache_helper.dart';
+import 'package:lms_student/features/auth/data/model/reset_password_request_model.dart';
 import 'package:lms_student/features/auth/data/model/verify_email_request_model.dart';
 import 'package:lms_student/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lms_student/features/auth/presentation/bloc/form_controller_mixin.dart';
+import 'package:lms_student/features/auth/presentation/screens/widgets/reset_password_body.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -18,6 +20,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
     on<ClearFormEvent>(_onClearForm);
     on<VerifyEmailEvent>(_onVerifyEmail);
     on<ResendOtpEvent>(_onResendOtp);
+    on<ForgotPasswordEvent>(_onForgotPassword);
+    on<ResetPasswordEvent>(_onResetPassword);
   }
 
   Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
@@ -102,6 +106,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
     if (result.toLowerCase().contains('success') ||
         result.toLowerCase().contains('resent')) {
       emit(ResendSuccess(result));
+    } else {
+      emit(AuthError(message: result));
+    }
+  }
+
+  Future<void> _onForgotPassword(
+    ForgotPasswordEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+
+    final result = await authRepository.forgotPassword(event.email);
+
+    if (result.toLowerCase().contains('sent')) {
+      emit(ForgotPasswordSuccess(result));
+    } else {
+      emit(AuthError(message: result));
+    }
+  }
+
+  Future<void> _onResetPassword(
+    ResetPasswordEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+
+    final result = await authRepository.resetPassword(event.requestModel);
+
+     if (result.toLowerCase().contains('success')) {
+      emit(AuthSuccess(data: result));
     } else {
       emit(AuthError(message: result));
     }
