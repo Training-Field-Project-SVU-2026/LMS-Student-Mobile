@@ -8,6 +8,7 @@ import 'package:lms_student/core/routing/app_routes.dart';
 import '../../../../../../core/extensions/context_extensions.dart';
 import '../../../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../../../features/widgets/custom_primary_button.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class VerifyOtpBody extends StatelessWidget {
   final String email;
@@ -83,14 +84,14 @@ class VerifyOtpBody extends StatelessWidget {
       
               SizedBox(height: 24.h),
               Text(
-                "Verify OTP",
+                context.tr('verify_otp'),
                 style: context.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(height: 12.h),
               Text(
-                "We sent a verification code to your email address. Enter it below to continue.",
+                context.tr('we_sent_verification_code'),
                 textAlign: TextAlign.center,
                 style: context.textTheme.bodyMedium?.copyWith(
                   color: context.colorScheme.onSurfaceVariant.withValues(
@@ -124,7 +125,7 @@ class VerifyOtpBody extends StatelessWidget {
                   ),
                   SizedBox(width: 8.w),
                   Text(
-                    "Code expires in 01:00",
+                    context.tr('code_expires_in'),
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: context.colorScheme.primary,
                       fontWeight: FontWeight.w500,
@@ -142,11 +143,11 @@ class VerifyOtpBody extends StatelessWidget {
                   },
                   child: RichText(
                     text: TextSpan(
-                      text: "Didn't receive the code? ",
+                      text: context.tr('didnt_receive_code'),
                       style: context.textTheme.bodyMedium,
                       children: [
                         TextSpan(
-                          text: "Resend",
+                          text: context.tr('resend'),
                           style: TextStyle(
                             color: context.colorScheme.primary,
                             fontWeight: FontWeight.bold,
@@ -180,7 +181,7 @@ class VerifyOtpBody extends StatelessWidget {
                 builder: (context, state) {
                   final isLoading = state is AuthLoading;
                   return CustomPrimaryButton(
-                    text: isLoading ? "Verifying..." : "Verify OTP",
+                    text: isLoading ? context.tr('verifying') : context.tr('verify_otp'),
                     onTap: isLoading
                         ? null
                         : () {

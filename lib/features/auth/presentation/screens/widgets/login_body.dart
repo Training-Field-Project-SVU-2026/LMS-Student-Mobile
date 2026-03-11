@@ -11,6 +11,7 @@ import 'package:lms_student/features/auth/utils/auth_validation.dart';
 import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class LoginBody extends StatelessWidget {
   const LoginBody({super.key});
@@ -23,8 +24,8 @@ class LoginBody extends StatelessWidget {
       listener: (context, state) {
         if (state is AuthSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Login successful!'),
+            SnackBar(
+              content: Text(context.tr('login_success')),
               backgroundColor: Colors.green,
             ),
           );
@@ -69,7 +70,7 @@ class LoginBody extends StatelessWidget {
                       ),
                       SizedBox(height: 12.h),
                       Text(
-                        "Eight Names App 😎",
+                        context.tr('eight_names_app'),
                         style: context.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: context.colorScheme.primary,
@@ -81,14 +82,14 @@ class LoginBody extends StatelessWidget {
 
                 SizedBox(height: 32.h),
                 Text(
-                  "Welcome Back!",
+                  context.tr('welcome_back'),
                   style: context.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  "Sign in to continue your learning path",
+                  context.tr('sign_in_continue'),
                   style: context.textTheme.bodyMedium?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
@@ -101,7 +102,7 @@ class LoginBody extends StatelessWidget {
                 SizedBox(height: 25.h),
                 CustomTextFormField(
                   controller: authBloc.emailController,
-                  hintText: 'Email Address',
+                  hintText: context.tr('email_address'),
                   prefixIcon: Icon(Icons.email_outlined, size: 22.w),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) => validateEmail(value),
@@ -111,7 +112,7 @@ class LoginBody extends StatelessWidget {
 
                 CustomTextFormField(
                   controller: authBloc.passwordController,
-                  hintText: 'Password',
+                  hintText: context.tr('password'),
                   isPassword: true,
                   prefixIcon: Icon(Icons.lock_outline, size: 22.w),
                   validator: (value) => validatePassword(value),
@@ -125,7 +126,7 @@ class LoginBody extends StatelessWidget {
                       context.go(AppRoutes.forgotPasswordScreen);
                     },
                     child: Text(
-                      "Forgot Password?",
+                      context.tr('forgot_password_question'),
                       style: context.textTheme.labelMedium?.copyWith(
                         color: context.colorScheme.primary,
                       ),
@@ -140,7 +141,7 @@ class LoginBody extends StatelessWidget {
                     final isLoading = state is AuthLoading;
 
                     return CustomPrimaryButton(
-                      text: isLoading ? 'Signing In...' : 'Sign In',
+                      text: isLoading ? context.tr('signing_in') : context.tr('sign_in'),
                       onTap: isLoading
                           ? null
                           : () {
@@ -181,7 +182,7 @@ class LoginBody extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.w),
                         child: Text(
-                          "OR",
+                          context.tr('or'),
                           style: context.textTheme.labelMedium?.copyWith(
                             color: context.colorScheme.primary,
                           ),
@@ -209,7 +210,7 @@ class LoginBody extends StatelessWidget {
                       side: BorderSide(color: context.colorScheme.outline),
                     ),
                     width: 400.w,
-                    text: 'Continue as a Guest',
+                    text: context.tr('continue_as_guest'),
                     onTap: () {
                       context.go(AppRoutes.homeScreen);
                     },
@@ -225,11 +226,11 @@ class LoginBody extends StatelessWidget {
                     },
                     child: RichText(
                       text: TextSpan(
-                        text: "Don't Have An Account? ",
+                        text: context.tr('dont_have_account'),
                         style: context.textTheme.bodyMedium,
                         children: [
                           TextSpan(
-                            text: "Sign Up",
+                            text: context.tr('sign_up'),
                             style: TextStyle(
                               color: context.colorScheme.primary,
                               fontWeight: FontWeight.bold,

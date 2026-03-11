@@ -10,6 +10,7 @@ import 'package:lms_student/features/auth/utils/auth_validation.dart';
 import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class RegisterBody extends StatelessWidget {
   const RegisterBody({super.key});
@@ -22,8 +23,8 @@ class RegisterBody extends StatelessWidget {
       listener: (context, state) {
         if (state is AuthSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Verification Code Sent!'),
+            SnackBar(
+              content: Text(context.tr('verification_code_sent')),
               backgroundColor: Colors.green,
             ),
           );
@@ -72,7 +73,7 @@ class RegisterBody extends StatelessWidget {
 
                   SizedBox(height: 20.h),
                   Text(
-                    "Start Your Journey",
+                    context.tr('start_your_journey'),
                     style: context.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: context.colorScheme.primary,
@@ -80,7 +81,7 @@ class RegisterBody extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    "Create an account and commit to growth",
+                    context.tr('create_account_commit'),
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: context.colorScheme.onSurfaceVariant,
                     ),
@@ -95,7 +96,7 @@ class RegisterBody extends StatelessWidget {
                       Expanded(
                         child: CustomTextFormField(
                           controller: authBloc.firstNameController,
-                          hintText: 'First Name',
+                          hintText: context.tr('first_name'),
                           prefixIcon: Icon(Icons.person_outline, size: 22.w),
                           validator: (value) => validateFirstName(value),
                         ),
@@ -104,7 +105,7 @@ class RegisterBody extends StatelessWidget {
                       Expanded(
                         child: CustomTextFormField(
                           controller: authBloc.lastNameController,
-                          hintText: 'Last Name',
+                          hintText: context.tr('last_name'),
                           prefixIcon: Icon(Icons.person_outline, size: 22.w),
                           validator: (value) => validateLastName(value),
                         ),
@@ -115,7 +116,7 @@ class RegisterBody extends StatelessWidget {
                   SizedBox(height: 16.h),
                   CustomTextFormField(
                     controller: authBloc.emailController,
-                    hintText: 'Email Address',
+                    hintText: context.tr('email_address'),
                     prefixIcon: Icon(Icons.email_outlined, size: 22.w),
                     validator: (value) => validateEmail(value),
                   ),
@@ -123,7 +124,7 @@ class RegisterBody extends StatelessWidget {
                   SizedBox(height: 16.h),
                   CustomTextFormField(
                     controller: authBloc.passwordController,
-                    hintText: 'Password',
+                    hintText: context.tr('password'),
                     isPassword: true,
                     prefixIcon: Icon(Icons.lock_outline, size: 22.w),
                     validator: (value) => validatePassword(value),
@@ -132,15 +133,15 @@ class RegisterBody extends StatelessWidget {
                   SizedBox(height: 16.h),
                   CustomTextFormField(
                     controller: authBloc.confirmPasswordController,
-                    hintText: 'Confirm Password',
+                    hintText: context.tr('confirm_password'),
                     isPassword: true,
                     prefixIcon: Icon(Icons.lock_outline, size: 22.w),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please confirm your password';
+                        return context.tr('please_confirm_password');
                       }
                       if (value != authBloc.passwordController.text) {
-                        return 'Passwords do not match';
+                        return context.tr('passwords_do_not_match');
                       }
                       return null;
                     },
@@ -156,8 +157,8 @@ class RegisterBody extends StatelessWidget {
                         alignment: Alignment.center,
                         child: CustomPrimaryButton(
                           text: isLoading
-                              ? 'Creating Account...'
-                              : 'Create Account',
+                              ? context.tr('creating_account')
+                              : context.tr('create_account'),
                           onTap: isLoading
                               ? null
                               : () {
@@ -211,7 +212,7 @@ class RegisterBody extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
                           child: Text(
-                            "OR",
+                            context.tr('or'),
                             style: context.textTheme.labelMedium?.copyWith(
                               color: context.colorScheme.primary,
                             ),
@@ -238,7 +239,7 @@ class RegisterBody extends StatelessWidget {
                         side: BorderSide(color: context.colorScheme.outline),
                       ),
                       width: 287.w,
-                      text: 'Continue as a Guest',
+                      text: context.tr('continue_as_guest'),
                       onTap: () {
                         context.go(AppRoutes.homeScreen);
                       },
@@ -254,11 +255,11 @@ class RegisterBody extends StatelessWidget {
                       },
                       child: RichText(
                         text: TextSpan(
-                          text: "Already Have An Account? ",
+                          text: context.tr('already_have_account'),
                           style: context.textTheme.bodyMedium,
                           children: [
                             TextSpan(
-                              text: "Sign In",
+                              text: context.tr('sign_in'),
                               style: TextStyle(
                                 color: context.colorScheme.primary,
                                 fontWeight: FontWeight.bold,

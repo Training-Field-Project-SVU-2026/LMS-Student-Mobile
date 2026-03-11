@@ -9,6 +9,7 @@ import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/auth/utils/auth_validation.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class ResetPasswordBody extends StatelessWidget {
   final String email;
@@ -23,7 +24,7 @@ class ResetPasswordBody extends StatelessWidget {
         if (state is AuthSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Password reset successfully!'),
+              content: Text(context.tr('password_reset_success')),
               backgroundColor: context.colorScheme.secondary,
             ),
           );
@@ -64,7 +65,7 @@ class ResetPasswordBody extends StatelessWidget {
                         ),
                         SizedBox(height: 8.h),
                         Text(
-                          "RESET PASSWORD",
+                          context.tr('reset_password'),
                           style: context.textTheme.labelLarge?.copyWith(
                             color: Colors.white,
                             letterSpacing: 2,
@@ -116,7 +117,7 @@ class ResetPasswordBody extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "Create New Password",
+                      context.tr('create_new_password'),
                       style: context.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w800,
                         color: context.colorScheme.onSurface,
@@ -124,7 +125,7 @@ class ResetPasswordBody extends StatelessWidget {
                     ),
                     SizedBox(height: 10.h),
                     Text(
-                      "Your new password must be different\nfrom previous used passwords.",
+                      context.tr('new_password_must_be_different'),
                       textAlign: TextAlign.center,
                       style: context.textTheme.bodyMedium?.copyWith(
                         color: context.colorScheme.onSurfaceVariant,
@@ -135,7 +136,7 @@ class ResetPasswordBody extends StatelessWidget {
 
                     CustomTextFormField(
                       controller: authBloc.otpController,
-                      hintText: 'Verification Code',
+                      hintText: context.tr('verification_code'),
                       prefixIcon: Icon(
                         Icons.verified_user_outlined,
                         size: 20.w,
@@ -144,10 +145,10 @@ class ResetPasswordBody extends StatelessWidget {
                       validator: (value) {
                         // make it function in utils file
                         if (value == null || value.isEmpty) {
-                          return 'Verification code is required';
+                          return context.tr('verification_code_required');
                         }
                         if (value.length < 6) {
-                          return 'Enter a valid 6-digit code';
+                          return context.tr('enter_valid_6_digit_code');
                         }
                         return null;
                       },
@@ -157,7 +158,7 @@ class ResetPasswordBody extends StatelessWidget {
 
                     CustomTextFormField(
                       controller: authBloc.newPasswordController,
-                      hintText: 'New Password',
+                      hintText: context.tr('new_password'),
                       isPassword: true,
                       prefixIcon: Icon(Icons.lock_outline_rounded, size: 20.w),
                       validator: (value) => validatePassword(value),
@@ -167,15 +168,15 @@ class ResetPasswordBody extends StatelessWidget {
 
                     CustomTextFormField(
                       controller: authBloc.confirmNewPasswordController,
-                      hintText: 'Confirm New Password',
+                      hintText: context.tr('confirm_new_password'),
                       isPassword: true,
                       prefixIcon: Icon(Icons.lock_reset_rounded, size: 20.w),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please confirm your password';
+                          return context.tr('please_confirm_password');
                         }
                         if (value != authBloc.newPasswordController.text) {
-                          return 'Passwords do not match';
+                          return context.tr('passwords_do_not_match');
                         }
                         return null;
                       },
@@ -187,7 +188,7 @@ class ResetPasswordBody extends StatelessWidget {
                       builder: (context, state) {
                         final isLoading = state is AuthLoading;
                         return CustomPrimaryButton(
-                          text: isLoading ? 'Updating...' : 'Update Password',
+                          text: isLoading ? context.tr('updating') : context.tr('update_password'),
                           onTap: isLoading
                               ? null
                               : () {
@@ -204,7 +205,7 @@ class ResetPasswordBody extends StatelessWidget {
                                       ).showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            'Passwords do not match',
+                                            context.tr('passwords_do_not_match'),
                                           ),
                                           backgroundColor: Colors.red,
                                         ),
@@ -235,7 +236,7 @@ class ResetPasswordBody extends StatelessWidget {
                     TextButton(
                       onPressed: () => context.go(AppRoutes.loginScreen),
                       child: Text(
-                        "Back to Login",
+                        context.tr('back_to_login'),
                         style: TextStyle(color: context.colorScheme.outline),
                       ),
                     ),

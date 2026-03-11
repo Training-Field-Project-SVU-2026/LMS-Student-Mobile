@@ -25,7 +25,7 @@ class HomeRepositoryImpl implements HomeRepository {
       } else if (response is List) {
         courses = response.map((json) => CourseModel.fromJson(json)).toList();
       }
-
+      print("courses from repo: ${courses}");
       return Left(courses);
     } on DioException catch (e) {
       return Right(DioExceptionHandler.handleException(e));

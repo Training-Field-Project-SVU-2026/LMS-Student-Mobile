@@ -6,6 +6,7 @@ import 'package:lms_student/features/home/widgets/custom_progress.dart';
 import 'package:lms_student/features/home/widgets/custom_streak.dart';
 import 'package:lms_student/features/widgets/course_card_horizontal.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class HomeScreenAfterLogin extends StatefulWidget {
   // final int completedVideos;
@@ -49,7 +50,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                   Column(
                     children: [
                       Text(
-                        'Welcome back,',
+                        context.tr('welcome_back_comma'),
                         style: context.textTheme.bodyMedium!.copyWith(
                           fontSize: 12.sp,
                           color: context.colorScheme.onSurface.withValues(
@@ -59,7 +60,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                       ),
 
                       Text(
-                        'Mayoora!',
+                        context.tr('user_mayoora'),
                         style: context.textTheme.bodyMedium!.copyWith(
                           fontSize: 20.sp,
                           color: context.colorScheme.onSurface,
@@ -82,16 +83,16 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomStreak(
-                    hidtag: "Current Streak",
-                    body: "Days",
+                    hidtag: context.tr('current_streak'),
+                    body: context.tr('days'),
                     color_container: Color(0xffFBE7D3),
                     color_Icon: const Color(0xffF05A0C),
                     icon: Icons.local_fire_department,
                     days_Or_hours: 5,
                   ),
                   CustomStreak(
-                    hidtag: "Hours Today",
-                    body: "hrs",
+                    hidtag: context.tr('hours_today'),
+                    body: context.tr('hrs'),
                     color_container: Color(0xffDBEAFE),
                     color_Icon: Color(0xff2563EB),
                     icon: Icons.access_time_outlined,
@@ -101,7 +102,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
               ),
               SizedBox(height: 25.h),
               Text(
-                "My Courses",
+                context.tr('my_courses'),
                 style: context.textTheme.headlineLarge!.copyWith(
                   fontSize: 22.sp,
                   color: context.colorScheme.onSurface,
@@ -131,13 +132,13 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Featured Courses",
+                    context.tr('featured_courses'),
                     style: context.textTheme.headlineMedium!.copyWith(
                       color: context.colorScheme.onSurface,
                     ),
                   ),
                   Text(
-                    "View All",
+                    context.tr('view_all'),
                     style: context.textTheme.labelMedium!.copyWith(
                       color: context.colorScheme.primary,
                     ),
@@ -158,15 +159,15 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                 children: List.generate(
                   20,
                   (index) => CourseCardVertical(
-                    title: 'intro to python ',
+                    title: context.tr('intro_to_python'),
                     imagePath:
                         'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
                     rating: 4.3,
                     totalHours: 12,
                     width: 256,
                     description:
-                        'description description description description description description description description description description description description',
-                    instructorName: 'instructor name',
+                        context.tr('description_placeholder'),
+                    instructorName: context.tr('instructor_name_placeholder'),
                     lessonsCount: 12,
                   ),
                 ),

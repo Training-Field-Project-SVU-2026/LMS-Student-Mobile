@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -123,7 +124,7 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Transform.translate(
                     offset: Offset(0, 20 * (1 - _nameFadeAnimation.value)),
                     child: Text(
-                      'البرنامج الى لسه مش عارفينله اسم ده ',
+                      context.tr('splash_title'),
                       style: context.textTheme.headlineMedium!.copyWith(
                         color: context.colorScheme.onPrimary,
                         fontSize: 24,
@@ -151,7 +152,7 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Transform.translate(
                     offset: Offset(0, 20 * (1 - _descFadeAnimation.value)),
                     child: Text(
-                      'المهم البرنامج ده فيه بشمهندس قِرانى فانت هتكون فل الفل فى اى تراك سجل وانت مطمئن يا بطل 😘😁',
+                      context.tr('splash_desc'),
                       style: context.textTheme.bodyMedium!.copyWith(
                         color: context.colorScheme.onPrimary,
                         fontSize: 18,

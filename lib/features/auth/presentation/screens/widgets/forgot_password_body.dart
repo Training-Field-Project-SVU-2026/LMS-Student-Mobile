@@ -8,6 +8,7 @@ import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/auth/utils/auth_validation.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class ForgotPasswordBody extends StatelessWidget {
   const ForgotPasswordBody({super.key});
@@ -71,7 +72,7 @@ class ForgotPasswordBody extends StatelessWidget {
                           ),
                           SizedBox(width: 8.w),
                           Text(
-                            "COMMIT MA3ANA",
+                            context.tr('commit_ma3ana'),
                             style: context.textTheme.labelLarge?.copyWith(
                               color: Colors.white.withValues(alpha: 0.9),
                               letterSpacing: 2,
@@ -130,7 +131,7 @@ class ForgotPasswordBody extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "Forgot Password?",
+                      context.tr('forgot_password_question'),
                       style: context.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w800,
                         color: context.colorScheme.onSurface,
@@ -138,7 +139,7 @@ class ForgotPasswordBody extends StatelessWidget {
                     ),
                     SizedBox(height: 10.h),
                     Text(
-                      "No worries! Enter your email and we will send you an otp.",
+                      context.tr('no_worries_otp'),
                       textAlign: TextAlign.center,
                       style: context.textTheme.bodyMedium?.copyWith(
                         color: context.colorScheme.onSurfaceVariant,
@@ -149,7 +150,7 @@ class ForgotPasswordBody extends StatelessWidget {
 
                     CustomTextFormField(
                       controller: authBloc.emailController,
-                      hintText: 'Enter your email',
+                      hintText: context.tr('enter_your_email'),
                       prefixIcon: Icon(
                         Icons.alternate_email_rounded,
                         color: context.colorScheme.primary,
@@ -165,7 +166,7 @@ class ForgotPasswordBody extends StatelessWidget {
                       builder: (context, state) {
                         final isLoading = state is AuthLoading;
                         return CustomPrimaryButton(
-                          text: isLoading ? 'Sending...' : 'Send OTP',
+                          text: isLoading ? context.tr('sending') : context.tr('send_otp'),
                           onTap: isLoading
                               ? null
                               : () {
@@ -187,7 +188,7 @@ class ForgotPasswordBody extends StatelessWidget {
                     TextButton.icon(
                       onPressed: () => context.go(AppRoutes.loginScreen),
                       icon: Icon(Icons.arrow_back_ios_new_rounded, size: 14.w),
-                      label: const Text("Back to Login"),
+                      label: Text(context.tr('back_to_login')),
                       style: TextButton.styleFrom(
                         foregroundColor: context.colorScheme.outline,
                         textStyle: TextStyle(
@@ -206,7 +207,7 @@ class ForgotPasswordBody extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: 20.h),
             child: Text(
-              "Commit Ma3ana • Build Consistency",
+              context.tr('commit_ma3ana_build_consistency'),
               style: context.textTheme.labelSmall?.copyWith(
                 color: context.colorScheme.outline.withValues(alpha: 0.5),
               ),

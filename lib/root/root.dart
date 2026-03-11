@@ -26,7 +26,6 @@ class _RootState extends State<Root> {
     ExploreScreenBeforLogin(),
     HomeScreenAfterLogin(),
     RegisterScreen(),
-    LoginScreen(),
   ];
 
   void changePage(int index) {

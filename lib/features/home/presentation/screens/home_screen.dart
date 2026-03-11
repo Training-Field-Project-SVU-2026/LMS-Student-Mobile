@@ -11,6 +11,7 @@ import 'package:lms_student/features/home/widgets/feature_card.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -91,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 context.push(AppRoutes.loginScreen);
               },
-              text: "Login",
+              text: context.tr('login'),
               textStyle: TextStyle(color: context.colorScheme.onSurface),
 
               width: 120,
@@ -136,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Padding(
                         padding: EdgeInsets.all(16.w),
                         child: Text(
-                          'Master Python, React, and more with expert-led courses designed specifically for mobilelearners.',
+                          context.tr('master_python_react'),
                           maxLines: 3,
 
                           overflow: TextOverflow.ellipsis,
@@ -159,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       textStyle: TextStyle(color: context.colorScheme.primary),
 
-                      text: "Start Learning",
+                      text: context.tr('start_learning'),
                       //Todo: GO TO LOGIN SCREEN
                       onTap: () {
                         context.push(AppRoutes.loginScreen);
@@ -169,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 20.h),
                   Center(
                     child: CustomOutlinedButton(
-                      text: "Browse Courses",
+                      text: context.tr('browse_courses'),
                       textStyle: TextStyle(color: Colors.white),
                       style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -208,13 +209,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Featured Courses",
+                      context.tr('featured_courses'),
                       style: context.textTheme.headlineMedium!.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
                     ),
                     Text(
-                      "View All",
+                      context.tr('view_all'),
                       style: context.textTheme.labelMedium!.copyWith(
                         color: context.colorScheme.primary,
                       ),
@@ -238,6 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }
                     if (state is CoursesLoaded) {
+                      print("courses from bloc: ${state.courses}");
                       return SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: IntrinsicHeight(
@@ -272,27 +274,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 40.h),
                 FeatureCard(
                   description:
-                      'Test your knowledge on the go with real-time feedback and progress tracking.',
+                      context.tr('test_your_knowledge'),
                   path: "assets/icons/InteractiveQuizzes.png",
-                  title: "Interactive Quizzes",
+                  title: context.tr('interactive_quizzes'),
                 ),
                 SizedBox(height: 20.h),
                 FeatureCard(
                   description:
-                      'Test your knowledge on the go with real-time feedback and progress tracking.',
+                      context.tr('test_your_knowledge'),
                   path: "assets/icons/DiscussionBoards.png",
-                  title: "Discussion Boards",
+                  title: context.tr('discussion_boards'),
                 ),
                 SizedBox(height: 20.h),
                 FeatureCard(
                   description:
-                      'Test your knowledge on the go with real-time feedback and progress tracking.',
+                      context.tr('test_your_knowledge'),
                   path: "assets/icons/DownloadableResources.png",
-                  title: "Downloadable Resources",
+                  title: context.tr('downloadable_resources'),
                 ),
                 SizedBox(height: 40.h),
                 CustomOutlinedButton(
-                  text: "Join Us Today",
+                  text: context.tr('join_us_today'),
                   textStyle: context.textTheme.labelSmall!.copyWith(
                     color: context.colorScheme.primary,
                   ),
@@ -316,16 +318,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 35.h),
                 Text(
-                  '''Ready to start your
-        journey?''',
+                  context.tr('ready_to_start_journey'),
                   style: context.textTheme.displayMedium!.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
                 ),
                 SizedBox(height: 35.h),
                 Text(
-                  '''Join 10k+ learners building the future of
-                    technology.''',
+                  context.tr('join_10k_learners'),
                   style: context.textTheme.labelMedium!.copyWith(
                     color: context.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
@@ -340,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   textStyle: TextStyle(color: context.colorScheme.onSurface),
 
-                  text: "Create Free Account",
+                  text: context.tr('create_free_account'),
                   //Todo: GO TO REGISTER SCREEN
                   onTap: () {
                     context.push(AppRoutes.registerScreen);
@@ -348,7 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 15.h),
                 Text(
-                  "   No credit card required to start learning.",
+                  context.tr('no_credit_card_required'),
                   style: context.textTheme.labelSmall!.copyWith(
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
@@ -410,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(height: 16.h),
               Text(
-                "© 2024 SkillUp E-Learning Platforms. All rights reserved.",
+                context.tr('all_rights_reserved'),
                 style: context.textTheme.labelSmall!.copyWith(
                   fontSize: 10.sp,
                   color: context.colorScheme.onSurface.withValues(alpha: 0.6),

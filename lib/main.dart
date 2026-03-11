@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/routing/router_generator.dart';
 import 'package:lms_student/core/di/service_locator.dart';
 import 'package:lms_student/core/theme/app_theme.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +30,13 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp.router(
             supportedLocales: const [Locale('en'), Locale('ar')],
-            locale: const Locale('en'),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            locale: const Locale('ar'),
             debugShowCheckedModeBanner: false,
             title: 'LMS Student',
             theme: AppTheme.lightTheme,

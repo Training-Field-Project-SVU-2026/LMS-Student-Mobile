@@ -6,6 +6,7 @@ import 'package:lms_student/features/explore/widget/custom_category_item.dart';
 import 'package:lms_student/features/explore/widget/custom_dropdown_list.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class ExploreScreenBeforLogin extends StatefulWidget {
   const ExploreScreenBeforLogin({super.key});
@@ -32,7 +33,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                     Icons.search,
                     color: context.colorScheme.onSurface,
                   ),
-                  hintText: "Search courses, instructors...",
+                  hintText: context.tr('search_courses_instructors'),
                 ),
 
                 const Spacer(),
@@ -54,7 +55,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Explore",
+                  context.tr('explore'),
                   style: context.textTheme.headlineMedium!.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
@@ -76,7 +77,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                     ),
                     SizedBox(width: 5.w),
                     Text(
-                      "Learning Tracks",
+                      context.tr('learning_tracks'),
                       style: context.textTheme.displayMedium!.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
@@ -84,7 +85,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                   ],
                 ),
                 Text(
-                  "See All",
+                  context.tr('see_all'),
                   style: context.textTheme.titleSmall!.copyWith(
                     color: context.colorScheme.primary,
                   ),
@@ -105,9 +106,8 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                     ),
                     child: IntrinsicHeight(
                       child: CustomCategory(
-                        title: "Full-Stack Web Development",
-                        description:
-                            "Master the art of building complete, modern web applications from scratch. Covers everything from HTML/CSS to advanced…",
+                        title: context.tr('full_stack_web_development'),
+                        description: context.tr('master_the_art'),
                         courseslessons: 12,
                         coursehours: 18,
                       ),
@@ -128,7 +128,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                     ),
                     SizedBox(width: 5.w),
                     Text(
-                      "Many Courses",
+                      context.tr('many_courses'),
                       style: context.textTheme.displayMedium!.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
@@ -136,7 +136,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                   ],
                 ),
                 Text(
-                  "See All",
+                  context.tr('see_all'),
                   style: context.textTheme.titleSmall!.copyWith(
                     color: context.colorScheme.primary,
                   ),
@@ -157,15 +157,14 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
               itemBuilder: (context, index) {
                 return IntrinsicHeight(
                   child: CourseCardVertical(
-                    title: 'intro to python',
+                    title: context.tr('intro_to_python'),
                     imagePath:
                         'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
                     rating: 4.3,
                     totalHours: 12,
                     width: 256,
-                    description:
-                        'description description description description description description description description',
-                    instructorName: 'instructor name',
+                    description: context.tr('description_placeholder'),
+                    instructorName: context.tr('instructor_name_placeholder'),
                     lessonsCount: 12,
                   ),
                 );
