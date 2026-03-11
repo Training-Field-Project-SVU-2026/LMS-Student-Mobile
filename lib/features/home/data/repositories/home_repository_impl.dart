@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:lms_student/core/errors/handle_dio_exception.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
+import 'package:lms_student/core/services/remote/endpoints.dart';
 import 'package:lms_student/features/home/data/model/course_model.dart';
 import 'package:lms_student/features/home/domain/repositories/home_repository.dart';
 
@@ -13,10 +14,7 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<Either<List<CourseModel>, String>> getAllCourses() async {
     try {
-      final response = await apiConsumer.get('/courses/all/');
-
-      // التحقق من شكل الـ response
-      // هل البيانات جاية في key اسمه 'data' ولا مباشرة؟
+      final response = await apiConsumer.get(EndPoint.allCourses);
       List<CourseModel> courses = [];
 
       if (response['data'] != null && response['data'] is List) {
@@ -25,7 +23,6 @@ class HomeRepositoryImpl implements HomeRepository {
             .map((json) => CourseModel.fromJson(json))
             .toList();
       } else if (response is List) {
-        // لو الـ response نفسه عبارة عن List
         courses = response.map((json) => CourseModel.fromJson(json)).toList();
       }
 
@@ -38,7 +35,7 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<CourseModel, String>> getCourseById(int id) {
+  Future<Either<CourseModel, String>> getCourseBySlug(String slug) {
     throw UnimplementedError();
   }
 

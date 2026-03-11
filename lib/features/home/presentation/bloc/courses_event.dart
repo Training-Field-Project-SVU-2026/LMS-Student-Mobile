@@ -7,5 +7,4 @@ sealed class CoursesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-// 📌 بس Event واحد : جلب الكورسات
-class FetchCoursesEvent extends CoursesEvent {}
+class GetCoursesEvent extends CoursesEvent {}

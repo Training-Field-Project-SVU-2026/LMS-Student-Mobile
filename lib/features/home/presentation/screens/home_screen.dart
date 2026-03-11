@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 import 'package:lms_student/features/home/widgets/custom_rich_text.dart';
 import 'package:lms_student/features/home/widgets/feature_card.dart';
@@ -22,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     // ✅ إضافة سطر واحد بس هنا
-    context.read<CoursesBloc>().add(FetchCoursesEvent());
+    context.read<CoursesBloc>().add(GetCoursesEvent());
   }
 
   @override
@@ -86,7 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(16.r),
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                context.push(AppRoutes.loginScreen);
+              },
               text: "Login",
               textStyle: TextStyle(color: context.colorScheme.onSurface),
 
@@ -132,8 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Padding(
                         padding: EdgeInsets.all(16.w),
                         child: Text(
-                          'Master Python, React, and more with expert-led courses designed specifically for mobilelearners PLPLPLPLPLPPLPPLPPLLPLPLPLPLPLPLPLPLPPLPLPLPLPLPLPLPLPLPLP.',
+                          'Master Python, React, and more with expert-led courses designed specifically for mobilelearners.',
                           maxLines: 3,
+
                           overflow: TextOverflow.ellipsis,
                           style: context.textTheme.labelSmall!.copyWith(
                             color: context.colorScheme.surface,
@@ -156,7 +161,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       text: "Start Learning",
                       //Todo: GO TO LOGIN SCREEN
-                      onTap: () {},
+                      onTap: () {
+                        context.push(AppRoutes.loginScreen);
+                      },
                     ),
                   ),
                   SizedBox(height: 20.h),
@@ -218,23 +225,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 20.h),
                 BlocBuilder<CoursesBloc, CoursesState>(
                   builder: (context, state) {
-                    // 🔵 حالة التحميل
                     if (state is CoursesLoading) {
                       return Container(
                         height: 280.h,
                         child: Center(child: CircularProgressIndicator()),
                       );
                     }
-
-                    // 🔴 حالة الخطأ
                     if (state is CoursesError) {
                       return Container(
                         height: 280.h,
-                        child: Center(child: Text('حدث خطأ: ${state.message}')),
+                        child: Center(child: Text('Error : ${state.message}')),
                       );
                     }
-
-                    // 🟢 حالة نجاح جلب البيانات
                     if (state is CoursesLoaded) {
                       return SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -242,15 +244,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: state.courses.map((course) {
-                              return CourseCardVertical(
-                                title: course.title,
-                                imagePath: course.image,
-                                rating: 4.3,
-                                totalHours: 12,
-                                width: 256,
-                                description: course.description,
-                                instructorName: course.instructorName,
-                                lessonsCount: 12,
+                              return InkWell(
+                                onTap: () {
+                                  context.push(AppRoutes.course_details_screen);
+                                },
+                                child: CourseCardVertical(
+                                  //Todo ::Handel nullable
+                                  title: course.title,
+                                  imagePath: course.image,
+                                  rating: 4.3,
+                                  totalHours: 12,
+                                  width: 256,
+                                  description: course.description,
+                                  instructorName: course.instructorName,
+                                  lessonsCount: 12,
+                                ),
                               );
                             }).toList(),
                           ),
@@ -258,12 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }
 
-                    // 🟡 لو لسبب ما مطلعش أي حالة من اللي فوق
-                    // (نادراً ما يحصل)
-                    return Container(
-                      height: 280.h,
-                      child: Center(child: Text('برجاء الانتظار...')),
-                    );
+                    return CircularProgressIndicator();
                   },
                 ),
                 SizedBox(height: 40.h),
@@ -339,7 +342,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   text: "Create Free Account",
                   //Todo: GO TO REGISTER SCREEN
-                  onTap: () {},
+                  onTap: () {
+                    context.push(AppRoutes.registerScreen);
+                  },
                 ),
                 SizedBox(height: 15.h),
                 Text(

@@ -14,7 +14,10 @@ class EndPoint {
   static String resendOtp = "/auth/resend-otp/"; // done 
   static String resetPassword = "/auth/reset-password/"; 
   static String refreshToken = "/auth/token/refresh/";
-  static String verifyEmail = "/auth/verify-email/";// done 
+  static String verifyEmail = "/auth/verify-email/";
+
+  // courses
+  static String allCourses = "/courses/all/";
 }
 
 class ApiKey {

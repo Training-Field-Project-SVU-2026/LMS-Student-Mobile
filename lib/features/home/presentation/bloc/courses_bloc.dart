@@ -10,16 +10,15 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
   final HomeRepository homeRepository;
 
   CoursesBloc({required this.homeRepository}) : super(CoursesInitial()) {
-    // 🟢 Event واحد بس
-    on<FetchCoursesEvent>((event, emit) async {
-      emit(CoursesLoading()); // 🔵 نشغل التحميل
+    on<GetCoursesEvent>((event, emit) async {
+      emit(CoursesLoading());
 
       try {
         final result = await homeRepository.getAllCourses();
 
         result.fold(
-          (courses) => emit(CoursesLoaded(courses: courses)), // 🟢 نجاح
-          (error) => emit(CoursesError(message: error)), // 🔴 فشل
+          (courses) => emit(CoursesLoaded(courses: courses)),
+          (error) => emit(CoursesError(message: error)),
         );
       } catch (e) {
         emit(CoursesError(message: e.toString()));
