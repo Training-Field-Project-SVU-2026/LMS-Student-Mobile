@@ -11,4 +11,6 @@ abstract class AuthRepository {
     RegisterRequestModel request,
   );
   Future<String> verifyEmail(VerifyEmailRequestModel request);
+
+  Future<String> resendOtp(String email);
 }

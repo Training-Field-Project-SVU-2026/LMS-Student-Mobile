@@ -12,7 +12,7 @@ import 'package:lms_student/root/root.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.registerScreen,
+    initialLocation: AppRoutes.loginScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,

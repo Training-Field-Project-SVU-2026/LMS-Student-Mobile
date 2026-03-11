@@ -162,7 +162,13 @@ class RegisterBody extends StatelessWidget {
                               ? null
                               : () {
                                   FocusScope.of(context).unfocus();
-                                  context.read<AuthBloc>().add(RegisterEvent());
+                                  //context.read<AuthBloc>().add(RegisterEvent());
+                                  context.go(
+                                    AppRoutes.verifyOtpScreen,
+                                    extra: {
+                                      "email": "mayarabdelrahim22@gmail.com",
+                                    },
+                                  );
                                 },
                           suffixIcon: isLoading
                               ? SizedBox(

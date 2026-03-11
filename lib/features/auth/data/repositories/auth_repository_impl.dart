@@ -87,4 +87,19 @@ class AuthRepositoryImpl implements AuthRepository {
       return 'An unexpected error occurred in Verify Email : ${e.toString()}';
     }
   }
+
+  @override
+  Future<String> resendOtp(String email) async {
+    try {
+      final response = await apiConsumer.post(
+        EndPoint.resendOtp,
+        data: {"email": email},
+      );
+      return response.toString();
+    } on DioException catch (e) {
+      return DioExceptionHandler.handleException(e);
+    } catch (e) {
+      return 'An unexpected error occurred in Resend OTP : ${e.toString()}';
+    }
+  }
 }

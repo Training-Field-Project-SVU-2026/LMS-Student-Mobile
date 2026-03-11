@@ -15,17 +15,32 @@ class VerifyOtpBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('📧 Email in screen: $email'); 
+    print('📧 Email in screen: $email');
 
     final authBloc = context.read<AuthBloc>();
 
-    return BlocListener<AuthBloc, AuthState>(
+    return MultiBlocListener(
+      listeners: [
+      BlocListener<AuthBloc, AuthState>(
+      listenWhen: (previous, current) => current is AuthSuccess,
       listener: (context, state) {
-        if (state is AuthSuccess) {
-          // here we have to check from where the user came from to navigate to the correct screen
-          context.go(AppRoutes.loginScreen);
-        }
+        context.go(AppRoutes.loginScreen);
       },
+    ),
+    
+    BlocListener<AuthBloc, AuthState>(
+      listenWhen: (previous, current) => current is ResendSuccess,
+      listener: (context, state) {
+        final resendState = state as ResendSuccess;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(resendState.message),
+            backgroundColor: Colors.green,
+          ),
+        );
+      },
+    ),
+  ],
       child: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -48,9 +63,9 @@ class VerifyOtpBody extends StatelessWidget {
                   ),
                 ),
               ),
-
+      
               SizedBox(height: 20.h),
-
+      
               Container(
                 padding: EdgeInsets.all(15.w),
                 decoration: BoxDecoration(
@@ -65,7 +80,7 @@ class VerifyOtpBody extends StatelessWidget {
                   color: context.colorScheme.primary,
                 ),
               ),
-
+      
               SizedBox(height: 24.h),
               Text(
                 "Verify OTP",
@@ -83,9 +98,9 @@ class VerifyOtpBody extends StatelessWidget {
                   ),
                 ),
               ),
-
+      
               SizedBox(height: 40.h),
-              
+      
               Form(
                 key: authBloc.otpFormKey,
                 child: Row(
@@ -96,9 +111,9 @@ class VerifyOtpBody extends StatelessWidget {
                   ),
                 ),
               ),
-
+      
               SizedBox(height: 32.h),
-
+      
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -117,13 +132,13 @@ class VerifyOtpBody extends StatelessWidget {
                   ),
                 ],
               ),
-
+      
               SizedBox(height: 16.h),
-
+      
               Center(
                 child: TextButton(
                   onPressed: () {
-                    // TODO: Implement Resend OTP logic
+                    authBloc.add(ResendOtpEvent(email: email));
                   },
                   child: RichText(
                     text: TextSpan(
@@ -142,7 +157,7 @@ class VerifyOtpBody extends StatelessWidget {
                   ),
                 ),
               ),
-
+      
               SizedBox(height: 40.h),
               Container(
                 width: double.infinity,
@@ -159,7 +174,7 @@ class VerifyOtpBody extends StatelessWidget {
                   ),
                 ),
               ),
-
+      
               SizedBox(height: 40.h),
               BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
@@ -169,11 +184,12 @@ class VerifyOtpBody extends StatelessWidget {
                     onTap: isLoading
                         ? null
                         : () {
+                          // for testing ya قائد don't delete it untill i make sure of the code 
                             print(
                               '🔑 OTP entered: ${authBloc.getOtpCode()}',
-                            ); // 👈 أضيفي ده
+                            ); 
                             print('📧 Email: $email');
-
+      
                             // wait here
                             authBloc.add(
                               VerifyEmailEvent(
@@ -222,6 +238,8 @@ class VerifyOtpBody extends StatelessWidget {
           maxLength: 1,
           decoration: const InputDecoration(
             counterText: "",
+            contentPadding: EdgeInsets.zero,
+            isDense: true,
             border: InputBorder.none,
           ),
           style: context.textTheme.titleSmall?.copyWith(

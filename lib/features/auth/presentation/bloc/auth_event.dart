@@ -21,3 +21,9 @@ class VerifyEmailEvent extends AuthEvent {
   });
 }
 
+class ResendOtpEvent extends AuthEvent {
+  final String email;
+
+  ResendOtpEvent({required this.email});
+}
+

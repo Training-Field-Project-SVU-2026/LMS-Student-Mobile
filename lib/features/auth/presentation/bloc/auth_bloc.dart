@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
     on<RegisterEvent>(_onRegister);
     on<ClearFormEvent>(_onClearForm);
     on<VerifyEmailEvent>(_onVerifyEmail);
+    on<ResendOtpEvent>(_onResendOtp);
   }
 
   Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
@@ -85,6 +86,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
     if (result.toLowerCase().contains('successfully')) {
       clearOtpControllers();
       emit(AuthSuccess(data: result));
+    } else {
+      emit(AuthError(message: result));
+    }
+  }
+
+  Future<void> _onResendOtp(
+    ResendOtpEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+
+    final result = await authRepository.resendOtp(event.email);
+
+    if (result.toLowerCase().contains('success') ||
+        result.toLowerCase().contains('resent')) {
+      emit(ResendSuccess(result));
     } else {
       emit(AuthError(message: result));
     }
