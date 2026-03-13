@@ -67,22 +67,27 @@ class _CustomCategoryState extends State<CustomCategory> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: List.generate(widget.category.length, (index) {
-                return Container(
-                  padding: EdgeInsets.all(6.r),
-                  width: 65.w,
-                  height: 30.h,
-                  decoration: BoxDecoration(
-                    color: context.colorScheme.primary.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Text(
-                    "${widget.category[index]}",
-                    style: context.textTheme.labelMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: context.colorScheme.primary.withValues(alpha: 0.7),
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  child: Container(
+                    padding: EdgeInsets.all(6.r),
+                    width: 65.w,
+                    height: 30.h,
+                    decoration: BoxDecoration(
+                      color: context.colorScheme.primary.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
+                    child: Text(
+                      "${widget.category[index]}",
+                      style: context.textTheme.labelMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: context.colorScheme.primary.withValues(
+                          alpha: 0.7,
+                        ),
+                      ),
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 );
               }),
