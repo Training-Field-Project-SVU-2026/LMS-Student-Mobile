@@ -10,7 +10,7 @@ import 'package:lms_student/features/auth/presentation/screens/reset_password_sc
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
-import 'package:lms_student/features/home/presentation/screens/course_details_screen.dart';
+import 'package:lms_student/features/course/presentation/screens/course_details_screen.dart';
 import 'package:lms_student/features/home/presentation/screens/home_screen.dart';
 import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
 import 'package:lms_student/root/root.dart';
