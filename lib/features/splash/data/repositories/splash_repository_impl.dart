@@ -28,13 +28,20 @@ class SplashRepositoryImpl implements SplashRepository {
         return Right(checkAuthResponseModel.message!);
       }
     } on DioException catch (e) {
-      print("From dio: $e");
       if (e.response?.statusCode == 401) {
+        await cacheHelper.removeData(key: ApiKey.accessToken);
+        await cacheHelper.removeData(key: ApiKey.refreshToken);
+        await cacheHelper.removeData(key: ApiKey.user);
+        await cacheHelper.removeData(key: ApiKey.isLoggedIn);
         return Left(CheckAuthDataModel(message: "Session expired"));
       }
       return Right(DioExceptionHandler.handleException(e));
     } catch (e) {
       if (e.toString().contains("Unauthorized")) {
+        await cacheHelper.removeData(key: ApiKey.accessToken);
+        await cacheHelper.removeData(key: ApiKey.refreshToken);
+        await cacheHelper.removeData(key: ApiKey.user);
+        await cacheHelper.removeData(key: ApiKey.isLoggedIn);
         return Left(CheckAuthDataModel(message: "Session expired"));
       }
       return Right(e.toString());

@@ -8,7 +8,7 @@ import 'package:lms_student/features/explore/presentation/bloc/packages_model_bl
 import 'package:lms_student/features/explore/widget/custom_category.dart';
 import 'package:lms_student/features/explore/widget/custom_category_item.dart';
 import 'package:lms_student/features/explore/widget/custom_dropdown_list.dart';
-import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
+import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
@@ -26,7 +26,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
   void initState() {
     super.initState();
     context.read<PackageBloc>().add(Getallpackage());
-    context.read<CoursesBloc>().add(GetCoursesEvent());
+    context.read<HomeBloc>().add(GetCoursesEvent());
   }
 
   @override
@@ -178,7 +178,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
               ],
             ),
             SizedBox(height: 15.h),
-            BlocBuilder<CoursesBloc, CoursesState>(
+            BlocBuilder<HomeBloc, HomeState>(
               builder: (context, state) {
                 if (state is CoursesLoading) {
                   return Container(

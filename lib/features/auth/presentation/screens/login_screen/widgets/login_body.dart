@@ -28,7 +28,7 @@ class LoginBody extends StatelessWidget {
               backgroundColor: Colors.green,
             ),
           );
-          context.go(AppRoutes.homeScreenAfterLogin);
+          context.go(AppRoutes.rootAfterLogin);
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message), backgroundColor: Colors.red),

@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/core/theme/app_assets.dart';
-import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
+import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/home/widgets/custom_rich_text.dart';
 import 'package:lms_student/features/home/widgets/feature_card.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
@@ -25,7 +25,7 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
   @override
   void initState() {
     super.initState();
-    context.read<CoursesBloc>().add(GetCoursesEvent());
+    context.read<HomeBloc>().add(GetCoursesEvent());
   }
 
   @override
@@ -224,7 +224,7 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                 ),
 
                 SizedBox(height: 20.h),
-                BlocBuilder<CoursesBloc, CoursesState>(
+                BlocBuilder<HomeBloc, HomeState>(
                   builder: (context, state) {
                     if (state is CoursesLoading) {
                       return Container(

@@ -9,7 +9,6 @@ class DioExceptionHandler {
       print('Response Data: ${e.response?.data}');
       
       try {
-        // استخدم ErrorModel عشان تجيب الرسالة
         final errorModel = ErrorModel.fromJson(
           e.response?.data ?? {},
         );
