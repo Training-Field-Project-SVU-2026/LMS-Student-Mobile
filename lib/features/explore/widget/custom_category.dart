@@ -68,7 +68,8 @@ class _CustomCategoryState extends State<CustomCategory> {
             child: Row(
               children: List.generate(widget.category.length, (index) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  padding: EdgeInsets.symmetric(horizontal: 4
+                  2.w),
                   child: Container(
                     padding: EdgeInsets.all(6.r),
                     width: 65.w,
