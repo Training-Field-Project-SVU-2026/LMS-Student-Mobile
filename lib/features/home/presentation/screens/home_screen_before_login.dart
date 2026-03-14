@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
-import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
+import 'package:lms_student/core/theme/app_assets.dart';
+import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/home/widgets/custom_rich_text.dart';
 import 'package:lms_student/features/home/widgets/feature_card.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
@@ -13,18 +14,18 @@ import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreenBeforeLogin extends StatefulWidget {
+  const HomeScreenBeforeLogin({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenBeforeLogin> createState() => _HomeScreenBeforeLoginState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
   @override
   void initState() {
     super.initState();
-    context.read<CoursesBloc>().add(GetCoursesEvent());
+    context.read<HomeBloc>().add(GetCoursesEvent());
   }
 
   @override
@@ -188,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 40.h),
                   Center(
                     child: Image.asset(
-                      "assets/images/Home.png",
+                      AppAssets.homePng,
                       fit: BoxFit.contain,
                       width: 200.w,
                       height: 120.h,
@@ -223,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 SizedBox(height: 20.h),
-                BlocBuilder<CoursesBloc, CoursesState>(
+                BlocBuilder<HomeBloc, HomeState>(
                   builder: (context, state) {
                     if (state is CoursesLoading) {
                       return Container(

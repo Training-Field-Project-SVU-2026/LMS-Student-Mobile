@@ -1,9 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
-import 'package:lms_student/core/errors/handle_dio_exception.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
 import 'package:lms_student/features/explore/data/model/packages_model.dart';
+import 'package:lms_student/features/explore/data/model/packages_response_model.dart';
 import 'package:lms_student/features/explore/domain/repositories/explore_repository.dart';
 
 class ExploreRepositoryImp implements ExploreRepository {
@@ -12,23 +11,19 @@ class ExploreRepositoryImp implements ExploreRepository {
   @override
   Future<Either<List<PackagesModel>, String>> getAllPackages() async {
     try {
-      final response = await apiConsumer.get(EndPoint.allPackages);
-      List<PackagesModel> packages = [];
-      print('📦 Response type: ${response.runtimeType}');
-      print('📦 Response data: $response');
-      if (response['data'] != null) {
-        packages = (response['data'] as List)
-            .map((package) => PackagesModel.fromJson(package))
-            .toList();
-      } else if (response is List) {
-        packages = response
-            .map((package) => PackagesModel.fromJson(package))
-            .toList();
+      final responseData = await apiConsumer.get(EndPoint.allPackages);
+      final response = Packagesresponsemodel.fromJson(responseData);
+
+      if (response.success &&
+          (response.status == 200 || response.status == 201)) {
+        return Left(response.data);
+      } else {
+        return Right(response.message);
       }
-      return Left(packages);
-    } on DioException catch (e) {
-      return Right(DioExceptionHandler.handleException(e));
     } catch (e) {
+      if (e is String) {
+        return Right(e);
+      }
       return Right('An unexpected error occurred: ${e.toString()}');
     }
   }

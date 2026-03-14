@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
@@ -29,7 +28,7 @@ class LoginBody extends StatelessWidget {
               backgroundColor: Colors.green,
             ),
           );
-          context.go(AppRoutes.homeScreenAfterLogin);
+          context.go(AppRoutes.rootAfterLogin);
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message), backgroundColor: Colors.red),
@@ -212,7 +211,7 @@ class LoginBody extends StatelessWidget {
                     width: 400.w,
                     text: context.tr('continue_as_guest'),
                     onTap: () {
-                      context.go(AppRoutes.homeScreen);
+                      context.go(AppRoutes.rootBeforeLogin);
                     },
                   ),
                 ),

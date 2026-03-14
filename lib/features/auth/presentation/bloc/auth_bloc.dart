@@ -4,7 +4,7 @@ import 'package:lms_student/features/auth/data/model/reset_password_request_mode
 import 'package:lms_student/features/auth/data/model/verify_email_request_model.dart';
 import 'package:lms_student/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lms_student/features/auth/presentation/bloc/form_controller_mixin.dart';
-import 'package:lms_student/features/auth/presentation/screens/widgets/reset_password_body.dart';
+import 'package:lms_student/features/auth/presentation/screens/reset_password_screen/widgets/reset_password_body.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

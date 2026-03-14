@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
-import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
+import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/home/widgets/custom_progress.dart';
 import 'package:lms_student/features/home/widgets/custom_streak.dart';
 import 'package:lms_student/features/widgets/course_card_horizontal.dart';
@@ -27,7 +26,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
   @override
   void initState() {
     super.initState();
-    context.read<CoursesBloc>().add(GetCoursesEvent());
+    context.read<HomeBloc>().add(GetCoursesEvent());
   }
 
   @override
@@ -161,7 +160,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 20.w),
-          child: BlocBuilder<CoursesBloc, CoursesState>(
+          child: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               if (state is CoursesLoading) {
                 return Container(

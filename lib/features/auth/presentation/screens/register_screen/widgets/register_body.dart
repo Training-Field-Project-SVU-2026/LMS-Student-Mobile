@@ -241,7 +241,7 @@ class RegisterBody extends StatelessWidget {
                       width: 287.w,
                       text: context.tr('continue_as_guest'),
                       onTap: () {
-                        context.go(AppRoutes.homeScreen);
+                        context.go(AppRoutes.rootBeforeLogin);
                       },
                     ),
                   ),

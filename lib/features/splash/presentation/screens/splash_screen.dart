@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
+import 'package:lms_student/features/splash/presentation/bloc/splash_event.dart';
+import 'package:lms_student/features/splash/presentation/bloc/splash_state.dart';
+import 'package:lms_student/features/splash/presentation/screens/widgets/custom_error_popup.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen>
@@ -17,6 +25,9 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _nameFadeAnimation;
   late Animation<double> _descFadeAnimation;
   late Animation<double> _exitAnimation;
+
+  bool _isDataReady = false;
+  SplashState? _finalState;
 
   @override
   void initState() {
@@ -62,11 +73,11 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    _controller.forward();
-
-    Future.delayed(Duration(milliseconds: 4200), () {
-      if (mounted) {
-        context.go(AppRoutes.homeScreen);
+    _controller.animateTo(0.85).then((_) {
+      if (_isDataReady && _finalState != null) {
+        _controller.forward().then((_) {
+          if (mounted) _handleNavigation(context, _finalState!);
+        });
       }
     });
   }
@@ -79,100 +90,169 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF0A5C75),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                return Opacity(
-                  opacity: _logoFadeAnimation.value * _exitAnimation.value,
-                  child: Transform.scale(
-                    scale: _logoScaleAnimation.value,
-                    child: Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.3),
-                            blurRadius: 20,
-                            offset: Offset(0, 10),
+    return BlocListener<SplashBloc, SplashState>(
+      listener: (context, state) {
+        if (state is SplashLoaded || state is SplashError) {
+          _isDataReady = true;
+          _finalState = state;
+
+          if (!_controller.isAnimating) {
+            if (_controller.value < 1.0) {
+              _controller.forward().then((_) {
+                if (mounted) _handleNavigation(context, state);
+              });
+            } else {
+              _handleNavigation(context, state);
+            }
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: context.colorScheme.primary,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return Opacity(
+                    opacity: _logoFadeAnimation.value * _exitAnimation.value,
+                    child: Transform.scale(
+                      scale: _logoScaleAnimation.value,
+                      child: Container(
+                        width: 150.w,
+                        height: 150.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: context.colorScheme.surface,
+                          boxShadow: [
+                            BoxShadow(
+                              color: context.colorScheme.onSurface.withValues(
+                                alpha: 0.3,
+                              ),
+                              blurRadius: 20,
+                              offset: Offset(0, 10),
+                            ),
+                          ],
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/splash2.jpg'),
+                            fit: BoxFit.cover,
                           ),
-                        ],
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/splash2.jpg'),
-                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 30),
-            AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                return Opacity(
-                  opacity: _nameFadeAnimation.value * _exitAnimation.value,
-                  child: Transform.translate(
-                    offset: Offset(0, 20 * (1 - _nameFadeAnimation.value)),
-                    child: Text(
-                      context.tr('splash_title'),
-                      style: context.textTheme.headlineMedium!.copyWith(
-                        color: context.colorScheme.onPrimary,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withValues(alpha: 0.3),
-                            blurRadius: 10,
-                            offset: Offset(2, 2),
-                          ),
-                        ],
+                  );
+                },
+              ),
+              SizedBox(height: 30),
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return Opacity(
+                    opacity: _nameFadeAnimation.value * _exitAnimation.value,
+                    child: Transform.translate(
+                      offset: Offset(0, 20 * (1 - _nameFadeAnimation.value)),
+                      child: Text(
+                        context.tr('splash_title'),
+                        style: context.textTheme.headlineMedium!.copyWith(
+                          color: context.colorScheme.onPrimary,
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              color: context.colorScheme.onSurface.withValues(
+                                alpha: 0.3,
+                              ),
+                              blurRadius: 10,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 15),
-
-            AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                return Opacity(
-                  opacity: _descFadeAnimation.value * _exitAnimation.value,
-                  child: Transform.translate(
-                    offset: Offset(0, 20 * (1 - _descFadeAnimation.value)),
-                    child: Text(
-                      context.tr('splash_desc'),
-                      style: context.textTheme.bodyMedium!.copyWith(
-                        color: context.colorScheme.onPrimary,
-                        fontSize: 18,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withValues(alpha: 0.2),
-                            blurRadius: 5,
-                            offset: Offset(1, 1),
-                          ),
-                        ],
+                  );
+                },
+              ),
+              SizedBox(height: 15),
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return Opacity(
+                    opacity: _descFadeAnimation.value * _exitAnimation.value,
+                    child: Transform.translate(
+                      offset: Offset(0, 20 * (1 - _descFadeAnimation.value)),
+                      child: Text(
+                        context.tr('splash_desc'),
+                        style: context.textTheme.bodyMedium!.copyWith(
+                          color: context.colorScheme.onPrimary,
+                          fontSize: 18,
+                          shadows: [
+                            Shadow(
+                              color: context.colorScheme.onSurface.withValues(
+                                alpha: 0.2,
+                              ),
+                              blurRadius: 5,
+                              offset: Offset(1, 1),
+                            ),
+                          ],
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _handleNavigation(BuildContext context, SplashState state) {
+    if (state is SplashLoaded) {
+      context.go(AppRoutes.rootAfterLogin);
+    } else if (state is SplashError) {
+      if (state.message != null && state.message!.isNotEmpty) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => CustomErrorPopup(
+            title: context.tr('error'),
+            message: state.message!,
+            onRetry: () {
+              context.pop();
+              _isDataReady = false;
+              _finalState = null;
+              _controller.reset();
+              _controller.animateTo(0.85).then((_) {
+                if (_isDataReady && _finalState != null) {
+                  _controller.forward().then((_) {
+                    if (mounted) _handleNavigation(context, _finalState!);
+                  });
+                }
+              });
+              context.read<SplashBloc>().add(SplashStarted());
+            },
+          ),
+        );
+      } else {
+        String msg = context.tr('authentication_failed');
+        if (state.message == "No token found") {
+          msg = context.tr('no_token_found');
+        } else if (state.message == "Session expired") {
+          msg = context.tr('session_expired');
+        } else if (state.isActive == false) {
+          msg = context.tr('account_inactive');
+        } else if (state.isVerified == false) {
+          msg = context.tr('account_unverified');
+        }
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(msg)));
+        context.go(AppRoutes.loginScreen);
+      }
+    }
   }
 }

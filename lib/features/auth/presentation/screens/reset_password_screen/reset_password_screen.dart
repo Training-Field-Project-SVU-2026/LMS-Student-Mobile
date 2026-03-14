@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
-import 'package:lms_student/features/auth/presentation/screens/widgets/reset_password_body.dart';
+import 'package:lms_student/features/auth/presentation/screens/reset_password_screen/widgets/reset_password_body.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
       final String email;

@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
-import '../../../../../../core/extensions/context_extensions.dart';
-import '../../../../../../features/auth/presentation/bloc/auth_bloc.dart';
-import '../../../../../../features/widgets/custom_primary_button.dart';
+import '../../../../../../../core/extensions/context_extensions.dart';
+import '../../../../../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../../../../../features/widgets/custom_primary_button.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
 
 class VerifyOtpBody extends StatelessWidget {

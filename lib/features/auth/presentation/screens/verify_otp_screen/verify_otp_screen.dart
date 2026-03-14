@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
-import 'package:lms_student/features/auth/presentation/screens/widgets/verify_otp_body.dart';
+import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/widgets/verify_otp_body.dart';
 
 class VerifyOtpScreen extends StatelessWidget {
   final String email;
