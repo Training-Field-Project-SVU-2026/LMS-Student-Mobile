@@ -11,12 +11,14 @@ import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 import 'package:lms_student/features/home/presentation/screens/course_details_screen.dart';
 import 'package:lms_student/features/home/presentation/screens/home_screen.dart';
+import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:lms_student/features/profile/presentation/screens/settings_screen/settings_screen.dart';
 import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
 import 'package:lms_student/root/root.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.splashScreen,
+    initialLocation: AppRoutes.loginScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
@@ -46,6 +48,17 @@ class RouterGenerator {
           );
         },
       ),
+      GoRoute(
+        path: AppRoutes.settingsScreen,
+        name: AppRoutes.settingsScreen,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => sl<ProfileBloc>(),
+            child: const SettingsScreen(),
+          );
+        },
+      ),
+
       GoRoute(
         path: AppRoutes.forgotPasswordScreen,
         name: AppRoutes.forgotPasswordScreen,

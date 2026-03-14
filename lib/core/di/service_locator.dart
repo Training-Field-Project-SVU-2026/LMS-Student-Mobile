@@ -9,6 +9,9 @@ import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/home/data/repositories/home_repository_impl.dart';
 import 'package:lms_student/features/home/domain/repositories/home_repository.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
+import 'package:lms_student/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:lms_student/features/profile/domain/repositories/profile_repository.dart';
+import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -29,6 +32,15 @@ Future<void> setupServiceLocator() async {
     () => AuthRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
   sl.registerFactory(() => AuthBloc(authRepository: sl()));
+
+  // Features - Profile
+  sl.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
+  );
+  sl.registerFactory(() => ProfileBloc(
+    profileRepository: sl(),
+    cacheHelper: sl(),
+  ));
 
   // Features - Home
   sl.registerLazySingleton<HomeRepository>(

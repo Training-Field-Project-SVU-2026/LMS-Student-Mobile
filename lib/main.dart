@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            locale: const Locale('ar'),
+            locale: const Locale('en'),
             debugShowCheckedModeBanner: false,
             title: 'LMS Student',
             theme: AppTheme.lightTheme,
