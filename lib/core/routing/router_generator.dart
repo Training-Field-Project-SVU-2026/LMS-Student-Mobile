@@ -8,6 +8,7 @@ import 'package:lms_student/features/auth/presentation/screens/login_screen/logi
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
+import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
 import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
 import 'package:lms_student/features/explore/presentation/screens/pk.dart';
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
@@ -106,10 +107,16 @@ class RouterGenerator {
         },
       ),
       GoRoute(
-        path: AppRoutes.course_details_screen,
-        name: AppRoutes.course_details_screen,
+        path: AppRoutes.coursedetailsscreen,
+        name: AppRoutes.coursedetailsscreen,
         builder: (context, state) {
-          return CourseDetailsScreen();
+          final slug = state.extra as String?;
+          print('Route received slug: $slug');
+
+          return BlocProvider(
+            create: (context) => sl<CoursedetailsBloc>(),
+            child: CourseDetailsScreen(slug: slug),
+          );
         },
       ),
       GoRoute(

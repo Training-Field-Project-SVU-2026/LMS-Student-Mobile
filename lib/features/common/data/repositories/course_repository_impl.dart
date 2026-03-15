@@ -3,6 +3,7 @@ import 'package:lms_student/core/services/remote/api_consumer.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
 import 'package:lms_student/features/common/data/model/course_model.dart';
 import 'package:lms_student/features/common/data/model/response_course_model.dart';
+import 'package:lms_student/features/common/data/model/responsecoursebyslugmodel.dart';
 import 'package:lms_student/features/common/domain/repositories/course_repository.dart';
 
 class CourseRepositoryImpl implements CourseRepository {
@@ -16,7 +17,8 @@ class CourseRepositoryImpl implements CourseRepository {
       final responseData = await apiConsumer.get(EndPoint.allCourses);
       final response = ResponseCourseModel.fromJson(responseData);
 
-      if (response.success && (response.status == 200 || response.status == 201)) {
+      if (response.success &&
+          (response.status == 200 || response.status == 201)) {
         return Left(response);
       } else {
         return Right(response.message);
@@ -30,8 +32,24 @@ class CourseRepositoryImpl implements CourseRepository {
   }
 
   @override
-  Future<Either<CourseModel, String>> getCourseBySlug(String slug) {
-    throw UnimplementedError();
+  Future<Either<CourseModel, String>> getCourseBySlug(String slug) async {
+    try {
+      final responseData = await apiConsumer.get(
+        '${EndPoint.courseBySlug}$slug/',
+      );
+      final response = ResponseCourseBySlugModel.fromJson(responseData);
+      if (response.success &&
+          (response.status == 200 || response.status == 201)) {
+        return Left(response.data);
+      } else {
+        return Right(response.message);
+      }
+    } catch (e) {
+      if (e is String) {
+        return Right(e);
+      }
+      return Right('An unexpected error occurred: ${e.toString()}');
+    }
   }
 
   @override

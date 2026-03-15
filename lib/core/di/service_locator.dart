@@ -6,6 +6,7 @@ import 'package:lms_student/core/services/remote/dio_consumer.dart';
 import 'package:lms_student/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:lms_student/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
 import 'package:lms_student/features/explore/data/repository/explore_repository_imp.dart';
 import 'package:lms_student/features/explore/domain/repositories/explore_repository.dart';
 import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
@@ -65,5 +66,10 @@ Future<void> setupServiceLocator() async {
   // register factory for PackageBloc
   sl.registerFactory(
     () => PackageBloc(exploreRepository: sl<ExploreRepository>()),
+  );
+
+  // register factory for course
+  sl.registerFactory(
+    () => CoursedetailsBloc(courseRepository: sl<CourseRepository>()),
   );
 }

@@ -184,7 +184,11 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                       children: state.courses.map((course) {
                         return InkWell(
                           onTap: () {
-                            context.push(AppRoutes.course_details_screen);
+                            print('Course slug: ${course.slug}');
+                            context.push(
+                              AppRoutes.coursedetailsscreen,
+                              extra: course.slug,
+                            );
                           },
                           child: CourseCardVertical(
                             //Todo ::Handel nullable

@@ -1,5 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class CourseModel {
-  int? id;
+  // int? id;
   String title;
   String slug;
   String description;
@@ -10,12 +11,16 @@ class CourseModel {
   String? createdAt;
   bool? isActive;
   String instructorName;
+  String instructorBio;
+  String? instructorImage;
   double? avgRating;
   int? ratingsCount;
   int? studentsCount;
+  // int? courseCount;
+  // TODO :: we need from omniya add it
 
   CourseModel({
-    this.id,
+    // this.id,
     required this.title,
     required this.slug,
     required this.description,
@@ -26,14 +31,20 @@ class CourseModel {
     this.createdAt,
     this.isActive,
     required this.instructorName,
+    required this.instructorBio,
+    this.instructorImage,
     this.avgRating,
     this.ratingsCount,
     this.studentsCount,
+    // this.courseCount,
   });
 
   factory CourseModel.fromJson(Map<String, dynamic> json) {
+    final String firstName = json['instructor_firstname'] ?? '';
+    final String lastName = json['instructor_lastname'] ?? '';
+    final String fullName = '$firstName $lastName'.trim();
+
     return CourseModel(
-      id: json['id'],
       title: json['title'] ?? '',
       slug: json['slug'] ?? '',
       description: json['description'] ?? '',
@@ -43,16 +54,23 @@ class CourseModel {
       image: json['image'],
       createdAt: json['created_at'],
       isActive: json['is_active'],
-      instructorName: json['instructor_name'] ?? '',
-      avgRating: json['avg_rating'] != null ? double.parse(json['avg_rating'].toString()) : null,
-      ratingsCount: json['ratings_count'],
-      studentsCount: json['students_count'],
+      instructorName: fullName.isEmpty
+          ? (json['instructor_name'] ?? '')
+          : fullName,
+      instructorImage: json['instructor_image'],
+      avgRating: double.tryParse(json['avg_rating']?.toString() ?? '') ?? 500,
+      ratingsCount:
+          int.tryParse(json['ratings_count']?.toString() ?? '') ?? 500,
+      // courseCount: int.tryParse(json['ratings_count']?.toString() ?? '') ?? 500,
+      studentsCount:
+          int.tryParse(json['course_count']?.toString() ?? '') ?? 500,
+      instructorBio: json['instructor_bio'] ?? "",
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      // 'id': id,
       'title': title,
       'slug': slug,
       'description': description,
@@ -63,9 +81,12 @@ class CourseModel {
       'created_at': createdAt,
       'is_active': isActive,
       'instructor_name': instructorName,
-      'avg_rating': avgRating,
-      'ratings_count': ratingsCount,
-      'students_count': studentsCount,
+      'instructor_bio': instructorBio,
+      'instructor_image': instructorImage,
+      'avg_rating': avgRating.toString(),
+      'ratings_count': ratingsCount.toString(),
+      'students_count': studentsCount.toString(),
+      // 'course_count': courseCount.toString(),
     };
   }
 }
