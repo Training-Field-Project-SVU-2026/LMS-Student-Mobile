@@ -53,7 +53,7 @@ class PackagesModel {
       'created_at': createdAt,
       'instructor_name': instructorName,
       'categories': categories,
-      'courses': [] ?? courses.map((course) => course.toJson()).toList(),
+      'courses': courses?.map((course) => course.toJson()).toList() ?? [],
     };
   }
 }
