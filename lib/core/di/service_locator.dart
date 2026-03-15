@@ -17,10 +17,14 @@ import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/splash/data/repositories/splash_repository_impl.dart';
 import 'package:lms_student/features/splash/domain/splash_repository.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
+import 'package:lms_student/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:lms_student/features/profile/domain/repositories/profile_repository.dart';
+import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
 
 final sl = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
+  
   // Services
   final cacheHelper = CacheHelper();
   await cacheHelper.init();
@@ -42,6 +46,15 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<CourseRepository>(
     () => CourseRepositoryImpl(apiConsumer: sl()),
   );
+
+  // Features - Profile
+  sl.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
+  );
+  sl.registerFactory(() => ProfileBloc(
+    profileRepository: sl(),
+    cacheHelper: sl(),
+  ));
 
   // Features - Home
   sl.registerLazySingleton<HomeRepository>(

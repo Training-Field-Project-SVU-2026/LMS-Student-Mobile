@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
@@ -7,7 +6,7 @@ import 'package:lms_student/features/course/widget/custom_img.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 
 class CourseDetailsScreen extends StatefulWidget {
-  const CourseDetailsScreen({Key? key});
+  const CourseDetailsScreen({super.key});
 
   @override
   State<CourseDetailsScreen> createState() => _CourseDetailsScreenState();

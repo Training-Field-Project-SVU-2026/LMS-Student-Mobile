@@ -248,9 +248,11 @@ class _SplashScreenState extends State<SplashScreen>
         } else if (state.isVerified == false) {
           msg = context.tr('account_unverified');
         }
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(msg)));
+        if (msg != context.tr('authentication_failed')) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(msg)));
+        }
         context.go(AppRoutes.loginScreen);
       }
     }

@@ -12,7 +12,7 @@ class ExploreRepositoryImp implements ExploreRepository {
   Future<Either<List<PackagesModel>, String>> getAllPackages() async {
     try {
       final responseData = await apiConsumer.get(EndPoint.allPackages);
-      final response = Packagesresponsemodel.fromJson(responseData);
+      final response = PackagesResponseModel.fromJson(responseData);
 
       if (response.success &&
           (response.status == 200 || response.status == 201)) {

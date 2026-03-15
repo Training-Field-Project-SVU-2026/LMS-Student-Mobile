@@ -211,7 +211,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                       return IntrinsicHeight(
                         child: InkWell(
                           onTap: () {
-                            context.push(AppRoutes.course_details_screen);
+                            context.push(AppRoutes.courseDetailsScreen);
                           },
                           child: CourseCardVertical(
                             title: course.title,

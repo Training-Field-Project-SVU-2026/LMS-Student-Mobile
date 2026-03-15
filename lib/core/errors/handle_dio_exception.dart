@@ -5,8 +5,6 @@ class DioExceptionHandler {
   static String handleException(DioException e) {
     
     if (e.response != null) {
-      print('Status Code: ${e.response?.statusCode}');
-      print('Response Data: ${e.response?.data}');
       
       try {
         final errorModel = ErrorModel.fromJson(
@@ -37,9 +35,7 @@ class DioExceptionHandler {
             return serverMessage;
         }
       } catch (err) {
-        print('Error parsing error response: $err');
         
-        // لو فشل الـ parsing، جرب تجيب message مباشرة
         try {
           if (e.response?.data is Map) {
             final data = e.response?.data as Map;
