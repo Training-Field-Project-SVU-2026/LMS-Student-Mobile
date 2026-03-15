@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lms_student/features/common/data/model/course_model.dart';
-import 'package:lms_student/features/common/domain/repositories/course_repository.dart';
+import 'package:lms_student/core/common_logic/data/model/course/course_model.dart';
+import 'package:lms_student/core/common_logic/domain/repositories/course_repository.dart';
 import 'package:lms_student/features/home/domain/repositories/home_repository.dart';
 
 part 'home_event.dart';
@@ -13,26 +13,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc({required this.courseRepository, required this.homeRepository})
     : super(CoursesInitial()) {
-    on<GetCoursesEvent>((event, emit) async {
-      emit(CoursesLoading());
+    on<GetCoursesEvent>(_onGetCourses);
+  }
 
-      try {
-        final result = await courseRepository.getAllCourses();
+  Future<void> _onGetCourses(
+    GetCoursesEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(CoursesLoading());
 
-        result.fold(
-          (response) => emit(
-            CoursesLoaded(
-              courses: response.data,
-              totalCourses: response.totalCourses,
-              totalPages: response.totalPages,
-              currentPage: response.currentPage,
-            ),
+    try {
+      final result = await courseRepository.getAllCourses();
+
+      result.fold(
+        (response) => emit(
+          CoursesLoaded(
+            courses: response.data,
+            totalCourses: response.totalCourses,
+            totalPages: response.totalPages,
+            currentPage: response.currentPage,
           ),
-          (error) => emit(CoursesError(message: error)),
-        );
-      } catch (e) {
-        emit(CoursesError(message: e.toString()));
-      }
-    });
+        ),
+        (error) => emit(CoursesError(message: error)),
+      );
+    } catch (e) {
+      emit(CoursesError(message: e.toString()));
+    }
   }
 }

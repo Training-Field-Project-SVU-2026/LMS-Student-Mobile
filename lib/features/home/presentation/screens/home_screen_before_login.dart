@@ -248,7 +248,10 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                             children: state.courses.map((course) {
                               return InkWell(
                                 onTap: () {
-                                  context.push(AppRoutes.coursedetailsscreen);
+                                  context.push(
+                                    AppRoutes.courseDetailsScreen,
+                                    extra: course.slug,
+                                  );
                                 },
                                 child: CourseCardVertical(
                                   //Todo ::Handel nullable

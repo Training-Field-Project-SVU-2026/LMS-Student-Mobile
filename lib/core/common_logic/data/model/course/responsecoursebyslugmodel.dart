@@ -1,4 +1,4 @@
-import 'package:lms_student/features/common/data/model/course_model.dart';
+import 'package:lms_student/core/common_logic/data/model/course/course_model.dart';
 
 class ResponseCourseBySlugModel {
   final bool success;

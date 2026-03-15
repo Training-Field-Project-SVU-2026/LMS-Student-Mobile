@@ -186,7 +186,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                           onTap: () {
                             print('Course slug: ${course.slug}');
                             context.push(
-                              AppRoutes.coursedetailsscreen,
+                              AppRoutes.courseDetailsScreen,
                               extra: course.slug,
                             );
                           },

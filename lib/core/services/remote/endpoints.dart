@@ -9,10 +9,10 @@ class EndPoint {
   static String login = "/auth/login/"; // done
   static String register = "/auth/register/"; // done
   static String changePassword = "/auth/change-password/";
-  static String logout = "/auth/logout/";
+  static String logout = "/auth/logout/"; // 
   static String forgotPassword = "/auth/forgot-password/"; // done
   static String resendOtp = "/auth/resend-otp/"; // done
-  static String resetPassword = "/auth/reset-password/";
+  static String resetPassword = "/auth/reset-password/"; // done
   static String refreshToken = "/auth/token/refresh/";
   static String verifyEmail = "/auth/verify-email/";
   static String checkToken = "/auth/check-token/";
@@ -23,6 +23,9 @@ class EndPoint {
 
   // packages
   static String allPackages = "/packages/all/";
+  
+  // student profile 
+  static String updateProfile = "";
 }
 
 class ApiKey {
