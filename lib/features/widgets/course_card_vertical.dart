@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/features/widgets/custom_image.dart';
 
@@ -9,25 +11,27 @@ class CourseCardVertical extends StatelessWidget {
   final String? description;
   final String? instructorName;
   final double? rating;
-  final int? totalHours;
+  final double? price;
+  final int? totalStudents;
   final Color? backgroundColor;
   final double? width;
   final int? lessonsCount;
   final VoidCallback? onTap;
 
   const CourseCardVertical({
-    super.key,
+    Key? key,
     required this.title,
     this.imagePath,
     this.description,
     this.instructorName,
     this.rating,
-    this.totalHours,
+    this.price,
+    this.totalStudents,
     this.backgroundColor,
     this.width,
     this.lessonsCount,
     this.onTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +115,18 @@ class CourseCardVertical extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
-
-                    SizedBox(height: 12.h),
+                    // price
+                    if (price != null) ...[
+                      SizedBox(height: 10.h),
+                      Text(
+                        '\$$price',
+                        style: context.textTheme.labelSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: context.colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+                    SizedBox(height: 10.h),
                     Wrap(
                       spacing: 8.w,
                       runSpacing: 4.h,
@@ -134,49 +148,51 @@ class CourseCardVertical extends StatelessWidget {
                               ),
                             ],
                           ),
-                        // total hours
-                        if (totalHours != null)
+
+                        // total Students
+                        if (totalStudents != null)
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
-                                Icons.access_time_rounded,
-                                color: context.colorScheme.onSurfaceVariant
-                                    .withValues(alpha: 0.8),
+                                Icons.person,
+                                color: context.colorScheme.onSurface.withValues(
+                                  alpha: 0.8,
+                                ),
                                 size: 14.w,
                               ),
                               SizedBox(width: 4.w),
                               Text(
-                                '${totalHours!} h',
+                                '${totalStudents!}',
                                 style: context.textTheme.labelSmall?.copyWith(
-                                  color: context.colorScheme.onSurfaceVariant
+                                  color: context.colorScheme.onSurface
                                       .withValues(alpha: 0.8),
                                 ),
                               ),
                             ],
                           ),
 
-                        // lessons count
-                        if (lessonsCount != null)
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.menu_book_rounded,
-                                color: context.colorScheme.onSurfaceVariant
-                                    .withValues(alpha: 0.8),
-                                size: 14.w,
-                              ),
-                              SizedBox(width: 4.w),
-                              Text(
-                                '$lessonsCount lessons',
-                                style: context.textTheme.labelSmall?.copyWith(
-                                  color: context.colorScheme.onSurfaceVariant
-                                      .withValues(alpha: 0.8),
-                                ),
-                              ),
-                            ],
-                          ),
+                        // // lessons count
+                        // if (lessonsCount != null)
+                        //   Row(
+                        //     mainAxisSize: MainAxisSize.min,
+                        //     children: [
+                        //       Icon(
+                        //         Icons.menu_book_rounded,
+                        //         color: context.colorScheme.onSurfaceVariant
+                        //             .withValues(alpha: 0.8),
+                        //         size: 14.w,
+                        //       ),
+                        //       SizedBox(width: 4.w),
+                        //       Text(
+                        //         '$lessonsCount lessons',
+                        //         style: context.textTheme.labelSmall?.copyWith(
+                        //           color: context.colorScheme.onSurfaceVariant
+                        //               .withValues(alpha: 0.8),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
                       ],
                     ),
                   ],

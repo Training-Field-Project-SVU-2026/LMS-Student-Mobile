@@ -258,7 +258,7 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                                   title: course.title,
                                   imagePath: course.image,
                                   rating: 4.3,
-                                  totalHours: 12,
+                                  totalStudents: 12,
                                   width: 256,
                                   description: course.description,
                                   instructorName: course.instructorName,

@@ -220,13 +220,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           },
                           child: CourseCardVertical(
                             title: course.title,
+                            price: course.price,
                             imagePath: course.image,
-                            rating: 3.4,
-                            totalHours: 12,
+                            rating: course.avgRating,
+                            totalStudents: course.studentsCount,
                             width: 256,
                             description: course.description,
                             instructorName: course.instructorName,
-                            lessonsCount: 12,
+                            // lessonsCount: 12,
                           ),
                         ),
                       );
