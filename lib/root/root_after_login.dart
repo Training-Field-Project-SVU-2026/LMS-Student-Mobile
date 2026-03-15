@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lms_student/features/explore/presentation/explore_screen_befor_login.dart';
+import 'package:lms_student/features/explore/presentation/screens/explore_screen_befor_login.dart';
 import 'package:lms_student/features/home/presentation/screens/home_screen_after_login.dart';
 import 'package:lms_student/features/profile/presentation/screens/settings_screen/settings_screen.dart';
 import 'package:lms_student/root/custom_nav_bar.dart';
