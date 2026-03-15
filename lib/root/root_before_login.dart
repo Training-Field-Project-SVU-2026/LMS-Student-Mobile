@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lms_student/features/explore/presentation/screens/explore_screen_befor_login.dart';
+import 'package:lms_student/features/explore/presentation/screens/explore_screen.dart';
 import 'package:lms_student/features/home/presentation/screens/home_screen_before_login.dart';
 import 'package:lms_student/root/custom_nav_bar.dart';
 
@@ -16,7 +16,7 @@ class _RootBeforeLoginState extends State<RootBeforeLogin> {
 
   List<Widget> screens = [
     HomeScreenBeforeLogin(),
-    ExploreScreenBeforLogin(),
+    ExploreScreen(),
     const SizedBox(), //MyCoursesScreenBeforeLogin(),
     const SizedBox(), //ProfileScreenBeforeLogin(),
   ];

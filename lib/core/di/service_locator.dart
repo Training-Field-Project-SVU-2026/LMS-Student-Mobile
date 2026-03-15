@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:lms_student/core/common_logic/data/repositories/package_repository_impl.dart';
+import 'package:lms_student/core/common_logic/domain/repositories/package_repository.dart';
 import 'package:lms_student/core/services/local/cache_helper.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
 import 'package:lms_student/core/services/remote/dio_consumer.dart';
@@ -8,9 +10,9 @@ import 'package:lms_student/features/auth/domain/repositories/auth_repository.da
 import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/explore/data/repository/explore_repository_imp.dart';
 import 'package:lms_student/features/explore/domain/repositories/explore_repository.dart';
-import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
-import 'package:lms_student/features/common/data/repositories/course_repository_impl.dart';
-import 'package:lms_student/features/common/domain/repositories/course_repository.dart';
+import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart';
+import 'package:lms_student/core/common_logic/data/repositories/course_repository_impl.dart';
+import 'package:lms_student/core/common_logic/domain/repositories/course_repository.dart';
 import 'package:lms_student/features/home/data/repositories/home_repository_impl.dart';
 import 'package:lms_student/features/home/domain/repositories/home_repository.dart';
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
@@ -24,7 +26,6 @@ import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart
 final sl = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
-  
   // Services
   final cacheHelper = CacheHelper();
   await cacheHelper.init();
@@ -47,14 +48,18 @@ Future<void> setupServiceLocator() async {
     () => CourseRepositoryImpl(apiConsumer: sl()),
   );
 
+  // Features - Packages
+  sl.registerLazySingleton<PackageRepository>(
+    () => PackageRepositoryImpl(apiConsumer: sl()),
+  );
+
   // Features - Profile
   sl.registerLazySingleton<ProfileRepository>(
     () => ProfileRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
-  sl.registerFactory(() => ProfileBloc(
-    profileRepository: sl(),
-    cacheHelper: sl(),
-  ));
+  sl.registerFactory(
+    () => ProfileBloc(profileRepository: sl(), cacheHelper: sl()),
+  );
 
   // Features - Home
   sl.registerLazySingleton<HomeRepository>(
@@ -77,6 +82,10 @@ Future<void> setupServiceLocator() async {
 
   // register factory for PackageBloc
   sl.registerFactory(
-    () => PackageBloc(exploreRepository: sl<ExploreRepository>()),
+    () => ExploreBloc(
+      exploreRepository: sl<ExploreRepository>(),
+      packageRepository: sl<PackageRepository>(),
+      courseRepository: sl<CourseRepository>(),
+    ),
   );
 }

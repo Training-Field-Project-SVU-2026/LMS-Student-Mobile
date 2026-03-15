@@ -4,30 +4,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
-import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
-import 'package:lms_student/features/explore/presentation/screens/pk.dart';
+import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart';
 import 'package:lms_student/features/explore/widget/custom_category.dart';
 import 'package:lms_student/features/explore/widget/custom_category_item.dart';
 import 'package:lms_student/features/explore/widget/custom_dropdown_list.dart';
-import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
 
-class ExploreScreenBeforLogin extends StatefulWidget {
-  const ExploreScreenBeforLogin({super.key});
+class ExploreScreen extends StatefulWidget {
+  const ExploreScreen({super.key});
 
   @override
-  State<ExploreScreenBeforLogin> createState() =>
-      _ExploreScreenBeforLoginState();
+  State<ExploreScreen> createState() => _ExploreScreenState();
 }
 
-class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
+class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<PackageBloc>().add(Getallpackage());
-    context.read<HomeBloc>().add(GetCoursesEvent());
+    context.read<ExploreBloc>().add(GetpackagesEvent(page: 1, pageSize: 2));
+    context.read<ExploreBloc>().add(GetCoursesEvent());
   }
 
   @override
@@ -108,25 +105,26 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
             SizedBox(height: 20.h),
             SizedBox(
               height: 320.h,
-              child: BlocBuilder<PackageBloc, PackageState>(
+              child: BlocBuilder<ExploreBloc, ExploreState>(
                 builder: (context, state) {
-                  if (state is Packagesloading) {
-                    return Container(
+                  if (state.packageStatus == ExploreStatus.loading) {
+                    return SizedBox(
                       height: 280.h,
                       child: Center(child: CircularProgressIndicator()),
                     );
                   }
-                  if (state is Packageserror) {
-                    return Container(
+                  if (state.packageStatus == ExploreStatus.failure) {
+                    return SizedBox(
                       height: 280.h,
-                      child: Center(child: Text('Error : ${state.message}')),
+                      child: Center(
+                        child: Text('Error : ${state.packageError}'),
+                      ),
                     );
                   }
-                  if (state is Packagesloaded) {
-                    print("courses from bloc: ${state.package}");
+                  if (state.packageStatus == ExploreStatus.success) {
                     return ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: state.package.length,
+                      itemCount: state.packages.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.symmetric(
@@ -139,12 +137,12 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                                 context.push(AppRoutes.pk);
                               },
                               child: CustomCategory(
-                                title: state.package[index].title,
-                                description: state.package[index].price
+                                title: state.packages[index].title,
+                                description: state.packages[index].price
                                     .toString(),
                                 courseslessons: 12,
                                 coursehours: 18,
-                                category: state.package[index].categories,
+                                category: state.packages[index].categories,
                               ),
                             ),
                           ),
@@ -152,7 +150,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                       },
                     );
                   }
-                  return CircularProgressIndicator();
+                  return const SizedBox.shrink();
                 },
               ),
             ),
@@ -184,23 +182,21 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
               ],
             ),
             SizedBox(height: 15.h),
-            BlocBuilder<HomeBloc, HomeState>(
+            BlocBuilder<ExploreBloc, ExploreState>(
               builder: (context, state) {
-                if (state is CoursesLoading) {
-                  return Container(
+                if (state.courseStatus == ExploreStatus.loading) {
+                  return SizedBox(
                     height: 280.h,
                     child: Center(child: CircularProgressIndicator()),
                   );
                 }
-                if (state is CoursesError) {
-                  return Container(
+                if (state.courseStatus == ExploreStatus.failure) {
+                  return SizedBox(
                     height: 280.h,
-                    child: Center(child: Text('Error : ${state.message}')),
+                    child: Center(child: Text('Error : ${state.courseError}')),
                   );
                 }
-                if (state is CoursesLoaded) {
-                  print("courses from bloc: ${state.courses}");
-
+                if (state.courseStatus == ExploreStatus.success) {
                   return GridView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -235,7 +231,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                   );
                 }
 
-                return CircularProgressIndicator();
+                return const SizedBox.shrink();
               },
             ),
           ],
@@ -244,27 +240,3 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
     );
   }
 }
-
-
-
-
-// return ListView.builder(
-//                     scrollDirection: Axis.horizontal,
-//                     itemCount: 10,
-//                     itemBuilder: (context, index) {
-//                       return Padding(
-//                         padding: EdgeInsets.symmetric(
-//                           vertical: 16.h,
-//                           horizontal: 8.w,
-//                         ),
-//                         child: IntrinsicHeight(
-//                           child: CustomCategory(
-//                             title: context.tr('full_stack_web_development'),
-//                             description: context.tr('master_the_art'),
-//                             courseslessons: 12,
-//                             coursehours: 18,
-//                           ),
-//                         ),
-//                       );
-//                     },
-//                   );
