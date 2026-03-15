@@ -9,6 +9,7 @@ import 'package:lms_student/features/auth/presentation/screens/register_screen/r
 import 'package:lms_student/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
+import 'package:lms_student/features/explore/presentation/screens/pk.dart';
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/home/presentation/screens/home_screen_before_login.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
@@ -95,6 +96,13 @@ class RouterGenerator {
             create: (context) => sl<HomeBloc>(),
             child: HomeScreenBeforeLogin(),
           );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.pk,
+        name: AppRoutes.pk,
+        builder: (context, state) {
+          return Pk();
         },
       ),
       GoRoute(

@@ -6,7 +6,7 @@ class PackagesModel {
   final double price;
   final String createdAt;
   final String instructorName;
-  final List<CourseModel> courses;
+  final List<CourseModel>? courses;
   final List<String> categories;
 
   PackagesModel({
@@ -15,7 +15,7 @@ class PackagesModel {
     required this.price,
     required this.createdAt,
     required this.instructorName,
-    required this.courses,
+    this.courses,
     required this.categories,
   });
 
@@ -53,7 +53,7 @@ class PackagesModel {
       'created_at': createdAt,
       'instructor_name': instructorName,
       'categories': categories,
-      'courses': courses.map((course) => course.toJson()).toList(),
+      'courses': [] ?? courses.map((course) => course.toJson()).toList(),
     };
   }
 }

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
+import 'package:lms_student/features/explore/presentation/screens/pk.dart';
 import 'package:lms_student/features/explore/widget/custom_category.dart';
 import 'package:lms_student/features/explore/widget/custom_category_item.dart';
 import 'package:lms_student/features/explore/widget/custom_dropdown_list.dart';
@@ -133,13 +134,18 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                             horizontal: 8.w,
                           ),
                           child: IntrinsicHeight(
-                            child: CustomCategory(
-                              title: state.package[index].title,
-                              description: state.package[index].price
-                                  .toString(),
-                              courseslessons: 12,
-                              coursehours: 18,
-                              category: state.package[index].categories,
+                            child: InkWell(
+                              onTap: () {
+                                context.push(AppRoutes.pk);
+                              },
+                              child: CustomCategory(
+                                title: state.package[index].title,
+                                description: state.package[index].price
+                                    .toString(),
+                                courseslessons: 12,
+                                coursehours: 18,
+                                category: state.package[index].categories,
+                              ),
                             ),
                           ),
                         );
