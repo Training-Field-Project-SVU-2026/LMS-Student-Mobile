@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
 
 class ProfileCard extends StatelessWidget {
   const ProfileCard({super.key});
@@ -10,7 +12,7 @@ class ProfileCard extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(12.r),
       onTap: () {
-        /// TODO: Navigate to profile screen
+        context.pushNamed(AppRoutes.studentProfileScreen);
       },
       child: Container(
         padding: EdgeInsets.all(16.w),

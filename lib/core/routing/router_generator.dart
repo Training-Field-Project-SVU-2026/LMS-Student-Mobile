@@ -13,12 +13,13 @@ import 'package:lms_student/features/home/presentation/screens/course_details_sc
 import 'package:lms_student/features/home/presentation/screens/home_screen.dart';
 import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:lms_student/features/profile/presentation/screens/settings_screen/settings_screen.dart';
+import 'package:lms_student/features/profile/presentation/screens/student_profile_screen/student_profile_screen.dart';
 import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
 import 'package:lms_student/root/root.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.loginScreen,
+    initialLocation: AppRoutes.settingsScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
@@ -55,6 +56,16 @@ class RouterGenerator {
           return BlocProvider(
             create: (context) => sl<ProfileBloc>(),
             child: const SettingsScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.studentProfileScreen,
+        name: AppRoutes.studentProfileScreen,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: sl<ProfileBloc>(),
+            child: const StudentProfileScreen(),
           );
         },
       ),
