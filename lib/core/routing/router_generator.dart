@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/di/service_locator.dart';
@@ -10,7 +11,7 @@ import 'package:lms_student/features/auth/presentation/screens/reset_password_sc
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
 import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart';
-import 'package:lms_student/features/explore/presentation/screens/pk.dart';
+import 'package:lms_student/features/explore/presentation/screens/package_details.dart';
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/home/presentation/screens/home_screen_before_login.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
@@ -114,10 +115,12 @@ class RouterGenerator {
       ),
 
       GoRoute(
-        path: AppRoutes.pk,
-        name: AppRoutes.pk,
+        path: AppRoutes.packageDetails,
+        name: AppRoutes.packageDetails,
         builder: (context, state) {
-          return Pk();
+          final category = state.extra as List<String>?;
+          print('Route received slug: $category');
+          return PackageDetails(category: category!);
         },
       ),
 

@@ -5,9 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart';
-import 'package:lms_student/features/explore/widget/custom_category.dart';
-import 'package:lms_student/features/explore/widget/custom_category_item.dart';
-import 'package:lms_student/features/explore/widget/custom_dropdown_list.dart';
+import 'package:lms_student/features/explore/presentation/screens/widget/custom_category.dart';
+import 'package:lms_student/features/explore/presentation/screens/widget/custom_category_item.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
@@ -60,21 +59,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
             ),
             SizedBox(height: 10.h),
             CustomCategoryItem(),
-            SizedBox(height: 10.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  context.tr('explore'),
-                  style: context.textTheme.headlineMedium!.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
-                ),
-                CustomDropdownList(),
-              ],
-            ),
-            SizedBox(height: 10.h),
-
             SizedBox(height: 13.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,12 +118,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           child: IntrinsicHeight(
                             child: InkWell(
                               onTap: () {
-                                context.push(AppRoutes.pk);
+                                print(
+                                  "jhcacsjbajs${state.packages[index].categories}",
+                                );
+                                context.push(
+                                  AppRoutes.packageDetails,
+                                  extra: state.packages[index].categories,
+                                );
                               },
                               child: CustomCategory(
                                 title: state.packages[index].title,
-                                description: state.packages[index].price
-                                    .toString(),
+                                description: state.packages[index].description,
                                 courseslessons: 12,
                                 coursehours: 18,
                                 category: state.packages[index].categories,
@@ -213,6 +202,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       return IntrinsicHeight(
                         child: InkWell(
                           onTap: () {
+                            print(
+                              " nammmmmmmmmmmmmmmme ${course.instructorName}",
+                            );
                             context.push(
                               AppRoutes.courseDetailsScreen,
                               extra: course.slug,

@@ -62,7 +62,7 @@ class _CustomCategoryState extends State<CustomCategory> {
               color: context.colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
-          SizedBox(height: 16.h),
+          Spacer(),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -93,12 +93,12 @@ class _CustomCategoryState extends State<CustomCategory> {
               }),
             ),
           ),
-          SizedBox(height: 26.h),
+          Spacer(),
           Divider(
             color: context.colorScheme.onSurface.withValues(alpha: 0.3),
             height: 2.w,
           ),
-          SizedBox(height: 20.h),
+          Spacer(),
           Row(
             children: [
               Row(

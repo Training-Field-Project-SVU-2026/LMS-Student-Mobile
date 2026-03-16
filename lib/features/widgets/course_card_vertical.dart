@@ -74,7 +74,7 @@ class CourseCardVertical extends StatelessWidget {
                 padding: EdgeInsets.all(12.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+                  // mainAxisSize: MainAxisSize.min,
                   children: [
                     //  title
                     Text(
@@ -104,7 +104,7 @@ class CourseCardVertical extends StatelessWidget {
 
                     // instructor name
                     if (instructorName != null) ...[
-                      SizedBox(height: 8.h),
+                      SizedBox(height: 4.h),
                       Text(
                         instructorName!,
                         style: context.textTheme.labelSmall?.copyWith(
@@ -117,7 +117,7 @@ class CourseCardVertical extends StatelessWidget {
                     ],
                     // price
                     if (price != null) ...[
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 4.h),
                       Text(
                         '\$$price',
                         style: context.textTheme.labelSmall?.copyWith(
@@ -126,7 +126,7 @@ class CourseCardVertical extends StatelessWidget {
                         ),
                       ),
                     ],
-                    SizedBox(height: 10.h),
+                    SizedBox(height: 5.h),
                     Wrap(
                       spacing: 8.w,
                       runSpacing: 4.h,

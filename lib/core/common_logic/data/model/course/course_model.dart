@@ -58,9 +58,8 @@ class CourseModel {
           ? (json['instructor_name'] ?? '')
           : fullName,
       instructorImage: json['instructor_image'],
-      avgRating: double.tryParse(json['avg_rating']?.toString() ?? '') ?? 500,
-      ratingsCount:
-          int.tryParse(json['ratings_count']?.toString() ?? '') ?? 500,
+      avgRating: double.tryParse(json['avg_rating']?.toString() ?? '') ?? 3.5,
+      ratingsCount: int.tryParse(json['ratings_count']?.toString() ?? '') ?? 3,
       // courseCount: int.tryParse(json['ratings_count']?.toString() ?? '') ?? 500,
       studentsCount:
           int.tryParse(json['course_count']?.toString() ?? '') ?? 500,

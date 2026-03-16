@@ -256,13 +256,13 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                                 child: CourseCardVertical(
                                   //Todo ::Handel nullable
                                   title: course.title,
+                                  price: course.price,
                                   imagePath: course.image,
-                                  rating: 4.3,
-                                  totalStudents: 12,
+                                  rating: course.avgRating,
+                                  totalStudents: course.studentsCount,
                                   width: 256,
                                   description: course.description,
                                   instructorName: course.instructorName,
-                                  lessonsCount: 12,
                                 ),
                               );
                             }).toList(),
