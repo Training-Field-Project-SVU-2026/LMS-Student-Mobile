@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 
@@ -9,14 +11,15 @@ class CustomCategory extends StatefulWidget {
   final String description;
   final int courseslessons;
   final int coursehours;
-
+  final List<String> category;
   CustomCategory({
     Key? key,
     required this.title,
     required this.description,
     required this.courseslessons,
     required this.coursehours,
-  });
+    required this.category,
+  }) : super(key: key);
 
   @override
   State<CustomCategory> createState() => _CustomCategoryState();
@@ -60,19 +63,34 @@ class _CustomCategoryState extends State<CustomCategory> {
             ),
           ),
           SizedBox(height: 16.h),
-          Container(
-            width: 45.w,
-            height: 23.h,
-            decoration: BoxDecoration(
-              color: context.colorScheme.primary.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Text(
-              "css",
-              style: context.textTheme.labelLarge!.copyWith(
-                color: context.colorScheme.primary.withValues(alpha: 0.7),
-              ),
-              textAlign: TextAlign.center,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(widget.category.length, (index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  child: Container(
+                    padding: EdgeInsets.all(6.r),
+                    width: 65.w,
+                    height: 30.h,
+                    decoration: BoxDecoration(
+                      color: context.colorScheme.primary.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Text(
+                      "${widget.category[index]}",
+                      style: context.textTheme.labelMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: context.colorScheme.primary.withValues(
+                          alpha: 0.7,
+                        ),
+                      ),
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }),
             ),
           ),
           SizedBox(height: 26.h),

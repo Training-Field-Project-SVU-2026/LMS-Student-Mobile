@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
+import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/home/widgets/custom_progress.dart';
 import 'package:lms_student/features/home/widgets/custom_streak.dart';
 import 'package:lms_student/features/widgets/course_card_horizontal.dart';
@@ -20,6 +23,12 @@ class HomeScreenAfterLogin extends StatefulWidget {
 
 class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
   // double progress = completedVideos / totalVideos;
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeBloc>().add(GetCoursesEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -151,28 +160,52 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 20.w),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: List.generate(
-                  20,
-                  (index) => CourseCardVertical(
-                    title: context.tr('intro_to_python'),
-                    imagePath:
-                        'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
-                    rating: 4.3,
-                    totalHours: 12,
-                    width: 256,
-                    description:
-                        context.tr('description_placeholder'),
-                    instructorName: context.tr('instructor_name_placeholder'),
-                    lessonsCount: 12,
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              if (state is CoursesLoading) {
+                return Container(
+                  height: 280.h,
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+              if (state is CoursesError) {
+                return Container(
+                  height: 280.h,
+                  child: Center(child: Text('Error : ${state.message}')),
+                );
+              }
+              if (state is CoursesLoaded) {
+                print("courses from bloc: ${state.courses}");
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: state.courses.map((course) {
+                        return InkWell(
+                          onTap: () {
+                            context.push(AppRoutes.courseDetailsScreen);
+                          },
+                          child: CourseCardVertical(
+                            //Todo ::Handel nullable
+                            title: course.title,
+                            imagePath: course.image,
+                            rating: 4.3,
+                            totalHours: 12,
+                            width: 256,
+                            description: course.description,
+                            instructorName: course.instructorName,
+                            lessonsCount: 12,
+                          ),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ),
-            ),
+                );
+              }
+
+              return CircularProgressIndicator();
+            },
           ),
         ),
       ],

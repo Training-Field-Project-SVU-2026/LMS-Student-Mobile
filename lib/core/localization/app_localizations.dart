@@ -12,13 +12,11 @@ class AppLocalizations {
       _AppLocalizationsDelegate();
 
   Future<bool> load() async {
-    print("LOADING: lib/core/localization/l10n/${locale.languageCode}.json");
 
     String jsonString = await rootBundle.loadString(
       'lib/core/localization/l10n/${locale.languageCode}.json',
     );
 
-    print("JSON LOADED SUCCESSFULLY");
 
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 

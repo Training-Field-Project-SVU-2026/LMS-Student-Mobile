@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
+import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
 import 'package:lms_student/features/explore/widget/custom_category.dart';
 import 'package:lms_student/features/explore/widget/custom_category_item.dart';
 import 'package:lms_student/features/explore/widget/custom_dropdown_list.dart';
+import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
@@ -17,6 +22,13 @@ class ExploreScreenBeforLogin extends StatefulWidget {
 }
 
 class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<PackageBloc>().add(Getallpackage());
+    context.read<HomeBloc>().add(GetCoursesEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +90,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                     SizedBox(width: 5.w),
                     Text(
                       context.tr('learning_tracks'),
-                      style: context.textTheme.displayMedium!.copyWith(
+                      style: context.textTheme.headlineLarge!.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
                     ),
@@ -95,24 +107,46 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
             SizedBox(height: 20.h),
             SizedBox(
               height: 320.h,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 16.h,
-                      horizontal: 8.w,
-                    ),
-                    child: IntrinsicHeight(
-                      child: CustomCategory(
-                        title: context.tr('full_stack_web_development'),
-                        description: context.tr('master_the_art'),
-                        courseslessons: 12,
-                        coursehours: 18,
-                      ),
-                    ),
-                  );
+              child: BlocBuilder<PackageBloc, PackageState>(
+                builder: (context, state) {
+                  if (state is Packagesloading) {
+                    return Container(
+                      height: 280.h,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+                  if (state is Packageserror) {
+                    return Container(
+                      height: 280.h,
+                      child: Center(child: Text('Error : ${state.message}')),
+                    );
+                  }
+                  if (state is Packagesloaded) {
+                    print("courses from bloc: ${state.package}");
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.package.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 16.h,
+                            horizontal: 8.w,
+                          ),
+                          child: IntrinsicHeight(
+                            child: CustomCategory(
+                              title: state.package[index].title,
+                              description: state.package[index].price
+                                  .toString(),
+                              courseslessons: 12,
+                              coursehours: 18,
+                              category: state.package[index].categories,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  return CircularProgressIndicator();
                 },
               ),
             ),
@@ -129,7 +163,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                     SizedBox(width: 5.w),
                     Text(
                       context.tr('many_courses'),
-                      style: context.textTheme.displayMedium!.copyWith(
+                      style: context.textTheme.headlineLarge!.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
                     ),
@@ -144,30 +178,58 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
               ],
             ),
             SizedBox(height: 15.h),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 0.70,
-              ),
-              itemBuilder: (context, index) {
-                return IntrinsicHeight(
-                  child: CourseCardVertical(
-                    title: context.tr('intro_to_python'),
-                    imagePath:
-                        'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
-                    rating: 4.3,
-                    totalHours: 12,
-                    width: 256,
-                    description: context.tr('description_placeholder'),
-                    instructorName: context.tr('instructor_name_placeholder'),
-                    lessonsCount: 12,
-                  ),
-                );
+            BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                if (state is CoursesLoading) {
+                  return Container(
+                    height: 280.h,
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state is CoursesError) {
+                  return Container(
+                    height: 280.h,
+                    child: Center(child: Text('Error : ${state.message}')),
+                  );
+                }
+                if (state is CoursesLoaded) {
+                  print("courses from bloc: ${state.courses}");
+
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: state.courses.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 0.70,
+                    ),
+                    itemBuilder: (context, index) {
+                      final course = state.courses[index];
+
+                      return IntrinsicHeight(
+                        child: InkWell(
+                          onTap: () {
+                            context.push(AppRoutes.courseDetailsScreen);
+                          },
+                          child: CourseCardVertical(
+                            title: course.title,
+                            imagePath: course.image,
+                            rating: 3.4,
+                            totalHours: 12,
+                            width: 256,
+                            description: course.description,
+                            instructorName: course.instructorName,
+                            lessonsCount: 12,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+
+                return CircularProgressIndicator();
               },
             ),
           ],
@@ -176,3 +238,27 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
     );
   }
 }
+
+
+
+
+// return ListView.builder(
+//                     scrollDirection: Axis.horizontal,
+//                     itemCount: 10,
+//                     itemBuilder: (context, index) {
+//                       return Padding(
+//                         padding: EdgeInsets.symmetric(
+//                           vertical: 16.h,
+//                           horizontal: 8.w,
+//                         ),
+//                         child: IntrinsicHeight(
+//                           child: CustomCategory(
+//                             title: context.tr('full_stack_web_development'),
+//                             description: context.tr('master_the_art'),
+//                             courseslessons: 12,
+//                             coursehours: 18,
+//                           ),
+//                         ),
+//                       );
+//                     },
+//                   );

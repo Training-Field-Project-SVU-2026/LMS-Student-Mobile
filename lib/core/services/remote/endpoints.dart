@@ -1,9 +1,9 @@
 class EndPoint {
-  static String localUrl = "http://127.0.0.1:8000/api";
+  static String localUrl = "http://192.168.1.10:8000/api";
   static String remoteUrl =
       "https://lmsbackend-production-c2ea.up.railway.app/api";
 
-  static String baseUrl = remoteUrl;
+  static String baseUrl = localUrl;
 
   // auth
   static String login = "/auth/login/"; // done
@@ -14,17 +14,22 @@ class EndPoint {
   static String resendOtp = "/auth/resend-otp/"; // done
   static String resetPassword = "/auth/reset-password/"; // done
   static String refreshToken = "/auth/token/refresh/";
-  static String verifyEmail = "/auth/verify-email/"; // done 
+  static String verifyEmail = "/auth/verify-email/";
+  static String checkToken = "/auth/check-token/";
 
   // courses
   static String allCourses = "/courses/all/";
 
+  // packages
+  static String allPackages = "/packages/all/";
+  
   // student profile 
   static String updateProfile = "";
 }
 
 class ApiKey {
   static String message = "message";
+  static String authorization = "Authorization";
   static String firstName = "first_name";
   static String lastName = "last_name";
   static String email = "email";

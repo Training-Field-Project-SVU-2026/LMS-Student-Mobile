@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import '../../../../../../core/extensions/context_extensions.dart';
 
@@ -19,8 +20,8 @@ class AuthToggleSwitch extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _buildTab(context, "Login", isActive: isLogin),
-          _buildTab(context, "Register", isActive: !isLogin),
+          _buildTab(context, "login", isActive: isLogin),
+          _buildTab(context, "register", isActive: !isLogin),
         ],
       ),
     );
@@ -30,9 +31,8 @@ class AuthToggleSwitch extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-        // لو دوسنا على Tab وهو أصلاً مش الـ Active، انقلي للصفحة التانية
         if (!isActive) {
-          if (label == "Login") {
+          if (label == "login") {
             context.go(AppRoutes.loginScreen); //
           } else {
             context.go(AppRoutes.registerScreen); //
@@ -50,7 +50,7 @@ class AuthToggleSwitch extends StatelessWidget {
             ] : null,
           ),
           child: Text(
-            label,
+            context.tr(label),
             style: context.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w500,
               color: isActive ? context.colorScheme.primary : context.colorScheme.onSurfaceVariant,

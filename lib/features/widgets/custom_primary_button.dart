@@ -63,7 +63,7 @@ class CustomPrimaryButton extends StatelessWidget {
               Flexible(
                 child: Text(
                   text,
-
+                  maxLines: 1,
                   style: (textStyle ?? context.textTheme.labelLarge)?.copyWith(
                     color: defaultColor,
                   ),

@@ -14,20 +14,23 @@ class LoginResponseModel {
   });
 
   Map<String, dynamic> toJson() {
-  return {
-    'message': message,
-    'access': accessToken,     
-    'refresh': refreshToken,    
-    'user': user.toJson(),      
-  };
-}
+    return {
+      'message': message,
+      'data': {
+        'access': accessToken,
+        'refresh': refreshToken,
+        'user': user.toJson(),
+      }
+    };
+  }
+
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
-    
+    final data = json['data'] ?? {};
     return LoginResponseModel(
       message: json['message'] ?? '',
-      accessToken: json['access'] ?? '',
-      refreshToken: json['refresh'] ?? '',
-      user: UserModel.fromJson(json['user'] ?? {}),
+      accessToken: data['access'] ?? '',
+      refreshToken: data['refresh'] ?? '',
+      user: UserModel.fromJson(data['user'] ?? {}),
     );
   }
 
