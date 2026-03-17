@@ -44,7 +44,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ),
                   hintText: context.tr('search_courses_instructors'),
                 ),
-
                 const Spacer(),
                 Container(
                   width: 42.w,
