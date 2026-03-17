@@ -21,27 +21,10 @@ class CustomImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // if (imagePath == null || imagePath!.isEmpty) {
-    //   return AspectRatio(
-    //     aspectRatio: aspectRatio ?? 16 / 10,
-    //     child: ClipRRect(
-    //       borderRadius:
-    //           borderRadius ?? BorderRadius.vertical(top: Radius.circular(12.r)),
-    //       child: Container(
-    //         color: context.colorScheme.surfaceVariant,
-    //         child: Icon(
-    //           Icons.image_not_supported,
-    //           color: context.colorScheme.outline,
-    //         ),
-    //       ),
-    //     ),
-    //   );
-    // }
 
     return AspectRatio(
-      aspectRatio: aspectRatio ?? 16 / 10, // نسبة العرض الي الطول
+      aspectRatio: aspectRatio ?? 16 / 10,
       child: ClipRRect(
-        // عشان يبقي شكل الصورة ليها راديس من فوق زي الكونتينر
         borderRadius:
             borderRadius ?? BorderRadius.vertical(top: Radius.circular(12.r)),
         child: CachedNetworkImage(
@@ -51,15 +34,11 @@ class CustomImage extends StatelessWidget {
           width: width?.w,
           height: height?.h,
           fit: BoxFit.cover,
-          // ده بيظهر عقبال ما الصورة تيجي من ال api
           placeholder: (context, url) => Container(
             color: context.colorScheme.surfaceVariant,
             child: const Center(child: CircularProgressIndicator()),
           ),
-          // لو الصورة حصل فيها مشكلة
           errorWidget: (context, url, error) {
-            print('imagePath: $imagePath'); // هنطبع الخطأ هنا
-            print('Error: $error'); // هنطبع الخطأ هنا
             return Container(
               color: context.colorScheme.onSurfaceVariant,
               child: Icon(

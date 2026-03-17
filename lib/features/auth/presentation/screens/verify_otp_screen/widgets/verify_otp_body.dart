@@ -1,5 +1,7 @@
 // lib/features/auth/presentation/screens/verify_otp_screen/widgets/verify_otp_body.dart
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +18,6 @@ class VerifyOtpBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('📧 Email in screen: $email');
 
     final authBloc = context.read<AuthBloc>();
 
@@ -186,10 +187,10 @@ class VerifyOtpBody extends StatelessWidget {
                         ? null
                         : () {
                           // for testing ya قائد don't delete it untill i make sure of the code 
-                            print(
+                            log(
                               '🔑 OTP entered: ${authBloc.getOtpCode()}',
                             ); 
-                            print('📧 Email: $email');
+                            log('📧 Email: $email');
       
                             // wait here
                             authBloc.add(

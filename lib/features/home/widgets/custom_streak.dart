@@ -7,20 +7,20 @@ import 'package:lms_student/core/extensions/context_extensions.dart';
 class CustomStreak extends StatelessWidget {
   final String hidtag;
   final String body;
-  final Color color_container;
-  final Color color_Icon;
+  final Color colorContainer;
+  final Color colorIcon;
   final IconData icon;
-  final int days_Or_hours;
+  final int daysOrHours;
 
   const CustomStreak({
-    Key? key,
+    super.key,
     required this.hidtag,
     required this.body,
-    required this.color_container,
-    required this.color_Icon,
+    required this.colorContainer,
+    required this.colorIcon,
     required this.icon,
-    required this.days_Or_hours,
-  }) : super(key: key);
+    required this.daysOrHours,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +45,11 @@ class CustomStreak extends StatelessWidget {
             width: 40.w,
             height: 40.h,
             decoration: BoxDecoration(
-              color: color_container,
+              color: colorContainer,
               borderRadius: BorderRadius.circular(16.r),
             ),
             child: Center(
-              child: Icon(icon, color: color_Icon, size: 28.sp),
+              child: Icon(icon, color: colorIcon, size: 28.sp),
             ),
           ),
 
@@ -68,7 +68,7 @@ class CustomStreak extends StatelessWidget {
               ),
               // SizedBox(height: 4.h),
               Text(
-                "$days_Or_hours $body",
+                "$daysOrHours $body",
                 style: context.textTheme.labelMedium!.copyWith(
                   fontSize: 18.sp,
                   color: context.colorScheme.onSurface,
