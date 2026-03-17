@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
@@ -6,12 +5,13 @@ import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/features/explore/presentation/screens/widget/custom_head_of_packe_detals.dart';
 import 'package:lms_student/features/explore/presentation/screens/widget/custom_package_caregory.dart';
 import 'package:lms_student/features/explore/presentation/screens/widget/custon_instractor_information.dart';
+import 'package:lms_student/features/widgets/course_card_horizontal.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 
 class PackageDetails extends StatefulWidget {
   final List<String> category;
-  const PackageDetails({Key? key, required this.category}) : super(key: key);
+  const PackageDetails({super.key, required this.category});
   @override
   State<PackageDetails> createState() => _PackageDetailsState();
 }
@@ -95,13 +95,11 @@ class _PackageDetailsState extends State<PackageDetails> {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 12.r),
                       child: IntrinsicHeight(
-                        child: CourseCardVertical(
+                        child: CourseCardHorizontal(
                           title: "title",
-                          description: "askfnwmsafnklsa,.f as,f ",
                           instructorName: "taha",
-                          price: 200,
                           rating: 3.4,
-                          totalStudents: 500,
+                          //! TODO add Price
                         ),
                       ),
                     );

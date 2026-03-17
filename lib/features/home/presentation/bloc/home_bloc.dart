@@ -26,6 +26,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final result = await courseRepository.getAllCourses();
 
       result.fold(
+        (error) => emit(CoursesError(message: error)),
         (response) => emit(
           CoursesLoaded(
             courses: response.data,
@@ -34,8 +35,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             currentPage: response.currentPage,
           ),
         ),
-        (error) => emit(CoursesError(message: error)),
       );
+
     } catch (e) {
       emit(CoursesError(message: e.toString()));
     }

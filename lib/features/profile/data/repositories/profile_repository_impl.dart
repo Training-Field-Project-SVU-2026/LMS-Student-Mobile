@@ -28,9 +28,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
       await cacheHelper.removeData(key: ApiKey.user);
       await cacheHelper.removeData(key: ApiKey.isLoggedIn);
 
-      print('✅ Logout successful');
     } on DioException catch (e) {
-      print('Logout API failed but continuing...');
 
       await cacheHelper.removeData(key: ApiKey.accessToken);
       await cacheHelper.removeData(key: ApiKey.refreshToken);

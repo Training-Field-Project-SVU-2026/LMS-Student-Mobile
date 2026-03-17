@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:lms_student/core/extensions/context_extensions.dart';
@@ -12,14 +11,14 @@ class CustomCategory extends StatefulWidget {
   final int courseslessons;
   final int coursehours;
   final List<String> category;
-  CustomCategory({
-    Key? key,
+  const CustomCategory({
+    super.key,
     required this.title,
     required this.description,
     required this.courseslessons,
     required this.coursehours,
     required this.category,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomCategory> createState() => _CustomCategoryState();
@@ -49,7 +48,7 @@ class _CustomCategoryState extends State<CustomCategory> {
           Text(
             widget.title,
             maxLines: 2,
-            style: context.textTheme.displayMedium!.copyWith(
+            style: context.textTheme.labelLarge!.copyWith(
               color: context.colorScheme.onSurface,
             ),
           ),
@@ -58,7 +57,7 @@ class _CustomCategoryState extends State<CustomCategory> {
             widget.description,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: context.textTheme.labelMedium!.copyWith(
+            style: context.textTheme.labelSmall!.copyWith(
               color: context.colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
@@ -78,8 +77,8 @@ class _CustomCategoryState extends State<CustomCategory> {
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Text(
-                      "${widget.category[index]}",
-                      style: context.textTheme.labelMedium!.copyWith(
+                      widget.category[index],
+                      style: context.textTheme.labelSmall!.copyWith(
                         fontWeight: FontWeight.bold,
                         color: context.colorScheme.primary.withValues(
                           alpha: 0.7,

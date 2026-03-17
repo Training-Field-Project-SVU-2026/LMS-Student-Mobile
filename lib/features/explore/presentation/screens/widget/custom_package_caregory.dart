@@ -6,8 +6,7 @@ import 'package:lms_student/core/extensions/context_extensions.dart';
 
 class CustomPackageCaregory extends StatefulWidget {
   final List<String> category;
-  const CustomPackageCaregory({Key? key, required this.category})
-    : super(key: key);
+  const CustomPackageCaregory({super.key, required this.category});
 
   @override
   State<CustomPackageCaregory> createState() => _CustomPackageCaregoryState();
@@ -31,7 +30,7 @@ class _CustomPackageCaregoryState extends State<CustomPackageCaregory> {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Text(
-                "${widget.category[index]}",
+                widget.category[index],
                 style: context.textTheme.labelMedium!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.primary.withValues(alpha: 0.7),

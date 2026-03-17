@@ -12,54 +12,27 @@ class CourseRepositoryImpl implements CourseRepository {
   CourseRepositoryImpl({required this.apiConsumer});
 
   @override
-  Future<Either<ResponseCourseModel, String>> getAllCourses({
+  Future<Either<String, ResponseCourseModel>> getAllCourses({
     int? page,
     int? pageSize,
   }) async {
-    try {
-      final responseData = await apiConsumer.get(
-        EndPoint.allCourses,
-        queryParameters: {'page': page, 'page_size': pageSize},
-      );
-      final response = ResponseCourseModel.fromJson(responseData);
-
-      if (response.success &&
-          (response.status == 200 || response.status == 201)) {
-        return Left(response);
-      } else {
-        return Right(response.message);
-      }
-    } catch (e) {
-      if (e is String) {
-        return Right(e);
-      }
-      return Right('An unexpected error occurred: ${e.toString()}');
-    }
+    return await apiConsumer.get<ResponseCourseModel>(
+      EndPoint.allCourses,
+      queryParameters: {'page': page, 'page_size': pageSize},
+      fromJson: (json) => ResponseCourseModel.fromJson(json),
+    );
   }
 
   @override
-  Future<Either<CourseModel, String>> getCourseBySlug(String slug) async {
-    try {
-      final responseData = await apiConsumer.get(
+  Future<Either<String, ResponseCourseBySlugModel>> getCourseBySlug(String slug) async {
+      return await apiConsumer.get<ResponseCourseBySlugModel>(
         '${EndPoint.courseBySlug}$slug/',
+        fromJson: (json) => ResponseCourseBySlugModel.fromJson(json)
       );
-      final response = ResponseCourseBySlugModel.fromJson(responseData);
-      if (response.success &&
-          (response.status == 200 || response.status == 201)) {
-        return Left(response.data);
-      } else {
-        return Right(response.message);
-      }
-    } catch (e) {
-      if (e is String) {
-        return Right(e);
-      }
-      return Right('An unexpected error occurred: ${e.toString()}');
-    }
   }
 
   @override
-  Future<Either<List<CourseModel>, String>> searchInCourses(String query) {
+  Future<Either<String, List<CourseModel>>> searchInCourses(String query) {
     throw UnimplementedError();
   }
 }

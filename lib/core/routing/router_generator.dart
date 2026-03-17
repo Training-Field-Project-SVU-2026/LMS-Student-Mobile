@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/di/service_locator.dart';
@@ -119,7 +120,7 @@ class RouterGenerator {
         name: AppRoutes.packageDetails,
         builder: (context, state) {
           final category = state.extra as List<String>?;
-          print('Route received slug: $category');
+          log('Route received slug: $category');
           return PackageDetails(category: category!);
         },
       ),
@@ -129,7 +130,7 @@ class RouterGenerator {
         name: AppRoutes.courseDetailsScreen,
         builder: (context, state) {
           final slug = state.extra as String?;
-          print('Route received slug: $slug');
+          log('Route received slug: $slug');
 
           return BlocProvider(
             create: (context) => sl<CoursedetailsBloc>(),

@@ -18,7 +18,7 @@ class CustomOutlinedButton extends StatelessWidget {
   final Color? color;
 
   const CustomOutlinedButton({
-    Key? key,
+    super.key,
     required this.text,
     this.prefixIcon,
     this.suffixIcon,
@@ -30,7 +30,7 @@ class CustomOutlinedButton extends StatelessWidget {
     this.style,
     this.textStyle,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
