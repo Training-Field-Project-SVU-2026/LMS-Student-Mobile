@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/di/service_locator.dart';
@@ -18,7 +19,9 @@ import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_event.dart';
 import 'package:lms_student/features/course/presentation/screens/course_details_screen.dart';
 import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:lms_student/features/profile/presentation/screens/change_password_screen/change_password_screen.dart';
 import 'package:lms_student/features/profile/presentation/screens/settings_screen/settings_screen.dart';
+import 'package:lms_student/features/profile/presentation/screens/student_profile_screen/student_profile_screen.dart';
 import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
 import 'package:lms_student/root/root_after_login.dart';
 import 'package:lms_student/root/root_before_login.dart';
@@ -70,6 +73,23 @@ class RouterGenerator {
           );
         },
       ),
+      GoRoute(
+        path: AppRoutes.studentProfileScreen,
+        name: AppRoutes.studentProfileScreen,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: sl<ProfileBloc>(),
+            child: const StudentProfileScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.changePasswordScreen,
+        name: AppRoutes.changePasswordScreen,
+        builder: (context, state) {
+          return const ChangePasswordScreen();
+        },
+      ),
 
       GoRoute(
         path: AppRoutes.forgotPasswordScreen,
@@ -119,7 +139,7 @@ class RouterGenerator {
         name: AppRoutes.packageDetails,
         builder: (context, state) {
           final category = state.extra as List<String>?;
-          print('Route received slug: $category');
+          log('Route received slug: $category');
           return PackageDetails(category: category!);
         },
       ),
@@ -129,7 +149,7 @@ class RouterGenerator {
         name: AppRoutes.courseDetailsScreen,
         builder: (context, state) {
           final slug = state.extra as String?;
-          print('Route received slug: $slug');
+          log('Route received slug: $slug');
 
           return BlocProvider(
             create: (context) => sl<CoursedetailsBloc>(),

@@ -9,40 +9,27 @@ class PackageRepositoryImpl implements PackageRepository {
   final ApiConsumer apiConsumer;
   PackageRepositoryImpl({required this.apiConsumer});
   @override
-  Future<Either<List<PackagesModel>, String>> getAllPackages({
+  Future<Either<String, List<PackagesModel>>> getAllPackages({
     int? page,
     int? pageSize,
   }) async {
-    try {
-      final responseData = await apiConsumer.get(
-        EndPoint.allPackages,
-        queryParameters: {'page': page, 'page_size': pageSize},
-      );
-      final response = PackagesResponseModel.fromJson(responseData);
-
-      if (response.success &&
-          (response.status == 200 || response.status == 201)) {
-        return Left(response.data);
-      } else {
-        return Right(response.message);
-      }
-    } catch (e) {
-      if (e is String) {
-        return Right(e);
-      }
-      return Right('An unexpected error occurred: ${e.toString()}');
-    }
+    return await apiConsumer.get<List<PackagesModel>>(
+      EndPoint.allPackages,
+      queryParameters: {'page': page, 'page_size': pageSize},
+      fromJson: (json) => PackagesResponseModel.fromJson(json).data,
+    );
   }
 
   @override
-  Future<Either<PackagesModel, String>> getPackageBySlug(String slug) {
+  Future<Either<String, PackagesModel>> getPackageBySlug(String slug) {
     // Implementation for fetching a package by its slug
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<List<PackagesModel>, String>> searchInPackages(String query) {
+  Future<Either<String, List<PackagesModel>>> searchInPackages(String query) {
     // Implementation for searching packages
     throw UnimplementedError();
   }
 }
+

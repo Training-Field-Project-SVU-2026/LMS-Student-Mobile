@@ -35,19 +35,20 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
         pageSize: event.pageSize,
       );
       response.fold(
-        (packages) => emit(
-          state.copyWith(
-            packageStatus: ExploreStatus.success,
-            packages: packages,
-          ),
-        ),
         (error) => emit(
           state.copyWith(
             packageStatus: ExploreStatus.failure,
             packageError: error,
           ),
         ),
+        (packages) => emit(
+          state.copyWith(
+            packageStatus: ExploreStatus.success,
+            packages: packages,
+          ),
+        ),
       );
+
     } catch (e) {
       emit(
         state.copyWith(
@@ -71,6 +72,12 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
       );
 
       result.fold(
+        (error) => emit(
+          state.copyWith(
+            courseStatus: ExploreStatus.failure,
+            courseError: error,
+          ),
+        ),
         (response) => emit(
           state.copyWith(
             courseStatus: ExploreStatus.success,
@@ -80,13 +87,8 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
             currentPage: response.currentPage,
           ),
         ),
-        (error) => emit(
-          state.copyWith(
-            courseStatus: ExploreStatus.failure,
-            courseError: error,
-          ),
-        ),
       );
+
     } catch (e) {
       emit(
         state.copyWith(

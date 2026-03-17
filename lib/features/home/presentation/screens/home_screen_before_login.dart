@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -227,19 +226,18 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                 BlocBuilder<HomeBloc, HomeState>(
                   builder: (context, state) {
                     if (state is CoursesLoading) {
-                      return Container(
+                      return SizedBox(
                         height: 280.h,
                         child: Center(child: CircularProgressIndicator()),
                       );
                     }
                     if (state is CoursesError) {
-                      return Container(
+                      return SizedBox(
                         height: 280.h,
                         child: Center(child: Text('Error : ${state.message}')),
                       );
                     }
                     if (state is CoursesLoaded) {
-                      print("courses from bloc: ${state.courses}");
                       return SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: IntrinsicHeight(

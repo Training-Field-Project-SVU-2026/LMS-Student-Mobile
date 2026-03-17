@@ -19,7 +19,7 @@ class CourseCardVertical extends StatelessWidget {
   final VoidCallback? onTap;
 
   const CourseCardVertical({
-    Key? key,
+    super.key,
     required this.title,
     this.imagePath,
     this.description,
@@ -31,7 +31,7 @@ class CourseCardVertical extends StatelessWidget {
     this.width,
     this.lessonsCount,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

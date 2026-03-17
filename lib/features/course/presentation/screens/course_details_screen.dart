@@ -9,7 +9,7 @@ import 'package:lms_student/features/widgets/custom_primary_button.dart';
 
 class CourseDetailsScreen extends StatefulWidget {
   final String? slug;
-  const CourseDetailsScreen({Key? key, this.slug});
+  const CourseDetailsScreen({super.key, this.slug});
 
   @override
   State<CourseDetailsScreen> createState() => _CourseDetailsScreenState();

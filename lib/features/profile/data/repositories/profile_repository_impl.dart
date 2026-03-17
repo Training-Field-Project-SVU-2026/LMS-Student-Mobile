@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:lms_student/core/errors/handle_dio_exception.dart';
 import 'package:lms_student/core/services/local/cache_helper.dart';
@@ -10,27 +12,19 @@ class ProfileRepositoryImpl implements ProfileRepository {
   final ApiConsumer apiConsumer;
   final CacheHelper cacheHelper;
 
-  ProfileRepositoryImpl({
-    required this.apiConsumer,
-    required this.cacheHelper,
-  });
+  ProfileRepositoryImpl({required this.apiConsumer, required this.cacheHelper});
 
   @override
   Future<void> logout(LogoutRequestModel request) async {
     try {
-      await apiConsumer.post(
-        EndPoint.logout,
-        data: request.toJson(),
-      );
+      await apiConsumer.post(EndPoint.logout, data: request.toJson());
 
       await cacheHelper.removeData(key: ApiKey.accessToken);
       await cacheHelper.removeData(key: ApiKey.refreshToken);
       await cacheHelper.removeData(key: ApiKey.user);
       await cacheHelper.removeData(key: ApiKey.isLoggedIn);
 
-      print('✅ Logout successful');
     } on DioException catch (e) {
-      print('Logout API failed but continuing...');
 
       await cacheHelper.removeData(key: ApiKey.accessToken);
       await cacheHelper.removeData(key: ApiKey.refreshToken);

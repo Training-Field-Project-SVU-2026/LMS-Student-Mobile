@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -117,7 +119,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           child: IntrinsicHeight(
                             child: InkWell(
                               onTap: () {
-                                print(
+                                log(
                                   "jhcacsjbajs${state.packages[index].categories}",
                                 );
                                 context.push(
@@ -201,7 +203,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       return IntrinsicHeight(
                         child: InkWell(
                           onTap: () {
-                            print(
+                            log(
                               " nammmmmmmmmmmmmmmme ${course.instructorName}",
                             );
                             context.push(

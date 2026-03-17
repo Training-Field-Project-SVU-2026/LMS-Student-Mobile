@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -94,18 +96,18 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                   CustomStreak(
                     hidtag: context.tr('current_streak'),
                     body: context.tr('days'),
-                    color_container: Color(0xffFBE7D3),
-                    color_Icon: const Color(0xffF05A0C),
+                    colorContainer: Color(0xffFBE7D3),
+                    colorIcon: const Color(0xffF05A0C),
                     icon: Icons.local_fire_department,
-                    days_Or_hours: 5,
+                    daysOrHours: 5,
                   ),
                   CustomStreak(
                     hidtag: context.tr('hours_today'),
                     body: context.tr('hrs'),
-                    color_container: Color(0xffDBEAFE),
-                    color_Icon: Color(0xff2563EB),
+                    colorContainer: Color(0xffDBEAFE),
+                    colorIcon: Color(0xff2563EB),
                     icon: Icons.access_time_outlined,
-                    days_Or_hours: 3,
+                    daysOrHours: 3,
                   ),
                 ],
               ),
@@ -163,19 +165,19 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
           child: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               if (state is CoursesLoading) {
-                return Container(
+                return SizedBox(
                   height: 280.h,
                   child: Center(child: CircularProgressIndicator()),
                 );
               }
               if (state is CoursesError) {
-                return Container(
+                return SizedBox(
                   height: 280.h,
                   child: Center(child: Text('Error : ${state.message}')),
                 );
               }
               if (state is CoursesLoaded) {
-                print("courses from bloc: ${state.courses}");
+                log("courses from bloc: ${state.courses}");
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: IntrinsicHeight(
@@ -184,7 +186,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                       children: state.courses.map((course) {
                         return InkWell(
                           onTap: () {
-                            print('Course slug: ${course.slug}');
+                            log('Course slug: ${course.slug}');
                             context.push(
                               AppRoutes.courseDetailsScreen,
                               extra: course.slug,
