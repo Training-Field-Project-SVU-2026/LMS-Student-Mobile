@@ -3,10 +3,11 @@ import 'package:lms_student/core/common_logic/data/model/course/course_model.dar
 import 'package:lms_student/core/common_logic/data/model/course/response_course_model.dart';
 
 abstract class CourseRepository {
-  Future<Either<ResponseCourseModel, String>> getAllCourses({
+  Future<Either<String, ResponseCourseModel>> getAllCourses({
     int? page,
     int? pageSize,
   });
-  Future<Either<CourseModel, String>> getCourseBySlug(String slug);
-  Future<Either<List<CourseModel>, String>> searchInCourses(String query);
+  Future<Either<String, CourseModel>> getCourseBySlug(String slug);
+  Future<Either<String, List<CourseModel>>> searchInCourses(String query);
 }
+

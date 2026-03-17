@@ -35,12 +35,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
     final result = await authRepository.login(request);
 
     result.fold(
+      (errorMessage) {
+        emit(AuthError(message: errorMessage));
+      },
       (successResponse) {
         clearLoginControllers();
         emit(AuthSuccess(data: successResponse));
-      },
-      (errorMessage) {
-        emit(AuthError(message: errorMessage));
       },
     );
   }
@@ -61,12 +61,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
     final result = await authRepository.register(request);
 
     result.fold(
+      (errorMessage) {
+        emit(AuthError(message: errorMessage));
+      },
       (successResponse) {
         // clearRegisterControllers();
         emit(AuthSuccess(data: successResponse));
-      },
-      (errorMessage) {
-        emit(AuthError(message: errorMessage));
       },
     );
   }
@@ -86,12 +86,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
 
     final result = await authRepository.verifyEmail(request);
 
-    if (result.toLowerCase().contains('successfully')) {
-      clearOtpControllers();
-      emit(AuthSuccess(data: result));
-    } else {
-      emit(AuthError(message: result));
-    }
+    result.fold(
+      (error) => emit(AuthError(message: error)),
+      (successMessage) {
+        clearOtpControllers();
+        emit(AuthSuccess(data: successMessage));
+      },
+    );
   }
 
   Future<void> _onResendOtp(
@@ -102,12 +103,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
 
     final result = await authRepository.resendOtp(event.email);
 
-    if (result.toLowerCase().contains('success') ||
-        result.toLowerCase().contains('resent')) {
-      emit(ResendSuccess(result));
-    } else {
-      emit(AuthError(message: result));
-    }
+    result.fold(
+      (error) => emit(AuthError(message: error)),
+      (successMessage) => emit(ResendSuccess(successMessage)),
+    );
   }
 
   Future<void> _onForgotPassword(
@@ -118,11 +117,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
 
     final result = await authRepository.forgotPassword(event.email);
 
-    if (result.toLowerCase().contains('sent')) {
-      emit(ForgotPasswordSuccess(result));
-    } else {
-      emit(AuthError(message: result));
-    }
+    result.fold(
+      (error) => emit(AuthError(message: error)),
+      (successMessage) => emit(ForgotPasswordSuccess(successMessage)),
+    );
   }
 
   Future<void> _onResetPassword(
@@ -133,12 +131,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
 
     final result = await authRepository.resetPassword(event.requestModel);
 
-     if (result.toLowerCase().contains('success')) {
-      emit(AuthSuccess(data: result));
-    } else {
-      emit(AuthError(message: result));
-    }
+    result.fold(
+      (error) => emit(AuthError(message: error)),
+      (successMessage) => emit(AuthSuccess(data: successMessage)),
+    );
   }
+
 
   void _onClearForm(ClearFormEvent event, Emitter<AuthState> emit) {
     clearRegisterControllers();

@@ -11,38 +11,25 @@ class CourseRepositoryImpl implements CourseRepository {
   CourseRepositoryImpl({required this.apiConsumer});
 
   @override
-  Future<Either<ResponseCourseModel, String>> getAllCourses({
+  Future<Either<String, ResponseCourseModel>> getAllCourses({
     int? page,
     int? pageSize,
   }) async {
-    try {
-      final responseData = await apiConsumer.get(
-        EndPoint.allCourses,
-        queryParameters: {'page': page, 'page_size': pageSize},
-      );
-      final response = ResponseCourseModel.fromJson(responseData);
-
-      if (response.success &&
-          (response.status == 200 || response.status == 201)) {
-        return Left(response);
-      } else {
-        return Right(response.message);
-      }
-    } catch (e) {
-      if (e is String) {
-        return Right(e);
-      }
-      return Right('An unexpected error occurred: ${e.toString()}');
-    }
+    return await apiConsumer.get<ResponseCourseModel>(
+      EndPoint.allCourses,
+      queryParameters: {'page': page, 'page_size': pageSize},
+      fromJson: (json) => ResponseCourseModel.fromJson(json),
+    );
   }
 
   @override
-  Future<Either<CourseModel, String>> getCourseBySlug(String slug) {
+  Future<Either<String, CourseModel>> getCourseBySlug(String slug) {
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<List<CourseModel>, String>> searchInCourses(String query) {
+  Future<Either<String, List<CourseModel>>> searchInCourses(String query) {
     throw UnimplementedError();
   }
 }
+
