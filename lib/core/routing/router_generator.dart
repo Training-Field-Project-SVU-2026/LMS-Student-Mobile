@@ -19,7 +19,9 @@ import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_event.dart';
 import 'package:lms_student/features/course/presentation/screens/course_details_screen.dart';
 import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:lms_student/features/profile/presentation/screens/change_password_screen/change_password_screen.dart';
 import 'package:lms_student/features/profile/presentation/screens/settings_screen/settings_screen.dart';
+import 'package:lms_student/features/profile/presentation/screens/student_profile_screen/student_profile_screen.dart';
 import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
 import 'package:lms_student/root/root_after_login.dart';
 import 'package:lms_student/root/root_before_login.dart';
@@ -69,6 +71,23 @@ class RouterGenerator {
             create: (context) => sl<ProfileBloc>(),
             child: const SettingsScreen(),
           );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.studentProfileScreen,
+        name: AppRoutes.studentProfileScreen,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: sl<ProfileBloc>(),
+            child: const StudentProfileScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.changePasswordScreen,
+        name: AppRoutes.changePasswordScreen,
+        builder: (context, state) {
+          return const ChangePasswordScreen();
         },
       ),
 

@@ -60,7 +60,7 @@ class SettingsBody extends StatelessWidget {
                 text: 'Change Password',
                 width: double.infinity,
                 onTap: () {
-                  // Navigate to change password
+                  context.pushNamed(AppRoutes.changePasswordScreen);
                 },
                 textStyle: context.textTheme.titleMedium?.copyWith(
                   color: context.colorScheme.onSurfaceVariant,
