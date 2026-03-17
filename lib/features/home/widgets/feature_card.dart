@@ -9,11 +9,11 @@ class FeatureCard extends StatelessWidget {
   final String description;
 
   const FeatureCard({
-    Key? key,
+    super.key,
     required this.path,
     required this.title,
     required this.description,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

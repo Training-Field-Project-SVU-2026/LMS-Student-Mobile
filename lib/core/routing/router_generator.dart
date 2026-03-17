@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/di/service_locator.dart';
@@ -8,11 +10,19 @@ import 'package:lms_student/features/auth/presentation/screens/login_screen/logi
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
-import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
-import 'package:lms_student/features/home/presentation/screens/course_details_screen.dart';
-import 'package:lms_student/features/home/presentation/screens/home_screen.dart';
+import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
+import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart';
+import 'package:lms_student/features/explore/presentation/screens/package_details.dart';
+import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
+import 'package:lms_student/features/home/presentation/screens/home_screen_before_login.dart';
+import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
+import 'package:lms_student/features/splash/presentation/bloc/splash_event.dart';
+import 'package:lms_student/features/course/presentation/screens/course_details_screen.dart';
+import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:lms_student/features/profile/presentation/screens/settings_screen/settings_screen.dart';
 import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
-import 'package:lms_student/root/root.dart';
+import 'package:lms_student/root/root_after_login.dart';
+import 'package:lms_student/root/root_before_login.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
@@ -21,7 +31,12 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.splashScreen,
         name: AppRoutes.splashScreen,
-        builder: (context, state) => SplashScreen(),
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => sl<SplashBloc>()..add(SplashStarted()),
+            child: const SplashScreen(),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.loginScreen,
@@ -46,6 +61,17 @@ class RouterGenerator {
           );
         },
       ),
+      GoRoute(
+        path: AppRoutes.settingsScreen,
+        name: AppRoutes.settingsScreen,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => sl<ProfileBloc>(),
+            child: const SettingsScreen(),
+          );
+        },
+      ),
+
       GoRoute(
         path: AppRoutes.forgotPasswordScreen,
         name: AppRoutes.forgotPasswordScreen,
@@ -83,25 +109,61 @@ class RouterGenerator {
         name: AppRoutes.homeScreen,
         builder: (context, state) {
           return BlocProvider(
-            create: (context) => sl<CoursesBloc>(),
-            child: HomeScreen(),
+            create: (context) => sl<HomeBloc>(),
+            child: HomeScreenBeforeLogin(),
           );
         },
       ),
+
       GoRoute(
-        path: AppRoutes.course_details_screen,
-        name: AppRoutes.course_details_screen,
+        path: AppRoutes.packageDetails,
+        name: AppRoutes.packageDetails,
         builder: (context, state) {
-          return CourseDetailsScreen();
+          final category = state.extra as List<String>?;
+          log('Route received slug: $category');
+          return PackageDetails(category: category!);
         },
       ),
+
       GoRoute(
-        path: AppRoutes.homeScreenAfterLogin,
-        name: AppRoutes.homeScreenAfterLogin,
+        path: AppRoutes.courseDetailsScreen,
+        name: AppRoutes.courseDetailsScreen,
+        builder: (context, state) {
+          final slug = state.extra as String?;
+          log('Route received slug: $slug');
+
+          return BlocProvider(
+            create: (context) => sl<CoursedetailsBloc>(),
+            child: CourseDetailsScreen(slug: slug),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.rootAfterLogin,
+        name: AppRoutes.rootAfterLogin,
         builder: (context, state) {
           return MultiBlocProvider(
-            providers: [BlocProvider(create: (context) => sl<CoursesBloc>())],
-            child: const Root(),
+            providers: [
+              BlocProvider(create: (context) => sl<HomeBloc>()),
+              BlocProvider(create: (context) => sl<ExploreBloc>()),
+              BlocProvider(create: (context) => sl<ProfileBloc>()),
+            ],
+            child: const RootAfterLogin(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.rootBeforeLogin,
+        name: AppRoutes.rootBeforeLogin,
+        builder: (context, state) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => sl<HomeBloc>()),
+              BlocProvider(create: (context) => sl<ExploreBloc>()),
+            ],
+            child: const RootBeforeLogin(),
           );
         },
       ),

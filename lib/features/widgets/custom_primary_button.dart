@@ -20,7 +20,7 @@ class CustomPrimaryButton extends StatelessWidget {
   color; // دي لو عايزين نعدل علي خاصية معينة ف الباتون مش واخدينها ك باراميتر او حتي نعدل الثيم كله بتاع الباتون
 
   const CustomPrimaryButton({
-    Key? key,
+    super.key,
     required this.text,
     this.prefixIcon,
     this.suffixIcon,
@@ -32,7 +32,7 @@ class CustomPrimaryButton extends StatelessWidget {
     this.textStyle,
     this.style,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class CustomPrimaryButton extends StatelessWidget {
               Flexible(
                 child: Text(
                   text,
-
+                  maxLines: 1,
                   style: (textStyle ?? context.textTheme.labelLarge)?.copyWith(
                     color: defaultColor,
                   ),
