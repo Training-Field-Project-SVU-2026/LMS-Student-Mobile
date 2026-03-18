@@ -6,7 +6,6 @@ import 'package:lms_student/features/explore/presentation/screens/widget/custom_
 import 'package:lms_student/features/explore/presentation/screens/widget/custom_package_caregory.dart';
 import 'package:lms_student/features/explore/presentation/screens/widget/custon_instractor_information.dart';
 import 'package:lms_student/features/widgets/course_card_horizontal.dart';
-import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 
 class PackageDetails extends StatefulWidget {
