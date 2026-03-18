@@ -2,28 +2,37 @@
 import 'package:lms_student/features/explore/data/model/packages_model.dart';
 
 class PackagesResponseModel {
-  bool success;
-  int status;
-  String message;
-  List<PackagesModel> data;
+  final bool success;
+  final int? status;
+  final String message;
+  final List<PackagesModel> data;
+  final int? totalPackages;
+  final int? totalPages;
+  final int? currentPage;
 
   PackagesResponseModel({
     required this.success,
-    required this.status,
+    this.status,
     required this.message,
     required this.data,
+    this.totalPackages,
+    this.totalPages,
+    this.currentPage,
   });
 
   factory PackagesResponseModel.fromJson(Map<String, dynamic> json) {
     return PackagesResponseModel(
-      success: json['success'] is bool ? json['success'] : false,
+      success: json['success'] ?? false,
       status: json['status'] ?? 0,
       message: json['message'] ?? '',
-      data: json['data'] != null
+      data: json['data'] != null && json['data']['packages'] != null
           ? List<PackagesModel>.from(
-              (json['data'] as List).map((x) => PackagesModel.fromJson(x)),
+              json['data']['packages'].map((x) => PackagesModel.fromJson(x)),
             )
           : [],
+      totalPackages: json['data'] != null ? json['data']['total_packages'] : null,
+      totalPages: json['data'] != null ? json['data']['total_pages'] : null,
+      currentPage: json['data'] != null ? json['data']['current_page'] : null,
     );
   }
 
@@ -32,7 +41,12 @@ class PackagesResponseModel {
       'success': success,
       'status': status,
       'message': message,
-      'data': data.map((x) => x.toJson()).toList(),
+      'data': {
+        'total_packages': totalPackages,
+        'total_pages': totalPages,
+        'current_page': currentPage,
+        'packages': data.map((x) => x.toJson()).toList(),
+      },
     };
   }
 }

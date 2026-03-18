@@ -182,7 +182,9 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                           ),
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        // TODO
+                      },
                     ),
                   ),
                   SizedBox(height: 40.h),
