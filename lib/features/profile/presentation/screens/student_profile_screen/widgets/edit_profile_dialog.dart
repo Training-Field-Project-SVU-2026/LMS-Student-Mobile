@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
 
@@ -132,11 +134,16 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 SizedBox(height: 32.h),
                 CustomPrimaryButton(
                   text: 'Save Changes',
-                  width: double.infinity,
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
-                      // TODO: Trigger update event
-                      context.pop();
+                      context.read<ProfileBloc>().add(
+                        UpdateProfileEvent(
+                          firstName: _firstNameController.text,
+                          lastName: _lastNameController.text,
+                          email: _emailController.text,
+                        ),
+                      );
+                      context.pop(); // نقفل الـ Dialog
                     }
                   },
                 ),

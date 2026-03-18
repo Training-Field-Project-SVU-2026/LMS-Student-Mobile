@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:lms_student/core/services/local/cache_helper.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
@@ -27,7 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
-  @override
+   @override
   Future<Either<String, LoginResponseModel>> login(
     LoginRequestModel request,
   ) async {
@@ -49,10 +51,20 @@ class AuthRepositoryImpl implements AuthRepository {
           value: loginResponse.refreshToken,
         );
         await cacheHelper.saveData(
-          key: ApiKey.user,
-          value: loginResponse.user.toJson().toString(),
+          key: ApiKey.isLoggedIn,
+          value: true,
         );
-        await cacheHelper.saveData(key: ApiKey.isLoggedIn, value: true);
+
+        final userJson = jsonEncode(loginResponse.user.toJson());
+        await cacheHelper.saveData(key: ApiKey.user, value: userJson);
+
+        await cacheHelper.saveData(key: ApiKey.firstName, value: loginResponse.user.firstName);
+        await cacheHelper.saveData(key: ApiKey.lastName, value: loginResponse.user.lastName);
+        await cacheHelper.saveData(key: ApiKey.email, value: loginResponse.user.email);
+        await cacheHelper.saveData(key: ApiKey.slug, value: loginResponse.user.slug);
+        await cacheHelper.saveData(key: ApiKey.image, value: loginResponse.user.image);
+        await cacheHelper.saveData(key: ApiKey.role, value: loginResponse.user.role);
+
         return Right(loginResponse);
       },
     );
