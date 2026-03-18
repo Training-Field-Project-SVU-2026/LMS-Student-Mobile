@@ -1,4 +1,4 @@
-import 'package:lms_student/features/auth/data/model/user_model.dart';
+import 'package:lms_student/core/common_logic/data/model/user_model.dart';
 
 class RegisterResponseModel {
   final String message;

@@ -3,18 +3,18 @@ class EndPoint {
   static String remoteUrl =
       "https://lmsbackend-production-c2ea.up.railway.app/api";
 
-  static String baseUrl = remoteUrl;
+  static String baseUrl = localUrl;
 
   // auth
   static String login = "/auth/login/"; // done
   static String register = "/auth/register/"; // done
-  static String changePassword = "/auth/change-password/";
-  static String logout = "/auth/logout/"; // 
+  static String changePassword = "/auth/change-password/"; // done
+  static String logout = "/auth/logout/"; // done
   static String forgotPassword = "/auth/forgot-password/"; // done
   static String resendOtp = "/auth/resend-otp/"; // done
   static String resetPassword = "/auth/reset-password/"; // done
   static String refreshToken = "/auth/token/refresh/";
-  static String verifyEmail = "/auth/verify-email/";
+  static String verifyEmail = "/auth/verify-email/"; // done
   static String checkToken = "/auth/check-token/";
 
   // courses
@@ -23,9 +23,10 @@ class EndPoint {
 
   // packages
   static String allPackages = "/packages/all/";
-  
-  // student profile 
-  static String updateProfile = "";
+
+  // student
+  static String studentProfile(String slug) => '/students/$slug/';
+  static String updateProfile(String slug) => '/students/$slug/';
 }
 
 class ApiKey {
@@ -44,4 +45,7 @@ class ApiKey {
   static String refreshToken = "refresh";
   static String user = "user";
   static String isLoggedIn = "is_logged_in";
+  static String oldPassword = "old_password";
+  static String newPassword = "new_password";
+  static String image = "image";
 }

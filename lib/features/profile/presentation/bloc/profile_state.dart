@@ -12,3 +12,13 @@ class ProfileError extends ProfileState {
   final String message;
   ProfileError({required this.message});
 }
+
+class ChangePasswordSuccess extends ProfileState {
+  final ChangePasswordModel changePasswordModel;
+  ChangePasswordSuccess({required this.changePasswordModel});
+}
+
+class GetProfileSuccess extends ProfileState {
+  final UserModel user;
+  GetProfileSuccess({required this.user});
+}
