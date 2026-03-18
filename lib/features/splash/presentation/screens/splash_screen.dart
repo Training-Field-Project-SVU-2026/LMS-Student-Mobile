@@ -214,6 +214,7 @@ class _SplashScreenState extends State<SplashScreen>
     if (state is SplashLoaded) {
       context.go(AppRoutes.rootAfterLogin);
     } else if (state is SplashError) {
+      context.go(AppRoutes.loginScreen);
       if (state.message != null && state.message!.isNotEmpty) {
         showDialog(
           context: context,

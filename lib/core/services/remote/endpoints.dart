@@ -3,7 +3,7 @@ class EndPoint {
   static String remoteUrl =
       "https://lmsbackend-production-c2ea.up.railway.app/api";
 
-  static String baseUrl = localUrl;
+  static String baseUrl = remoteUrl;
 
   // auth
   static String login = "/auth/login/"; // done
@@ -19,6 +19,7 @@ class EndPoint {
 
   // courses
   static String allCourses = "/courses/all/";
+  static String courseBySlug = "/courses/";
 
   // packages
   static String allPackages = "/packages/all/";

@@ -14,4 +14,5 @@ class AppRoutes {
   static const String settingsScreen = '/settings_screen';
   static const String studentProfileScreen = '/student_profile_screen';
   static const String changePasswordScreen = '/change_password_screen';
+  static const String packageDetails = '/package_details';
 }

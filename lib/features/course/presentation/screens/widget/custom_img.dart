@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,8 +9,7 @@ class CustomImg extends StatelessWidget {
   final double? width;
   final double? height;
   final double? radius;
-  const CustomImg({Key? key, this.imgUrl, this.width, this.height, this.radius})
-    : super(key: key);
+  const CustomImg({super.key, this.imgUrl, this.width, this.height, this.radius});
 
   @override
   Widget build(BuildContext context) {
