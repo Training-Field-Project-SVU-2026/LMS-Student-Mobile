@@ -10,11 +10,12 @@ class EndPoint {
   static String register = "/auth/register/"; // done
   static String changePassword = "/auth/change-password/";
   static String logout = "/auth/logout/"; //
+
   static String forgotPassword = "/auth/forgot-password/"; // done
   static String resendOtp = "/auth/resend-otp/"; // done
   static String resetPassword = "/auth/reset-password/"; // done
   static String refreshToken = "/auth/token/refresh/";
-  static String verifyEmail = "/auth/verify-email/";
+  static String verifyEmail = "/auth/verify-email/"; // done
   static String checkToken = "/auth/check-token/";
 
   // courses
@@ -25,8 +26,9 @@ class EndPoint {
   static String allPackages = "/packages/all/";
   static String packagesBySlug = "/packages/";
 
-  // student profile
-  static String updateProfile = "";
+  // student
+  static String studentProfile(String slug) => '/students/$slug/';
+  static String updateProfile(String slug) => '/students/$slug/';
 }
 
 class ApiKey {
@@ -45,4 +47,7 @@ class ApiKey {
   static String refreshToken = "refresh";
   static String user = "user";
   static String isLoggedIn = "is_logged_in";
+  static String oldPassword = "old_password";
+  static String newPassword = "new_password";
+  static String image = "image";
 }

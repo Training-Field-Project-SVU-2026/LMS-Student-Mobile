@@ -78,8 +78,8 @@ class RouterGenerator {
         path: AppRoutes.studentProfileScreen,
         name: AppRoutes.studentProfileScreen,
         builder: (context, state) {
-          return BlocProvider.value(
-            value: sl<ProfileBloc>(),
+          return BlocProvider(
+            create: (context) => sl<ProfileBloc>()..add(GetProfileEvent()),
             child: const StudentProfileScreen(),
           );
         },
@@ -88,7 +88,10 @@ class RouterGenerator {
         path: AppRoutes.changePasswordScreen,
         name: AppRoutes.changePasswordScreen,
         builder: (context, state) {
-          return const ChangePasswordScreen();
+          return BlocProvider(
+            create: (context) => sl<ProfileBloc>(),
+            child: const ChangePasswordScreen(),
+          );
         },
       ),
 
