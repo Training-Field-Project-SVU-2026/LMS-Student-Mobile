@@ -58,13 +58,10 @@ class AuthRepositoryImpl implements AuthRepository {
         final userJson = jsonEncode(loginResponse.user.toJson());
         await cacheHelper.saveData(key: ApiKey.user, value: userJson);
 
-        await cacheHelper.saveData(key: ApiKey.firstName, value: loginResponse.user.firstName);
-        await cacheHelper.saveData(key: ApiKey.lastName, value: loginResponse.user.lastName);
-        await cacheHelper.saveData(key: ApiKey.email, value: loginResponse.user.email);
-        await cacheHelper.saveData(key: ApiKey.slug, value: loginResponse.user.slug);
-        await cacheHelper.saveData(key: ApiKey.image, value: loginResponse.user.image);
-        await cacheHelper.saveData(key: ApiKey.role, value: loginResponse.user.role);
-
+        await cacheHelper.saveData(
+        key: ApiKey.slug,
+        value: loginResponse.user.slug,
+      );
         return Right(loginResponse);
       },
     );

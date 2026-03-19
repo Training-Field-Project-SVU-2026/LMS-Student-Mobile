@@ -73,7 +73,7 @@ class SettingsBody extends StatelessWidget {
 
               BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, state) {
-                  final isLoading = state is ProfileLoading;
+                  final isLoading = state is LogoutLoading;
 
                   return Center(
                     child: TextButton.icon(

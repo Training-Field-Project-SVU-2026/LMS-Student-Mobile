@@ -33,9 +33,10 @@ class ProfileInfoItem extends StatelessWidget {
                   letterSpacing: 1.2,
                 ),
               ),
+              SizedBox(width: 16.w),
               Expanded(
                 child: Text(
-                  value,
+                  value.replaceAll('@', '@\u200B').replaceAll('.', '.\u200B'),
                   textAlign: TextAlign.right,
                   style: context.textTheme.bodyLarge?.copyWith(
                     color: context.colorScheme.onSurface,

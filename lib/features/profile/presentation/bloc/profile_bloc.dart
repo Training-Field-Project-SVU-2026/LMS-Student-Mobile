@@ -24,7 +24,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<void> _onLogout(LogoutEvent event, Emitter<ProfileState> emit) async {
-    emit(ProfileLoading());
+    emit(LogoutLoading());
 
     final refreshToken =
         cacheHelper.getData(key: ApiKey.refreshToken) as String?;
@@ -66,36 +66,35 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     emit(ProfileLoading());
 
-    // 1. Try to get data from cache first
     final userJson = cacheHelper.getData(key: ApiKey.user) as String?;
+
     if (userJson != null && userJson.isNotEmpty) {
       try {
         final userData = jsonDecode(userJson) as Map<String, dynamic>;
         final user = UserModel.fromJson(userData);
         emit(GetProfileSuccess(user: user));
-        // Optionally we could still fetch from API to refresh,
-        // but if the API returns 403 we should probably just stick to cache.
-        log(userJson);
         return;
       } catch (e) {
-        // If decoding fails, continue to API call
+        // complete if an error occurs
       }
     }
 
-    // 2. If no cache or if we want to refresh, call API
     final slug = cacheHelper.getData(key: ApiKey.slug) as String?;
-
     if (slug == null || slug.isEmpty) {
       emit(ProfileError(message: 'User slug not found'));
       return;
     }
 
+    log('Token: ${cacheHelper.getData(key: ApiKey.accessToken)}');
+    log('Slug from cache: ${cacheHelper.getData(key: ApiKey.slug)}');
+    log('Email from cache: ${cacheHelper.getData(key: ApiKey.email)}');
     final result = await profileRepository.getProfile(slug);
 
-    result.fold(
-      (error) => emit(ProfileError(message: error)),
-      (user) => emit(GetProfileSuccess(user: user)),
-    );
+    result.fold((error) => emit(ProfileError(message: error)), (user) async {
+      final updatedUserJson = jsonEncode(user.toJson());
+      await cacheHelper.saveData(key: ApiKey.user, value: updatedUserJson);
+      emit(GetProfileSuccess(user: user));
+    });
   }
 
   Future<void> _onUpdateProfile(
@@ -110,6 +109,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       return;
     }
 
+    log('Token: ${cacheHelper.getData(key: ApiKey.accessToken)}');
+    log('Slug from cache: ${cacheHelper.getData(key: ApiKey.slug)}');
+    log('Email from cache: ${cacheHelper.getData(key: ApiKey.email)}');
+
     final result = await profileRepository.updateProfile(
       slug: slug,
       firstName: event.firstName,
@@ -118,13 +121,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
 
     result.fold((error) => emit(ProfileError(message: error)), (user) async {
-      // تحديث الـ Cache
       await cacheHelper.saveData(key: ApiKey.firstName, value: user.firstName);
       await cacheHelper.saveData(key: ApiKey.lastName, value: user.lastName);
       await cacheHelper.saveData(key: ApiKey.email, value: user.email);
       await cacheHelper.saveData(key: ApiKey.image, value: user.image);
 
-      // تحديث الـ JSON
       final userJson = jsonEncode(user.toJson());
       await cacheHelper.saveData(key: ApiKey.user, value: userJson);
 

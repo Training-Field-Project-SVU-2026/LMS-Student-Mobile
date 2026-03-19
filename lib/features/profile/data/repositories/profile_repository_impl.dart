@@ -66,7 +66,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     required String lastName,
     required String email,
   }) async {
-    final result = await apiConsumer.put<Map<String, dynamic>>(
+    final result = await apiConsumer.patch<Map<String, dynamic>>(
       EndPoint.updateProfile(slug),
       data: {
         ApiKey.firstName: firstName,
