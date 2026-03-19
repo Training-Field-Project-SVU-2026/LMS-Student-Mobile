@@ -62,8 +62,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                     children: [
                       Text(
                         context.tr('welcome_back_comma'),
-                        style: context.textTheme.bodyMedium!.copyWith(
-                          fontSize: 12.sp,
+                        style: context.textTheme.bodySmall!.copyWith(
                           color: context.colorScheme.onSurface.withValues(
                             alpha: 0.6,
                           ),
@@ -72,8 +71,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
 
                       Text(
                         context.tr('user_mayoora'),
-                        style: context.textTheme.bodyMedium!.copyWith(
-                          fontSize: 20.sp,
+                        style: context.textTheme.titleLarge!.copyWith(
                           color: context.colorScheme.onSurface,
                         ),
                       ),
@@ -114,8 +112,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
               SizedBox(height: 25.h),
               Text(
                 context.tr('my_courses'),
-                style: context.textTheme.headlineLarge!.copyWith(
-                  fontSize: 22.sp,
+                style: context.textTheme.titleLarge!.copyWith(
                   color: context.colorScheme.onSurface,
                 ),
               ),
@@ -144,13 +141,13 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                 children: [
                   Text(
                     context.tr('featured_courses'),
-                    style: context.textTheme.headlineMedium!.copyWith(
+                    style: context.textTheme.titleLarge!.copyWith(
                       color: context.colorScheme.onSurface,
                     ),
                   ),
                   Text(
                     context.tr('view_all'),
-                    style: context.textTheme.labelMedium!.copyWith(
+                    style: context.textTheme.labelLarge!.copyWith(
                       color: context.colorScheme.primary,
                     ),
                   ),
@@ -184,24 +181,25 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: state.courses.map((course) {
-                        return InkWell(
-                          onTap: () {
-                            log('Course slug: ${course.slug}');
-                            context.push(
-                              AppRoutes.courseDetailsScreen,
-                              extra: course.slug,
-                            );
-                          },
-                          child: CourseCardVertical(
-                            //Todo ::Handel nullable
-                            title: course.title,
-                            price: course.price,
-                            imagePath: course.image,
-                            rating: course.avgRating,
-                            totalStudents: course.studentsCount,
-                            width: 256,
-                            description: course.description,
-                            instructorName: course.instructorName,
+                        return Padding(
+                          padding: EdgeInsets.only(right: 16.w),
+                          child: InkWell(
+                            onTap: () {
+                              log('Course slug: ${course.slug}');
+                              context.push(
+                                AppRoutes.courseDetailsScreen,
+                                extra: course.slug,
+                              );
+                            },
+                            child: CourseCardVertical(
+                              title: course.title,
+                              price: course.price,
+                              imagePath: course.image,
+                              rating: course.avgRating,
+                              totalStudents: course.studentsCount,
+                              description: course.description,
+                              instructorName: course.instructorName,
+                            ),
                           ),
                         );
                       }).toList(),

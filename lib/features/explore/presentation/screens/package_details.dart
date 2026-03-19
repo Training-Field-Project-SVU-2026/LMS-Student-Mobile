@@ -67,22 +67,21 @@ class _PackageDetailsState extends State<PackageDetails> {
                 SizedBox(height: 15.h),
                 Text(
                   "About this package",
-                  style: context.textTheme.displaySmall!.copyWith(
+                  style: context.textTheme.titleLarge!.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
                 ),
-                SizedBox(height: 10.h),
+                SizedBox(height: 8.h),
                 Text(
                   '''A comprehensive package covering Frontend, Backend, and DevOps. Master the modern web stack with curated content designed to take you from fundamentals to professional deployment strategies.''',
-                  style: context.textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeight.w400,
+                  style: context.textTheme.bodyMedium!.copyWith(
                     color: context.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
                 SizedBox(height: 10.h),
                 Text(
                   "Included Courses",
-                  style: context.textTheme.displaySmall!.copyWith(
+                  style: context.textTheme.titleLarge!.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
                 ),
@@ -127,7 +126,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                 CustomPrimaryButton(
                   text: "Enroll Now",
                   onTap: () {},
-                  width: 240,
+                  width: 200,
                 ),
               ],
             ),

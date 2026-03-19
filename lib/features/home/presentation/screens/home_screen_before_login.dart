@@ -140,7 +140,7 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                           maxLines: 3,
 
                           overflow: TextOverflow.ellipsis,
-                          style: context.textTheme.labelSmall!.copyWith(
+                          style: context.textTheme.bodyMedium!.copyWith(
                             color: context.colorScheme.surface,
                             fontWeight: FontWeight.normal,
                           ),
@@ -203,7 +203,7 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
           SizedBox(height: 30.h),
 
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
               children: [
                 Row(
@@ -211,13 +211,13 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                   children: [
                     Text(
                       context.tr('featured_courses'),
-                      style: context.textTheme.headlineMedium!.copyWith(
+                      style: context.textTheme.titleLarge!.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
                     ),
                     Text(
                       context.tr('view_all'),
-                      style: context.textTheme.labelMedium!.copyWith(
+                      style: context.textTheme.labelLarge!.copyWith(
                         color: context.colorScheme.primary,
                       ),
                     ),
@@ -246,23 +246,26 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: state.courses.map((course) {
-                              return InkWell(
-                                onTap: () {
-                                  context.push(
-                                    AppRoutes.courseDetailsScreen,
-                                    extra: course.slug,
-                                  );
-                                },
-                                child: CourseCardVertical(
-                                  //Todo ::Handel nullable
-                                  title: course.title,
-                                  price: course.price,
-                                  imagePath: course.image,
-                                  rating: course.avgRating,
-                                  totalStudents: course.studentsCount,
-                                  width: 256,
-                                  description: course.description,
-                                  instructorName: course.instructorName,
+                              return Padding(
+                                padding: EdgeInsets.only(right: 16.w),
+                                child: InkWell(
+                                  onTap: () {
+                                    context.push(
+                                      AppRoutes.courseDetailsScreen,
+                                      extra: course.slug,
+                                    );
+                                  },
+                                  child: CourseCardVertical(
+                                    //Todo ::Handel nullable
+                                    title: course.title,
+                                    price: course.price,
+                                    imagePath: course.image,
+                                    rating: course.avgRating,
+                                    totalStudents: course.studentsCount,
+                                    width: 256,
+                                    description: course.description,
+                                    instructorName: course.instructorName,
+                                  ),
                                 ),
                               );
                             }).toList(),
@@ -295,7 +298,7 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                 SizedBox(height: 40.h),
                 CustomOutlinedButton(
                   text: context.tr('join_us_today'),
-                  textStyle: context.textTheme.labelSmall!.copyWith(
+                  textStyle: context.textTheme.labelLarge!.copyWith(
                     color: context.colorScheme.primary,
                   ),
                   style: OutlinedButton.styleFrom(
@@ -319,14 +322,14 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                 SizedBox(height: 35.h),
                 Text(
                   context.tr('ready_to_start_journey'),
-                  style: context.textTheme.displayMedium!.copyWith(
+                  style: context.textTheme.headlineMedium!.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
                 ),
                 SizedBox(height: 35.h),
                 Text(
                   context.tr('join_10k_learners'),
-                  style: context.textTheme.labelMedium!.copyWith(
+                  style: context.textTheme.bodyLarge!.copyWith(
                     color: context.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
@@ -349,9 +352,7 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                 SizedBox(height: 15.h),
                 Text(
                   context.tr('no_credit_card_required'),
-                  style: context.textTheme.labelSmall!.copyWith(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
+                  style: context.textTheme.bodySmall!.copyWith(
                     color: context.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
@@ -411,8 +412,7 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
               SizedBox(height: 16.h),
               Text(
                 context.tr('all_rights_reserved'),
-                style: context.textTheme.labelSmall!.copyWith(
-                  fontSize: 10.sp,
+                style: context.textTheme.bodySmall!.copyWith(
                   color: context.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),

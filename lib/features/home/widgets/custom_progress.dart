@@ -14,8 +14,7 @@ class _CustomProgressState extends State<CustomProgress> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 362.w,
-      height: 260.5.h,
+      width: double.infinity,
       decoration: BoxDecoration(
         color: context.colorScheme.primary,
         borderRadius: BorderRadius.circular(16.r),
