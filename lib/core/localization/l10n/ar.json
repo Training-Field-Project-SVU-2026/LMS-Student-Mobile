@@ -98,5 +98,10 @@
   "no_token_found": "لم يتم العثور على رمز",
   "session_expired": "انتهت الجلسة",
   "account_inactive": "حسابك غير نشط.",
-  "account_unverified": "يرجى تأكيد عنوان بريدك الإلكتروني."
+  "account_unverified": "يرجى تأكيد عنوان بريدك الإلكتروني.",
+  "view_course": "جميع الدورات ",
+  "view_course_notFound": "لا توجد دورات",
+  "view_course_nothing_added":  "لم تتم اضافه دورات بعد ",
+  "about_this_course":  "تفاصيل الدوره",
+  "instructor": " المعلم "
 }

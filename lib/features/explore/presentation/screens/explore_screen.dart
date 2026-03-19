@@ -163,10 +163,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ),
                   ],
                 ),
-                Text(
-                  context.tr('see_all'),
-                  style: context.textTheme.titleSmall!.copyWith(
-                    color: context.colorScheme.primary,
+                InkWell(
+                  onTap: () {
+                    context.push(AppRoutes.viewAllCourse);
+                  },
+                  child: Text(
+                    context.tr('view_all'),
+                    style: context.textTheme.labelMedium!.copyWith(
+                      color: context.colorScheme.primary,
+                    ),
                   ),
                 ),
               ],

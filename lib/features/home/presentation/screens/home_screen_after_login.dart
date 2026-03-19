@@ -148,10 +148,15 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                       color: context.colorScheme.onSurface,
                     ),
                   ),
-                  Text(
-                    context.tr('view_all'),
-                    style: context.textTheme.labelMedium!.copyWith(
-                      color: context.colorScheme.primary,
+                  InkWell(
+                    onTap: () {
+                      context.push(AppRoutes.viewAllCourse);
+                    },
+                    child: Text(
+                      context.tr('view_all'),
+                      style: context.textTheme.labelMedium!.copyWith(
+                        color: context.colorScheme.primary,
+                      ),
                     ),
                   ),
                 ],
