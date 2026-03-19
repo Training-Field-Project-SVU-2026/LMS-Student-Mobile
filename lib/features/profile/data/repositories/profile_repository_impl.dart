@@ -1,8 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:lms_student/core/common_logic/data/model/user_model.dart';
-
-import 'package:dio/dio.dart';
-import 'package:lms_student/core/errors/handle_dio_exception.dart';
 import 'package:lms_student/core/services/local/cache_helper.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
@@ -69,7 +66,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     required String lastName,
     required String email,
   }) async {
-    final result = await apiConsumer.put<Map<String, dynamic>>(
+    final result = await apiConsumer.patch<Map<String, dynamic>>(
       EndPoint.updateProfile(slug),
       data: {
         ApiKey.firstName: firstName,

@@ -15,8 +15,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    //  نجيب البيانات أول ما الصفحة تفتح
-    //  الكومنت الي فوق ai عشان متتعبش نفسك 
     context.read<ProfileBloc>().add(GetProfileEvent());
   }
 

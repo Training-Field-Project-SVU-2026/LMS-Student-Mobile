@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,33 +33,19 @@ class StudentProfileBody extends StatelessWidget {
                           height: 120.r,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: context.colorScheme.outline.withValues(
-                              alpha: 0.2,
+                            color: context.colorScheme.primary.withValues(
+                              alpha: 0.1,
                             ),
                           ),
-                          child: ClipOval(
-                            child: user.image != null
-                                ? CachedNetworkImage(
-                                    imageUrl: user.image!,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                    errorWidget: (context, url, error) => Icon(
-                                      Icons.person,
-                                      size: 60.r,
-                                      color: context
-                                          .colorScheme
-                                          .onSurfaceVariant
-                                          .withValues(alpha: 0.5),
-                                    ),
-                                  )
-                                : Icon(
-                                    Icons.person,
-                                    size: 60.r,
-                                    color: context.colorScheme.onSurfaceVariant
-                                        .withValues(alpha: 0.5),
-                                  ),
+                          child: Center(
+                            child: Text(
+                              '${user.firstName.isNotEmpty ? user.firstName[0] : ''}${user.lastName.isNotEmpty ? user.lastName[0] : ''}'
+                                  .toUpperCase(),
+                              style: context.textTheme.displayMedium?.copyWith(
+                                color: context.colorScheme.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(height: 16.h),
