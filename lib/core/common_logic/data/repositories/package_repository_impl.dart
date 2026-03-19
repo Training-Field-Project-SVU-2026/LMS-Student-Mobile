@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:lms_student/core/common_logic/data/model/course/response_package_byslug_model.dart';
 import 'package:lms_student/core/common_logic/domain/repositories/package_repository.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
@@ -21,9 +22,11 @@ class PackageRepositoryImpl implements PackageRepository {
   }
 
   @override
-  Future<Either<String, PackagesModel>> getPackageBySlug(String slug) {
-    // Implementation for fetching a package by its slug
-    throw UnimplementedError();
+  Future<Either<String, PackagesModel>> getPackageBySlug(String slug) async {
+    return await apiConsumer.get<PackagesModel>(
+      "${EndPoint.packagesBySlug}$slug/",
+      fromJson: (json) => PackageBySlugResponseModel.fromJson(json).data,
+    );
   }
 
   @override
@@ -32,4 +35,3 @@ class PackageRepositoryImpl implements PackageRepository {
     throw UnimplementedError();
   }
 }
-

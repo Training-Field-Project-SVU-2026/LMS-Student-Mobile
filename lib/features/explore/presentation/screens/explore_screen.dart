@@ -124,7 +124,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 );
                                 context.push(
                                   AppRoutes.packageDetails,
-                                  extra: state.packages[index].categories,
+                                  extra: state.packages[index].slug,
                                 );
                               },
                               child: CustomCategory(

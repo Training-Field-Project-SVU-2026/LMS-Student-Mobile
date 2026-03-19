@@ -30,9 +30,9 @@ class PackagesModel {
       description: json['description']?.toString() ?? '',
       price: json['price'] != null
           ? (json['price'] is num
-              ? (json['price'] as num).toDouble()
-              : double.tryParse(json['price'].toString()) ?? 0.0)
-          : 0.0,
+                ? (json['price'] as num).toDouble()
+                : double.tryParse(json['price'].toString()) ?? 500)
+          : 500,
       createdAt: json['created_at']?.toString() ?? '',
       instructorName: json['instructor_name']?.toString() ?? '',
       courses: json['courses'] != null && json['courses'] is List
