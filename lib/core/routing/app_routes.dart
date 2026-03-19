@@ -15,4 +15,5 @@ class AppRoutes {
   static const String studentProfileScreen = '/student_profile_screen';
   static const String changePasswordScreen = '/change_password_screen';
   static const String packageDetails = '/package_details';
+  static const String viewAllCourse = '/view_all_course';
 }

@@ -4,10 +4,10 @@ class UserModel {
   final String firstName;
   final String lastName;
   final String email;
-  final String? role;          
+  final String? role;
   final String slug;
-  final bool? isActive;         
-  final bool? isVerified;       
+  final bool? isActive;
+  final bool? isVerified;
   final String? image;
 
   UserModel({

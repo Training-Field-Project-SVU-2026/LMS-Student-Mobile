@@ -4,16 +4,10 @@ class ChangePasswordModel {
   final String oldPassword;
   final String newPassword;
 
-  ChangePasswordModel({
-    required this.oldPassword,
-    required this.newPassword,
-  });
+  ChangePasswordModel({required this.oldPassword, required this.newPassword});
 
   Map<String, dynamic> toJson() {
-    return {
-      ApiKey.oldPassword: oldPassword,
-      ApiKey.newPassword: newPassword,
-    };
+    return {ApiKey.oldPassword: oldPassword, ApiKey.newPassword: newPassword};
   }
 
   factory ChangePasswordModel.fromJson(Map<String, dynamic> json) {

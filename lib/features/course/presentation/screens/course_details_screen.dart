@@ -116,7 +116,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                             ),
                             SizedBox(height: 10.h),
                             Text(
-                              "About this course",
+                              context.tr('about_this_course'),
                               style: context.textTheme.titleLarge!.copyWith(
                                 color: context.colorScheme.onSurface.withValues(
                                   alpha: 0.5,
@@ -132,7 +132,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                             ),
                             SizedBox(height: 15.h),
                             Text(
-                              "Instructor",
+                              context.tr('instructor'),
                               style: context.textTheme.titleLarge!.copyWith(
                                 color: context.colorScheme.onSurface.withValues(
                                   alpha: 0.5,

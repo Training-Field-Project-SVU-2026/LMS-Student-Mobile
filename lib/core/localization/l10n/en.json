@@ -98,5 +98,12 @@
   "no_token_found": "No token found",
   "session_expired": "Session expired",
   "account_inactive": "Your account is not active.",
-  "account_unverified": "Please verify your email address."
+  "account_unverified": "Please verify your email address.",
+  "view_course": "All Course",
+  "view_course_notFound": "There Are No Courses",
+  "view_course_nothing_added":  "No Courses have been added yet",
+  "about_this_course":  "About this course",
+    "instructor": "Instructor"
+
+
 }

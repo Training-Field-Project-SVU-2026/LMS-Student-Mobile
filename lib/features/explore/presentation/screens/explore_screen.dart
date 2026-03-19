@@ -47,7 +47,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     hintText: context.tr('search_courses_instructors'),
                   ),
                 ),
-                SizedBox(width: 12.w),
+                const Spacer(),
                 Container(
                   width: 42.w,
                   height: 42.h,
@@ -125,12 +125,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 );
                                 context.push(
                                   AppRoutes.packageDetails,
-                                  extra: state.packages[index].categories,
+                                  extra: state.packages[index].slug,
                                 );
                               },
                               child: CustomCategory(
                                 title: state.packages[index].title,
                                 description: state.packages[index].description,
+                                // TODO Make it dynamic
                                 courseslessons: 12,
                                 coursehours: 18,
                                 category: state.packages[index].categories,
@@ -164,10 +165,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ),
                   ],
                 ),
-                Text(
-                  context.tr('see_all'),
-                  style: context.textTheme.labelLarge!.copyWith(
-                    color: context.colorScheme.primary,
+                InkWell(
+                  onTap: () {
+                    context.push(AppRoutes.viewAllCourse);
+                  },
+                  child: Text(
+                    context.tr('view_all'),
+                    style: context.textTheme.labelLarge!.copyWith(
+                      color: context.colorScheme.primary,
+                    ),
                   ),
                 ),
               ],

@@ -17,6 +17,7 @@ import 'package:lms_student/core/common_logic/domain/repositories/course_reposit
 import 'package:lms_student/features/home/data/repositories/home_repository_impl.dart';
 import 'package:lms_student/features/home/domain/repositories/home_repository.dart';
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
+import 'package:lms_student/features/package_details/presentation/bloc/package_details_bloc.dart';
 import 'package:lms_student/features/splash/data/repositories/splash_repository_impl.dart';
 import 'package:lms_student/features/splash/domain/splash_repository.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
@@ -93,5 +94,10 @@ Future<void> setupServiceLocator() async {
   // register factory for course
   sl.registerFactory(
     () => CoursedetailsBloc(courseRepository: sl<CourseRepository>()),
+  );
+
+  // إضافة PackageDetailsBloc
+  sl.registerFactory(
+    () => PackageDetailsBloc(packageRepository: sl<PackageRepository>()),
   );
 }

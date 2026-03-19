@@ -8,8 +8,9 @@ class EndPoint {
   // auth
   static String login = "/auth/login/"; // done
   static String register = "/auth/register/"; // done
-  static String changePassword = "/auth/change-password/"; // done
-  static String logout = "/auth/logout/"; // done
+  static String changePassword = "/auth/change-password/";
+  static String logout = "/auth/logout/"; //
+
   static String forgotPassword = "/auth/forgot-password/"; // done
   static String resendOtp = "/auth/resend-otp/"; // done
   static String resetPassword = "/auth/reset-password/"; // done
@@ -23,6 +24,7 @@ class EndPoint {
 
   // packages
   static String allPackages = "/packages/all/";
+  static String packagesBySlug = "/packages/";
 
   // student
   static String studentProfile(String slug) => '/students/$slug/';

@@ -24,11 +24,13 @@ class CourseRepositoryImpl implements CourseRepository {
   }
 
   @override
-  Future<Either<String, ResponseCourseBySlugModel>> getCourseBySlug(String slug) async {
-      return await apiConsumer.get<ResponseCourseBySlugModel>(
-        '${EndPoint.courseBySlug}$slug/',
-        fromJson: (json) => ResponseCourseBySlugModel.fromJson(json)
-      );
+  Future<Either<String, ResponseCourseBySlugModel>> getCourseBySlug(
+    String slug,
+  ) async {
+    return await apiConsumer.get<ResponseCourseBySlugModel>(
+      '${EndPoint.courseBySlug}$slug/',
+      fromJson: (json) => ResponseCourseBySlugModel.fromJson(json),
+    );
   }
 
   @override

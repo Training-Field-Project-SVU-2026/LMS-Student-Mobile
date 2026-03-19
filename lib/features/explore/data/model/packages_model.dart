@@ -36,16 +36,23 @@ class PackagesModel {
       price: double.tryParse(json['price']?.toString() ?? '0.0') ?? 0.0,
       createdAt: json['created_at']?.toString() ?? '',
       coursesCount: int.tryParse(json['courses_count']?.toString() ?? '0') ?? 0,
-      avgRating: double.tryParse(json['avg_rating']?.toString() ?? '0.0') ?? 0.0,
+      avgRating:
+          double.tryParse(json['avg_rating']?.toString() ?? '0.0') ?? 0.0,
       categories: json['categories'] != null && json['categories'] is List
-          ? List<String>.from((json['categories'] as List).map((e) => e.toString()))
+          ? List<String>.from(
+              (json['categories'] as List).map((e) => e.toString()),
+            )
           : [],
       courseSlugs: json['course_slugs'] != null && json['course_slugs'] is List
-          ? List<String>.from((json['course_slugs'] as List).map((e) => e.toString()))
+          ? List<String>.from(
+              (json['course_slugs'] as List).map((e) => e.toString()),
+            )
           : [],
       courses: json['courses'] != null && json['courses'] is List
           ? List<CourseModel>.from(
-              (json['courses'] as List).map((x) => CourseModel.fromJson(x as Map<String, dynamic>)),
+              (json['courses'] as List).map(
+                (x) => CourseModel.fromJson(x as Map<String, dynamic>),
+              ),
             )
           : null,
     );
