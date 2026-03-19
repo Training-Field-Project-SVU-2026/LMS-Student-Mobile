@@ -25,14 +25,34 @@ class LoginBody extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(context.tr('login_success')),
-              backgroundColor: Colors.green,
+              backgroundColor: context.colorScheme.secondary,
             ),
           );
           context.go(AppRoutes.rootAfterLogin);
         } else if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
-          );
+          final errorMsg = state.message.toLowerCase();
+          if (errorMsg.contains('verify') || errorMsg.contains('verified')) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Please verify your email. Click "Resend OTP" to get a new code.',
+                ),
+                backgroundColor: context.colorScheme.primary,
+                duration: const Duration(seconds: 4),
+              ),
+            );
+            context.pushNamed(
+              AppRoutes.verifyOtpScreen,
+              extra: {'email': authBloc.emailController.text},
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: context.colorScheme.error,
+              ),
+            );
+          }
         }
       },
       child: SafeArea(
