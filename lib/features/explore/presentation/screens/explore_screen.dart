@@ -38,13 +38,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
             SizedBox(height: 10.h),
             Row(
               children: [
-                CustomTextFormField(
-                  width: 315,
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: context.colorScheme.onSurface,
+                Expanded(
+                  child: CustomTextFormField(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: context.colorScheme.onSurface,
+                    ),
+                    hintText: context.tr('search_courses_instructors'),
                   ),
-                  hintText: context.tr('search_courses_instructors'),
                 ),
                 const Spacer(),
                 Container(
@@ -73,7 +74,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     SizedBox(width: 5.w),
                     Text(
                       context.tr('learning_tracks'),
-                      style: context.textTheme.headlineLarge!.copyWith(
+                      style: context.textTheme.titleLarge!.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
                     ),
@@ -81,7 +82,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 ),
                 Text(
                   context.tr('see_all'),
-                  style: context.textTheme.titleSmall!.copyWith(
+                  style: context.textTheme.labelLarge!.copyWith(
                     color: context.colorScheme.primary,
                   ),
                 ),
@@ -128,6 +129,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 description: state.packages[index].description,
                                 courses: state.packages[index].coursesCount,
                                 price: state.packages[index].price,
+
                                 category: state.packages[index].categories,
                                 slug: state.packages[index].slug,
                               ),
@@ -154,7 +156,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     SizedBox(width: 5.w),
                     Text(
                       context.tr('many_courses'),
-                      style: context.textTheme.headlineLarge!.copyWith(
+                      style: context.textTheme.titleLarge!.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
                     ),
@@ -166,7 +168,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   },
                   child: Text(
                     context.tr('view_all'),
-                    style: context.textTheme.labelMedium!.copyWith(
+                    style: context.textTheme.labelLarge!.copyWith(
                       color: context.colorScheme.primary,
                     ),
                   ),
@@ -189,42 +191,35 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   );
                 }
                 if (state.courseStatus == ExploreStatus.success) {
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: state.courses.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      childAspectRatio: 0.70,
-                    ),
-                    itemBuilder: (context, index) {
-                      final course = state.courses[index];
-
-                      return IntrinsicHeight(
-                        child: InkWell(
-                          onTap: () {
-                            log(
-                              " nammmmmmmmmmmmmmmme ${course.instructorName}",
-                            );
-                            context.push(
-                              AppRoutes.courseDetailsScreen,
-                              extra: course.slug,
-                            );
-                          },
-                          child: CourseCardVertical(
-                            title: course.title,
-                            price: course.price,
-                            imagePath: course.image,
-                            rating: course.avgRating,
-                            totalStudents: course.studentsCount,
-                            width: 256,
-                            description: course.description,
-                            instructorName: course.instructorName,
-                            // lessonsCount: 12,
-                          ),
-                        ),
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                      final cardWidth = (constraints.maxWidth - 8.w) / 2;
+                      return Wrap(
+                        spacing: 8.w,
+                        runSpacing: 16.h,
+                        children: state.courses.map((course) {
+                          return InkWell(
+                            onTap: () {
+                              log(
+                                " nammmmmmmmmmmmmmmme ${course.instructorName}",
+                              );
+                              context.push(
+                                AppRoutes.courseDetailsScreen,
+                                extra: course.slug,
+                              );
+                            },
+                            child: CourseCardVertical(
+                              width: cardWidth / ScreenUtil().scaleWidth,
+                              title: course.title,
+                              price: course.price,
+                              imagePath: course.image,
+                              rating: course.avgRating,
+                              totalStudents: course.studentsCount,
+                              description: course.description,
+                              instructorName: course.instructorName,
+                            ),
+                          );
+                        }).toList(),
                       );
                     },
                   );

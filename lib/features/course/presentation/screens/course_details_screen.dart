@@ -93,9 +93,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                 SizedBox(width: 10.w),
                                 Text(
                                   "${course.avgRating}",
-                                  style: context.textTheme.displaySmall!
+                                  style: context.textTheme.headlineSmall!
                                       .copyWith(
-                                        // fontSize: 28.sp,
                                         color: context.colorScheme.onSurface,
                                       ),
                                 ),
@@ -104,17 +103,14 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
 
                             Text(
                               course.title,
-                              style: context.textTheme.displayLarge!.copyWith(
-                                // fontWeight: FontWeight.bold,
-                                fontSize: 40.sp,
+                              style: context.textTheme.displayMedium!.copyWith(
                                 color: context.colorScheme.primary,
                               ),
                             ),
                             SizedBox(height: 10.h),
                             Text(
                               "\$${course.price.toInt()}",
-                              style: context.textTheme.displayMedium!.copyWith(
-                                // fontSize: 28.sp,
+                              style: context.textTheme.headlineLarge!.copyWith(
                                 color: context.colorScheme.onSurface.withValues(
                                   alpha: 0.5,
                                 ),
@@ -123,8 +119,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                             SizedBox(height: 10.h),
                             Text(
                               context.tr('about_this_course'),
-                              style: context.textTheme.displayMedium!.copyWith(
-                                fontSize: 28.sp,
+                              style: context.textTheme.titleLarge!.copyWith(
                                 color: context.colorScheme.onSurface.withValues(
                                   alpha: 0.5,
                                 ),
@@ -133,15 +128,14 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                             SizedBox(height: 15.h),
                             Text(
                               course.description,
-                              style: context.textTheme.titleLarge!.copyWith(
+                              style: context.textTheme.bodyMedium!.copyWith(
                                 color: context.colorScheme.onSurface,
                               ),
                             ),
                             SizedBox(height: 15.h),
                             Text(
                               context.tr('instructor'),
-                              style: context.textTheme.displayMedium!.copyWith(
-                                fontSize: 26.sp,
+                              style: context.textTheme.titleLarge!.copyWith(
                                 color: context.colorScheme.onSurface.withValues(
                                   alpha: 0.5,
                                 ),
@@ -151,13 +145,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                             Column(
                               children: [
                                 Container(
-                                  width: 350.w,
-                                  height: 86.h,
+                                  width: double.infinity,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: context.colorScheme.onSurface
                                           .withValues(alpha: 0.2),
-                                      width: 2,
+                                      width: 1.w,
                                     ),
                                     borderRadius: BorderRadius.circular(16.r),
                                   ),
@@ -177,9 +170,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                         children: [
                                           Text(
                                             course.instructorName,
-                                            style: context
-                                                .textTheme
-                                                .displayMedium!
+                                            style: context.textTheme.titleLarge!
                                                 .copyWith(
                                                   color: context
                                                       .colorScheme
@@ -201,11 +192,10 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 30.h),
+                                SizedBox(height: 15.h),
                                 Text(
                                   course.instructorBio,
-                                  style: context.textTheme.titleLarge!.copyWith(
-                                    fontWeight: FontWeight.w400,
+                                  style: context.textTheme.bodyMedium!.copyWith(
                                     color: context.colorScheme.onSurface
                                         .withValues(alpha: 0.5),
                                   ),
@@ -214,64 +204,76 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                             ),
                             Center(
                               child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 10.r),
-                                width: 250.w,
-                                height: 80.h,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 16.h,
+                                  horizontal: 20.w,
+                                ),
+                                width: double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12.r),
                                   color: context.colorScheme.primary.withValues(
-                                    alpha: 0.2,
+                                    alpha: 0.1,
                                   ),
                                 ),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "${course.avgRating}",
-                                          style: context
-                                              .textTheme
-                                              .displayMedium!
-                                              .copyWith(
-                                                color:
-                                                    context.colorScheme.primary,
-                                              ),
-                                        ),
-                                        Text(
-                                          context.tr('rating'),
-                                          style: context.textTheme.displaySmall!
-                                              .copyWith(
-                                                color: context
-                                                    .colorScheme
-                                                    .onSurface,
-                                              ),
-                                        ),
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "${course.avgRating}",
+                                            style: context
+                                                .textTheme
+                                                .headlineMedium!
+                                                .copyWith(
+                                                  color: context
+                                                      .colorScheme
+                                                      .primary,
+                                                ),
+                                          ),
+                                          Text(
+                                            context.tr('rating'),
+                                            style: context
+                                                .textTheme
+                                                .labelMedium!
+                                                .copyWith(
+                                                  color: context
+                                                      .colorScheme
+                                                      .onSurface,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "${course.studentsCount}",
-                                          style: context
-                                              .textTheme
-                                              .displayMedium!
-                                              .copyWith(
-                                                color:
-                                                    context.colorScheme.primary,
-                                              ),
-                                        ),
-                                        Text(
-                                          context.tr('students'),
-                                          style: context.textTheme.displaySmall!
-                                              .copyWith(
-                                                color: context
-                                                    .colorScheme
-                                                    .onSurface,
-                                              ),
-                                        ),
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "${course.studentsCount}",
+                                            style: context
+                                                .textTheme
+                                                .headlineMedium!
+                                                .copyWith(
+                                                  color: context
+                                                      .colorScheme
+                                                      .primary,
+                                                ),
+                                          ),
+                                          Text(
+                                            context.tr('students'),
+                                            style: context
+                                                .textTheme
+                                                .labelMedium!
+                                                .copyWith(
+                                                  color: context
+                                                      .colorScheme
+                                                      .onSurface,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),

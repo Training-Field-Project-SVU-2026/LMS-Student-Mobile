@@ -37,7 +37,6 @@ class CourseCardVertical extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width?.w ?? 256.w,
-      margin: EdgeInsets.only(right: 16.w),
       decoration: BoxDecoration(
         color: backgroundColor ?? context.colorScheme.surface,
         borderRadius: BorderRadius.circular(16.r),
