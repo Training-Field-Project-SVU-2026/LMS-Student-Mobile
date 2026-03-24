@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/widget/custom_img.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
@@ -238,7 +240,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                               ),
                                         ),
                                         Text(
-                                          "Rating",
+                                          context.tr('rating'),
                                           style: context.textTheme.displaySmall!
                                               .copyWith(
                                                 color: context
@@ -261,7 +263,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                               ),
                                         ),
                                         Text(
-                                          "Students",
+                                          context.tr('students'),
                                           style: context.textTheme.displaySmall!
                                               .copyWith(
                                                 color: context
@@ -284,11 +286,62 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0.h),
                   child: CustomPrimaryButton(
-                    text: "Enroll Now",
+                    text: context.tr('enroll_now'),
                     textStyle: context.textTheme.labelLarge!.copyWith(
                       fontSize: 16.sp,
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            title: Column(
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  color: context.colorScheme.secondary,
+                                  size: 60.sp,
+                                ),
+                                SizedBox(height: 10.h),
+                                Text(
+                                  context.tr('enroll_success_title'),
+                                  style: context.textTheme.displayMedium!
+                                      .copyWith(
+                                        fontSize: 24.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: context.colorScheme.secondary,
+                                      ),
+                                ),
+                              ],
+                            ),
+                            content: Text(
+                              context.tr('enroll_success_message'),
+                              textAlign: TextAlign.center,
+                              style: context.textTheme.bodyLarge,
+                            ),
+                            actions: [
+                              Center(
+                                child: CustomPrimaryButton(
+                                  text: context.tr('go_to_course'),
+                                  textStyle: context.textTheme.labelLarge!
+                                      .copyWith(fontSize: 16.sp),
+                                  onTap: () {
+                                    context.pushReplacement(
+                                      AppRoutes.courseAfterEnroll,
+                                      extra: state.course.slug,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ],
