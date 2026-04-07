@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:lms_student/core/services/local/cache_helper.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
@@ -11,6 +13,7 @@ class ApiInterceptor extends Interceptor {
         !options.path.contains('/auth/register')) {
       final token = _cacheHelper.getData(key: ApiKey.accessToken);
       if (token != null) {
+        log('Token: $token');
         options.headers[ApiKey.authorization] = 'Bearer $token';
       }
     }

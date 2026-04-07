@@ -90,7 +90,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             ),
             SizedBox(height: 20.h),
             SizedBox(
-              height: 320.h,
+              height: 260.h,
               child: BlocBuilder<ExploreBloc, ExploreState>(
                 builder: (context, state) {
                   if (state.packageStatus == ExploreStatus.loading) {
@@ -123,18 +123,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 log(
                                   "jhcacsjbajs${state.packages[index].categories}",
                                 );
-                                context.push(
-                                  AppRoutes.packageDetails,
-                                  extra: state.packages[index].slug,
-                                );
                               },
                               child: CustomCategory(
                                 title: state.packages[index].title,
                                 description: state.packages[index].description,
-                                // TODO Make it dynamic
-                                courseslessons: 12,
-                                coursehours: 18,
+                                courses: state.packages[index].coursesCount,
+                                price: state.packages[index].price,
+
                                 category: state.packages[index].categories,
+                                slug: state.packages[index].slug,
                               ),
                             ),
                           ),

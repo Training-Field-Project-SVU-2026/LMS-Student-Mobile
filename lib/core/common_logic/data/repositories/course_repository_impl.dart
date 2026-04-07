@@ -37,4 +37,16 @@ class CourseRepositoryImpl implements CourseRepository {
   Future<Either<String, List<CourseModel>>> searchInCourses(String query) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<String, ResponseCourseModel>> getMyEnrollments({
+    int? page,
+    int? pageSize,
+  }) async {
+    return await apiConsumer.get<ResponseCourseModel>(
+      EndPoint.myEnrollments,
+      queryParameters: {'page': page, 'page_size': pageSize},
+      fromJson: (json) => ResponseCourseModel.fromJson(json),
+    );
+  }
 }

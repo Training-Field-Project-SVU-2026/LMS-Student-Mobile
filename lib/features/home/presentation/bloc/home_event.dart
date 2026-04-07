@@ -8,3 +8,9 @@ sealed class HomeEvent extends Equatable {
 }
 
 class GetCoursesEvent extends HomeEvent {}
+
+class GetMyEnrollmentsEvent extends HomeEvent {
+  const GetMyEnrollmentsEvent();
+  @override
+  List<Object> get props => [];
+}

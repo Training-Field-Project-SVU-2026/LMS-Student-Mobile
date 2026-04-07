@@ -66,7 +66,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                         GetpackagesEventBySlug(slug: widget.slug),
                       );
                     },
-                    child: const Text('Retry'),
+                    child: Text(context.tr('retry')),
                   ),
                 ],
               ),
@@ -118,7 +118,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                       ),
                       SizedBox(height: 15.h),
                       Text(
-                        "About this package",
+                        context.tr('about_this_package'),
                         style: context.textTheme.displaySmall!.copyWith(
                           color: context.colorScheme.onSurface,
                         ),
@@ -135,7 +135,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                       ),
                       SizedBox(height: 10.h),
                       Text(
-                        "Included Courses",
+                        context.tr('included_courses'),
                         style: context.textTheme.displaySmall!.copyWith(
                           color: context.colorScheme.onSurface,
                         ),

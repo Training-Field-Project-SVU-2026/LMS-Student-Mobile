@@ -39,6 +39,7 @@ class _CustomProgressState extends State<CustomProgress> {
                 color: context.colorScheme.surface,
               ),
             ),
+
             SizedBox(height: 22.h),
             Row(
               children: [

@@ -36,3 +36,29 @@ class CoursesError extends HomeState {
   @override
   List<Object> get props => [message];
 }
+
+class MyEnrollmentsLoading extends HomeState {}
+
+class MyEnrollmentsLoaded extends HomeState {
+  final List<CourseModel> enrollments;
+  final int? totalPages;
+  final int? currentPage;
+
+  const MyEnrollmentsLoaded({
+    required this.enrollments,
+    this.totalPages,
+    this.currentPage,
+  });
+
+  @override
+  List<Object?> get props => [enrollments, totalPages, currentPage];
+}
+
+class MyEnrollmentsError extends HomeState {
+  final String message;
+
+  const MyEnrollmentsError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

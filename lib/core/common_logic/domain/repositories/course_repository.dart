@@ -8,7 +8,12 @@ abstract class CourseRepository {
     int? page,
     int? pageSize,
   });
-  Future<Either<String, ResponseCourseBySlugModel>> getCourseBySlug(String slug);
+  Future<Either<String, ResponseCourseModel>> getMyEnrollments({
+    int? page,
+    int? pageSize,
+  });
+  Future<Either<String, ResponseCourseBySlugModel>> getCourseBySlug(
+    String slug,
+  );
   Future<Either<String, List<CourseModel>>> searchInCourses(String query);
 }
-

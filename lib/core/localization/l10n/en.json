@@ -103,7 +103,17 @@
   "view_course_notFound": "There Are No Courses",
   "view_course_nothing_added":  "No Courses have been added yet",
   "about_this_course":  "About this course",
-    "instructor": "Instructor"
-
-
+  "instructor": "Instructor",
+  "enroll_success_title": "Success",
+  "enroll_success_message": "Successfully enrolled in the course",
+  "go_to_course": "Go to Course",
+  "enroll_now": "Enroll Now",
+  "students": "Students",
+  "rating": "Rating",
+  "videos": "VIDEOS",
+  "files": "FILES",
+  "quizzes": "QUIZZES",
+  "about_this_package": "About this package",
+  "included_courses": "Included Courses",
+"join_now": "Join Now"
 }
