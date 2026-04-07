@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
-import '../../../../../../core/extensions/context_extensions.dart';
+import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/utils/get_responsive_size.dart';
 
 class AuthToggleSwitch extends StatelessWidget {
   final bool isLogin;
@@ -12,11 +13,11 @@ class AuthToggleSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50.h,
+      height: context.isDesktop ? 48 : 48.h,
+      padding: EdgeInsets.all(context.isDesktop ? 4 : 4.w),
       decoration: BoxDecoration(
-
-        color: context.colorScheme.outline.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(15.r),
+        color: context.colorScheme.surfaceVariant.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(context.isDesktop ? 12 : 12.r),
       ),
       child: Row(
         children: [
@@ -31,29 +32,37 @@ class AuthToggleSwitch extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-        if (!isActive) {
-          if (label == "login") {
-            context.go(AppRoutes.loginScreen); //
-          } else {
-            context.go(AppRoutes.registerScreen); //
+          if (!isActive) {
+            if (label == "login") {
+              context.go(AppRoutes.loginScreen);
+            } else {
+              context.go(AppRoutes.registerScreen);
+            }
           }
-        }
-      },
-        child: Container(
-          margin: EdgeInsets.all(4.w),
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: isActive ? context.colorScheme.surface : Colors.transparent,
-            borderRadius: BorderRadius.circular(12.r),
-            boxShadow: isActive ? [
-              BoxShadow(color: context.colorScheme.onSecondary.withValues(alpha: 0.05), blurRadius: 4, offset: const Offset(0, 2))
-            ] : null,
+            borderRadius: BorderRadius.circular(context.isDesktop ? 8 : 8.r),
+            boxShadow: isActive
+                ? [
+                    BoxShadow(
+                      color: context.colorScheme.primary.withValues(alpha: 0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    )
+                  ]
+                : null,
           ),
           child: Text(
             context.tr(label),
-            style: context.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              color: isActive ? context.colorScheme.primary : context.colorScheme.onSurfaceVariant,
+            style: context.textTheme.labelLarge?.copyWith(
+              fontWeight: isActive ? FontWeight.w900 : FontWeight.w500,
+              color: isActive
+                  ? context.colorScheme.primary
+                  : context.colorScheme.onSurfaceVariant,
             ),
           ),
         ),

@@ -19,8 +19,8 @@ class AppTheme {
   static const _error = Color(0xFFD32F2F);
 
   static double getResponsiveSize(double webSize, double mobileSize) {
-    if (kIsWeb) return webSize.sp;
-    return ScreenUtil().screenWidth > 600 ? webSize.sp : mobileSize.sp;
+    if (kIsWeb) return webSize;
+    return ScreenUtil().screenWidth > 600 ? webSize : mobileSize.sp;
   }
 
   static TextTheme _buildTextTheme(ColorScheme colorScheme) {

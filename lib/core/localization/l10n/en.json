@@ -115,5 +115,21 @@
   "quizzes": "QUIZZES",
   "about_this_package": "About this package",
   "included_courses": "Included Courses",
-"join_now": "Join Now"
+  "join_now": "Join Now",
+  "commit_today": "Commit today.",
+  "build_your_future": "Build your future.",
+  "join_learners_desc": "Join thousands of learners building consistency and growing their programming skills — one commit at a time.",
+  "learn_by_doing": "Learn by doing",
+  "track_progress": "Track progress",
+  "grow_daily": "Grow daily",
+  "good_to_see_you_again": "Good to see you again 👋",
+  "start_learning_journey_today": "Start your learning journey today ✨",
+  "change_password": "Change Password",
+  "update_security_desc": "Keep your account secure by updating your password regularly.",
+  "verify_email_resend_otp": "Please verify your email. Click \"Resend OTP\" to get a new code.",
+  "please_enter_full_otp": "Please enter a 6-digit OTP code.",
+  "saving": "Saving...",
+  "save_password": "Save Password"
 }
+
+

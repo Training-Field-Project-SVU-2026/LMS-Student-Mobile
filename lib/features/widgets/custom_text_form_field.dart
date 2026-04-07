@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/utils/get_responsive_size.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final String hintText;
@@ -51,8 +52,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         ],
       ),
       child: SizedBox(
-        width: widget.width?.w ?? 324.w,
-        //height: widget.height?.h ?? 51.h,
+        width: widget.width?.w,
         child: TextFormField(
           textAlignVertical: TextAlignVertical.center,
           controller: widget.controller,
@@ -70,8 +70,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             // color: context.colorScheme.primary
             // ),
             contentPadding: EdgeInsets.symmetric(
-              vertical: widget.height ?? 12.h,
-              horizontal: 12.w,
+              vertical: widget.height ?? (context.isDesktop ? 12 : 12.h),
+              horizontal: context.isDesktop ? 12 : 12.w,
             ),
             prefixIconColor: context.colorScheme.onSurfaceVariant.withValues(
               alpha: 0.7,

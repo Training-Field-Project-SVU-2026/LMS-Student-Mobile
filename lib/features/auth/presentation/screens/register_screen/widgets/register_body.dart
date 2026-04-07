@@ -7,10 +7,10 @@ import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/auth/presentation/screens/widgets/auth_toggle_switch.dart';
 import 'package:lms_student/features/auth/utils/auth_validation.dart';
-import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:lms_student/core/utils/get_responsive_size.dart';
 
 class RegisterBody extends StatelessWidget {
   const RegisterBody({super.key});
@@ -25,7 +25,7 @@ class RegisterBody extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(context.tr('verification_code_sent')),
-              backgroundColor: Colors.green,
+              backgroundColor: context.colorScheme.secondary,
             ),
           );
 
@@ -38,75 +38,71 @@ class RegisterBody extends StatelessWidget {
           );
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: context.colorScheme.error,
+            ),
           );
         }
       },
-      child: SafeArea(
+      child: Center(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(
+            horizontal: context.isDesktop ? 80 : 36.w,
+            vertical: context.isDesktop ? 80 : 56.h,
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: context.isDesktop ? 500 : 400.w,
+            ),
             child: Form(
               key: authBloc.registerFormKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: 30.h),
-
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      padding: EdgeInsets.all(8.w),
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.primary.withValues(
-                          alpha: 0.1,
-                        ),
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: Icon(
-                        Icons.code,
-                        color: context.colorScheme.primary,
-                        size: 30.w,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 20.h),
                   Text(
                     context.tr('start_your_journey'),
-                    style: context.textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: context.colorScheme.primary,
+                    style: context.textTheme.displaySmall!.copyWith(
+                      color: context.colorScheme.onSurface,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
-                  SizedBox(height: 8.h),
+                  SizedBox(height: 12.h),
                   Text(
-                    context.tr('create_account_commit'),
-                    style: context.textTheme.bodyMedium?.copyWith(
+                    context.tr('start_learning_journey_today'),
+                    style: context.textTheme.bodyLarge!.copyWith(
                       color: context.colorScheme.onSurfaceVariant,
                     ),
                   ),
+                  SizedBox(height: 48.h),
 
-                  SizedBox(height: 20.h),
-                  AuthToggleSwitch(isLogin: false),
-                  SizedBox(height: 30.h),
+                  const AuthToggleSwitch(isLogin: false),
 
+                  SizedBox(height: 32.h),
                   Row(
                     children: [
                       Expanded(
                         child: CustomTextFormField(
                           controller: authBloc.firstNameController,
                           hintText: context.tr('first_name'),
-                          prefixIcon: Icon(Icons.person_outline, size: 22.w),
+                          prefixIcon: Icon(
+                            Icons.person_outline_rounded,
+                            size: context.isDesktop ? 22 : 22.w,
+                          ),
                           validator: (value) => validateFirstName(value),
                         ),
                       ),
-                      SizedBox(width: 15.w),
+
+                      SizedBox(width: context.isDesktop ? 16 : 15.w),
                       Expanded(
                         child: CustomTextFormField(
                           controller: authBloc.lastNameController,
                           hintText: context.tr('last_name'),
-                          prefixIcon: Icon(Icons.person_outline, size: 22.w),
+                          prefixIcon: Icon(
+                            Icons.person_outline_rounded,
+                            size: context.isDesktop ? 22 : 22.w,
+                          ),
                           validator: (value) => validateLastName(value),
                         ),
                       ),
@@ -117,8 +113,12 @@ class RegisterBody extends StatelessWidget {
                   CustomTextFormField(
                     controller: authBloc.emailController,
                     hintText: context.tr('email_address'),
-                    prefixIcon: Icon(Icons.email_outlined, size: 22.w),
+                    prefixIcon: Icon(
+                      Icons.alternate_email_rounded,
+                      size: context.isDesktop ? 22 : 22.w,
+                    ),
                     validator: (value) => validateEmail(value),
+                    keyboardType: TextInputType.emailAddress,
                   ),
 
                   SizedBox(height: 16.h),
@@ -126,7 +126,10 @@ class RegisterBody extends StatelessWidget {
                     controller: authBloc.passwordController,
                     hintText: context.tr('password'),
                     isPassword: true,
-                    prefixIcon: Icon(Icons.lock_outline, size: 22.w),
+                    prefixIcon: Icon(
+                      Icons.lock_outline_rounded,
+                      size: context.isDesktop ? 22 : 22.w,
+                    ),
                     validator: (value) => validatePassword(value),
                   ),
 
@@ -135,7 +138,10 @@ class RegisterBody extends StatelessWidget {
                     controller: authBloc.confirmPasswordController,
                     hintText: context.tr('confirm_password'),
                     isPassword: true,
-                    prefixIcon: Icon(Icons.lock_outline, size: 22.w),
+                    prefixIcon: Icon(
+                      Icons.lock_outline_rounded,
+                      size: context.isDesktop ? 22 : 22.w,
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return context.tr('please_confirm_password');
@@ -147,110 +153,32 @@ class RegisterBody extends StatelessWidget {
                     },
                   ),
 
-                  SizedBox(height: 30.h),
+                  SizedBox(height: 32.h),
 
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading = state is AuthLoading;
 
-                      return Align(
-                        alignment: Alignment.center,
-                        child: CustomPrimaryButton(
-                          text: isLoading
-                              ? context.tr('creating_account')
-                              : context.tr('create_account'),
-                          onTap: isLoading
-                              ? null
-                              : () {
-                                  FocusScope.of(context).unfocus();
-                                  context.read<AuthBloc>().add(RegisterEvent());
-                                  // context.go(
-                                  //   AppRoutes.verifyOtpScreen,
-                                  //   extra: {
-                                  //     "email": "mayarabdelrahim22@gmail.com",
-                                  //   },
-                                  // );
-                                },
-                          suffixIcon: isLoading
-                              ? SizedBox(
-                                  width: 20.w,
-                                  height: 20.w,
-                                  child: CircularProgressIndicator(
-                                    color: context.colorScheme.onPrimary,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : Icon(
-                                  Icons.arrow_forward,
-                                  fontWeight: FontWeight.bold,
-                                  color: context.colorScheme.onPrimary,
-                                  size: 20.w,
-                                ),
-                          width: 287.w,
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                        ),
+                      return CustomPrimaryButton(
+                        text: isLoading
+                            ? context.tr('creating_account')
+                            : context.tr('create_account'),
+                        onTap: isLoading
+                            ? null
+                            : () {
+                                FocusScope.of(context).unfocus();
+                                context.read<AuthBloc>().add(RegisterEvent());
+                              },
+                        width: double.infinity,
                       );
                     },
                   ),
 
-                  SizedBox(height: 30.h),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 50.w),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            color: context.colorScheme.outlineVariant
-                                .withValues(alpha: 0.15),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          child: Text(
-                            context.tr('or'),
-                            style: context.textTheme.labelMedium?.copyWith(
-                              color: context.colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            color: context.colorScheme.outlineVariant
-                                .withValues(alpha: 0.15),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: 30.h),
-
-                  Align(
-                    child: CustomOutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
-                        ),
-                        side: BorderSide(color: context.colorScheme.outline),
-                      ),
-                      width: 287.w,
-                      text: context.tr('continue_as_guest'),
-                      onTap: () {
-                        context.go(AppRoutes.rootBeforeLogin);
-                      },
-                    ),
-                  ),
-
-                  SizedBox(height: 100.h),
+                  SizedBox(height: 24.h),
 
                   Center(
-                    child: TextButton(
-                      onPressed: () {
+                    child: GestureDetector(
+                      onTap: () {
                         context.go(AppRoutes.loginScreen);
                       },
                       child: RichText(
@@ -270,7 +198,19 @@ class RegisterBody extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 24.h),
+
+                  Center(
+                    child: TextButton(
+                      onPressed: () => context.go(AppRoutes.rootBeforeLogin),
+                      child: Text(
+                        context.tr('continue_as_guest'),
+                        style: context.textTheme.labelMedium?.copyWith(
+                          color: context.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
