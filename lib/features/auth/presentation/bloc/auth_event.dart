@@ -8,7 +8,6 @@ class LoginEvent extends AuthEvent {}
 
 class ClearFormEvent extends AuthEvent {}
 
-// wanna understand why
 class VerifyEmailEvent extends AuthEvent {
   final String email;
   final String otp;

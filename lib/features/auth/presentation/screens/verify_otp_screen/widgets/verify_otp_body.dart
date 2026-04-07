@@ -1,5 +1,3 @@
-// lib/features/auth/presentation/screens/verify_otp_screen/widgets/verify_otp_body.dart
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -37,7 +35,7 @@ class VerifyOtpBody extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(resendState.message),
-            backgroundColor: Colors.green,
+            backgroundColor: context.colorScheme.secondary,
           ),
         );
       },
@@ -188,9 +186,9 @@ class VerifyOtpBody extends StatelessWidget {
                         : () {
                           // for testing ya قائد don't delete it untill i make sure of the code 
                             log(
-                              '🔑 OTP entered: ${authBloc.getOtpCode()}',
+                              'OTP entered: ${authBloc.getOtpCode()}',
                             ); 
-                            log('📧 Email: $email');
+                            log('Email: $email');
       
                             // wait here
                             authBloc.add(

@@ -61,7 +61,6 @@ class ForgotPasswordBody extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(height: 10.h),
-                      // Logo
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

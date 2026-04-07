@@ -108,7 +108,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
       (successMessage) => emit(ResendSuccess(successMessage)),
     );
   }
-
+  
   Future<void> _onForgotPassword(
     ForgotPasswordEvent event,
     Emitter<AuthState> emit,

@@ -143,7 +143,7 @@ class ResetPasswordBody extends StatelessWidget {
                       ),
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                        // make it function in utils file
+                        ///TODO: make it function in utils file
                         if (value == null || value.isEmpty) {
                           return context.tr('verification_code_required');
                         }
