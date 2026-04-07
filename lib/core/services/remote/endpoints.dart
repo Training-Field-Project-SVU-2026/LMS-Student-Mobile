@@ -21,6 +21,7 @@ class EndPoint {
   // courses
   static String allCourses = "/courses/all/";
   static String courseBySlug = "/courses/";
+  static String myEnrollments = "/courses/myEnrollments/";
 
   // packages
   static String allPackages = "/packages/all/";

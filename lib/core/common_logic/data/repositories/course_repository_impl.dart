@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:lms_student/core/common_logic/data/model/course/enroll_course_model.dart';
 import 'package:lms_student/core/common_logic/data/model/course/responsecoursebyslugmodel.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
@@ -36,5 +37,17 @@ class CourseRepositoryImpl implements CourseRepository {
   @override
   Future<Either<String, List<CourseModel>>> searchInCourses(String query) {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<String, EnrollCourseModel>> getMyEnrollments({
+    int? page,
+    int? pageSize,
+  }) async {
+    return await apiConsumer.get(
+      EndPoint.myEnrollments,
+      queryParameters: {'page': page, 'page_size': pageSize},
+      fromJson: (json) => EnrollCourseModel.fromJson(json),
+    );
   }
 }

@@ -14,6 +14,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({required this.courseRepository, required this.homeRepository})
     : super(CoursesInitial()) {
     on<GetCoursesEvent>(_onGetCourses);
+    on<GetMyEnrollmentsEvent>(_onGetMyEnrollments);
   }
 
   Future<void> _onGetCourses(
@@ -36,9 +37,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           ),
         ),
       );
-
     } catch (e) {
       emit(CoursesError(message: e.toString()));
+    }
+  }
+
+  Future<void> _onGetMyEnrollments(
+    GetMyEnrollmentsEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(MyEnrollmentsLoading());
+
+    try {
+      final result = await courseRepository.getMyEnrollments();
+
+      result.fold(
+        (error) => emit(MyEnrollmentsError(message: error)),
+        (response) => emit(
+          MyEnrollmentsLoaded(
+            enrollments: response.data,
+            totalPages: response.totalPages,
+            currentPage: response.currentPage,
+          ),
+        ),
+      );
+    } catch (e) {
+      emit(MyEnrollmentsError(message: e.toString()));
     }
   }
 }
