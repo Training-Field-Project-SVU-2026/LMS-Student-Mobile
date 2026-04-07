@@ -19,6 +19,7 @@ class CourseModel {
   int? progress;
   String? enrollStatus;
   String? enrolledAt;
+  bool? isenrolled;
 
   CourseModel({
     // this.id,
@@ -40,6 +41,7 @@ class CourseModel {
     this.progress,
     this.enrollStatus,
     this.enrolledAt,
+    this.isenrolled,
   });
 
   factory CourseModel.fromJson(Map<String, dynamic> json) {
@@ -68,6 +70,7 @@ class CourseModel {
       progress: json['progress'],
       enrollStatus: json['status'],
       enrolledAt: json['enrolled_at'],
+      isenrolled: json['is_enrolled'],
     );
   }
 
@@ -91,6 +94,7 @@ class CourseModel {
       'progress': progress,
       'status': enrollStatus,
       'enrolled_at': enrolledAt,
+      'is_enrolled': isenrolled,
     };
   }
 }

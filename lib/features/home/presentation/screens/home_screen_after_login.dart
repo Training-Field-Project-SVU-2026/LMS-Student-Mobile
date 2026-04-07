@@ -62,11 +62,10 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                 );
               }
               if (state is MyEnrollmentsLoaded) {
-                log("courses from bloc taha: ${state.enrollments}");
+                log("courses from bloc taha: ${state.enrollments.first.title}");
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ... المحتوى الخاص بالـ MyEnrollments
                     Row(
                       children: [
                         Container(
@@ -119,21 +118,36 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                         color: context.colorScheme.onSurface,
                       ),
                     ),
-                    SizedBox(height: 21.h),
+                    SizedBox(height: 15.h),
                     // استخدم Column بدلاً من ListView
-                    Column(
-                      children: state.enrollments.map((course) {
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final course = state.enrollments[index];
                         return Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.h),
-                          child: CourseCardHorizontal(
-                            title: course.title,
-                            instructorName: course.instructorName,
-                            imagePath: course.image,
-                            rating: course.avgRating,
-                            width: 200.w,
+                          child: InkWell(
+                            onTap: () {
+                              log(
+                                "is enrolledddddddddddddddddddd: ${course.isenrolled}",
+                              );
+                              context.push(
+                                AppRoutes.courseAfterEnroll,
+                                extra: course.slug,
+                              );
+                            },
+                            child: CourseCardHorizontal(
+                              title: course.title,
+                              instructorName: course.instructorName,
+                              imagePath: course.image,
+                              rating: course.avgRating,
+                              width: 200.w,
+                            ),
                           ),
                         );
-                      }).toList(),
+                      },
+                      itemCount: state.enrollments.length,
                     ),
                     SizedBox(height: 20.h),
                     Row(
