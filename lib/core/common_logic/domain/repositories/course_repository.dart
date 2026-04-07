@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:lms_student/core/common_logic/data/model/course/course_model.dart';
-import 'package:lms_student/core/common_logic/data/model/course/enroll_course_model.dart';
 import 'package:lms_student/core/common_logic/data/model/course/response_course_model.dart';
 import 'package:lms_student/core/common_logic/data/model/course/responsecoursebyslugmodel.dart';
 
@@ -9,7 +8,7 @@ abstract class CourseRepository {
     int? page,
     int? pageSize,
   });
-  Future<Either<String, EnrollCourseModel>> getMyEnrollments({
+  Future<Either<String, ResponseCourseModel>> getMyEnrollments({
     int? page,
     int? pageSize,
   });
