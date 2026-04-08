@@ -136,5 +136,7 @@
   "password_changed_successfully": "Password changed successfully",
   "edit_profile": "Edit Profile",
   "save_changes": "Save Changes",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "no_courses_yet": "No courses enrolled yet",
+  "explore_courses_to_start": "Explore courses and start your learning journey now"
 }

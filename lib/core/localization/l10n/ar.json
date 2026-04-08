@@ -126,5 +126,7 @@
   "password_changed_successfully": "تم تغيير كلمة المرور بنجاح",
   "edit_profile": "تعديل الملف الشخصي",
   "save_changes": "حفظ التغييرات",
-  "cancel": "إلغاء"
+  "cancel": "إلغاء",
+  "no_courses_yet": "لا توجد كورسات مسجل فيها بعد",
+  "explore_courses_to_start": "استكشف الكورسات وابدأ رحلة التعلم الآن"
 }

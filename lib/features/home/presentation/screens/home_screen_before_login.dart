@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -250,9 +252,16 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                                 padding: EdgeInsets.only(right: 16.w),
                                 child: InkWell(
                                   onTap: () {
+                                    log("course.slugggg ${course.slug}");
+                                    log(
+                                      "course.isenrolled ${course.isenrolled}",
+                                    );
                                     context.push(
                                       AppRoutes.courseDetailsScreen,
-                                      extra: course.slug,
+                                      extra: {
+                                        'slug': course.slug,
+                                        'isEnrolled': course.isenrolled,
+                                      },
                                     );
                                   },
                                   child: CourseCardVertical(
