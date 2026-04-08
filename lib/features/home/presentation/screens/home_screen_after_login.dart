@@ -176,6 +176,8 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                                 );
                               },
                               child: CourseCardHorizontal(
+                                progressPercentage: course.progress,
+                                progressValue: course.progress!.toDouble(),
                                 title: course.title,
                                 instructorName: course.instructorName,
                                 imagePath: course.image,
@@ -187,7 +189,6 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                         },
                       ),
                     SizedBox(height: 20.h),
-                    // باقي الكود (Featured Courses section)
                   ],
                 );
               }
@@ -219,40 +220,74 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                 );
               }
               if (state is CoursesLoaded) {
-                log("courses from bloc: ${state.courses}");
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: IntrinsicHeight(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: state.courses.map((course) {
-                        return Padding(
-                          padding: EdgeInsets.only(right: 16.w),
-                          child: InkWell(
+                // log("courses from bloc: ${state.courses}");
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                context.tr('featured_courses'),
+                                style: context.textTheme.titleLarge!.copyWith(
+                                  color: context.colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
+                          ),
+                          InkWell(
                             onTap: () {
-                              log('Course slug: ${course.slug}');
-                              context.push(
-                                AppRoutes.courseDetailsScreen,
-                                extra: {
-                                  'slug': course.slug,
-                                  'isEnrolled': course.isenrolled,
-                                },
-                              );
+                              context.push(AppRoutes.viewAllCourse);
                             },
-                            child: CourseCardVertical(
-                              title: course.title,
-                              price: course.price,
-                              imagePath: course.image,
-                              rating: course.avgRating,
-                              totalStudents: course.studentsCount,
-                              description: course.description,
-                              instructorName: course.instructorName,
+                            child: Text(
+                              context.tr('view_all'),
+                              style: context.textTheme.labelLarge!.copyWith(
+                                color: context.colorScheme.primary,
+                              ),
                             ),
                           ),
-                        );
-                      }).toList(),
+                        ],
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 10.h),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: state.courses.map((course) {
+                            return Padding(
+                              padding: EdgeInsets.only(right: 16.w),
+                              child: InkWell(
+                                onTap: () {
+                                  log('Course slugggggggggg: ${course.slug}');
+                                  context.push(
+                                    AppRoutes.courseDetailsScreen,
+                                    extra: {
+                                      'slug': course.slug,
+                                      'isEnrolled': course.isenrolled,
+                                    },
+                                  );
+                                },
+                                child: CourseCardVertical(
+                                  title: course.title,
+                                  price: course.price,
+                                  imagePath: course.image,
+                                  rating: course.avgRating,
+                                  totalStudents: course.studentsCount,
+                                  description: course.description,
+                                  instructorName: course.instructorName,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               }
               return CircularProgressIndicator();
