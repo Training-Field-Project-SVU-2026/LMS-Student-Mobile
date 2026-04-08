@@ -168,8 +168,11 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                                   "tahaaaaaaaaaaaaaaaa22 ${course.instructorName}",
                                 );
                                 context.push(
-                                  AppRoutes.courseAfterEnroll,
-                                  extra: course.slug,
+                                  AppRoutes.courseDetailsScreen,
+                                  extra: {
+                                    'slug': course.slug,
+                                    'isEnrolled': course.isenrolled,
+                                  },
                                 );
                               },
                               child: CourseCardHorizontal(
@@ -230,7 +233,10 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                               log('Course slug: ${course.slug}');
                               context.push(
                                 AppRoutes.courseDetailsScreen,
-                                extra: course.slug,
+                                extra: {
+                                  'slug': course.slug,
+                                  'isEnrolled': course.isenrolled,
+                                },
                               );
                             },
                             child: CourseCardVertical(
