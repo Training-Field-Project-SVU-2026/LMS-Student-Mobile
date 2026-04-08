@@ -90,9 +90,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     log('Email from cache: ${cacheHelper.getData(key: ApiKey.email)}');
     final result = await profileRepository.getProfile(slug);
 
-    result.fold((error) => emit(ProfileError(message: error)), (user) async {
+    await result.fold((error) async => emit(ProfileError(message: error)), (
+      user,
+    ) async {
       final updatedUserJson = jsonEncode(user.toJson());
       await cacheHelper.saveData(key: ApiKey.user, value: updatedUserJson);
+      await cacheHelper.saveData(key: ApiKey.firstName, value: user.firstName);
+      await cacheHelper.saveData(key: ApiKey.lastName, value: user.lastName);
+      await cacheHelper.saveData(key: ApiKey.email, value: user.email);
+      await cacheHelper.saveData(key: ApiKey.image, value: user.image);
+
       emit(GetProfileSuccess(user: user));
     });
   }
@@ -111,16 +118,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     log('Token: ${cacheHelper.getData(key: ApiKey.accessToken)}');
     log('Slug from cache: ${cacheHelper.getData(key: ApiKey.slug)}');
-    log('Email from cache: ${cacheHelper.getData(key: ApiKey.email)}');
 
     final result = await profileRepository.updateProfile(
       slug: slug,
       firstName: event.firstName,
       lastName: event.lastName,
-      email: event.email,
     );
 
-    result.fold((error) => emit(ProfileError(message: error)), (user) async {
+    await result.fold((error) async => emit(ProfileError(message: error)), (
+      user,
+    ) async {
       await cacheHelper.saveData(key: ApiKey.firstName, value: user.firstName);
       await cacheHelper.saveData(key: ApiKey.lastName, value: user.lastName);
       await cacheHelper.saveData(key: ApiKey.email, value: user.email);

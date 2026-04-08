@@ -109,7 +109,7 @@ class LoginBody extends StatelessWidget {
                       Icons.lock_outline_rounded,
                       size: context.isDesktop ? 22 : 22.w,
                     ),
-                    validator: (value) => validatePassword(value),
+                    // validator: (value) => validatePassword(value),
                     keyboardType: TextInputType.visiblePassword,
                   ),
 

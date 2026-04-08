@@ -69,7 +69,7 @@
   "this_is_course_details_screen": "هذه شاشة تفاصيل الدورة",
   "verify_otp": "التحقق من الرمز",
   "we_sent_verification_code": "لقد أرسلنا رمز تحقق إلى بريدك. أدخله أدناه للمتابعة.",
-  "code_expires_in": "تنتهي صلاحية الرمز خلال 01:00",
+  "code_expires_in": "تنتهي صلاحية الرمز خلال",
   "didnt_receive_code": "لم تتلقَ الرمز؟ ",
   "resend": "إعادة الإرسال",
   "verifying": "جاري التحقق...",
@@ -101,8 +101,8 @@
   "account_unverified": "يرجى تأكيد عنوان بريدك الإلكتروني.",
   "view_course": "جميع الدورات ",
   "view_course_notFound": "لا توجد دورات",
-  "view_course_nothing_added":  "لم تتم اضافه دورات بعد ",
-  "about_this_course":  "تفاصيل الدوره",
+  "view_course_nothing_added": "لم تتم اضافه دورات بعد ",
+  "about_this_course": "تفاصيل الدوره",
   "instructor": " المعلم ",
   "enroll_success_title": "تم بنجاح!",
   "enroll_success_message": "تم الاشتراك في الكورس بنجاح",
@@ -119,5 +119,12 @@
   "verify_email_resend_otp": "يرجى التحقق من بريدك الإلكتروني. اضغط على \"إعادة الإرسال\" للحصول على رمز جديد.",
   "please_enter_full_otp": "يرجى إدخال رمز التحقق المكون من 6 أرقام.",
   "saving": "جاري الحفظ...",
-  "save_password": "حفظ كلمة المرور"
+  "save_password": "حفظ كلمة المرور",
+  "old_password": "كلمة المرور القديمة",
+  "required": "مطلوب",
+  "back": "العودة",
+  "password_changed_successfully": "تم تغيير كلمة المرور بنجاح",
+  "edit_profile": "تعديل الملف الشخصي",
+  "save_changes": "حفظ التغييرات",
+  "cancel": "إلغاء"
 }

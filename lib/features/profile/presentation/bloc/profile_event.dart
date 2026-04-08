@@ -15,11 +15,9 @@ class GetProfileEvent extends ProfileEvent {}
 class UpdateProfileEvent extends ProfileEvent {
   final String firstName;
   final String lastName;
-  final String email;
 
   UpdateProfileEvent({
     required this.firstName,
     required this.lastName,
-    required this.email,
   });
 }

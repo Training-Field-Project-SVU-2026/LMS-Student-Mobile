@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,9 +10,47 @@ import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/core/utils/get_responsive_size.dart';
 
-class VerifyOtpBody extends StatelessWidget {
+class VerifyOtpBody extends StatefulWidget {
   final String email;
   const VerifyOtpBody({super.key, required this.email});
+
+  @override
+  State<VerifyOtpBody> createState() => _VerifyOtpBodyState();
+}
+
+class _VerifyOtpBodyState extends State<VerifyOtpBody> {
+  Timer? _timer;
+  int _remainingSeconds = 120;
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_remainingSeconds > 0) {
+        setState(() {
+          _remainingSeconds--;
+        });
+      } else {
+        _timer?.cancel();
+      }
+    });
+  }
+
+  String _formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +74,11 @@ class VerifyOtpBody extends StatelessWidget {
                 backgroundColor: context.colorScheme.secondary,
               ),
             );
+            // Reset timer when resend is successful
+            setState(() {
+              _remainingSeconds = 120;
+            });
+            _startTimer();
           },
         ),
       ],
@@ -98,7 +142,8 @@ class VerifyOtpBody extends StatelessWidget {
                     ),
                     SizedBox(width: 8.w),
                     Text(
-                      context.tr('code_expires_in'),
+                      '${context.tr('code_expires_in').replaceFirst(' 01:00', '')}: ${_formatTime(_remainingSeconds)}',
+
                       style: context.textTheme.bodyMedium?.copyWith(
                         color: context.colorScheme.primary,
                         fontWeight: FontWeight.w500,
@@ -111,18 +156,30 @@ class VerifyOtpBody extends StatelessWidget {
 
                 Center(
                   child: TextButton(
-                    onPressed: () {
-                      authBloc.add(ResendOtpEvent(email: email));
-                    },
+                    onPressed: _remainingSeconds == 0
+                        ? () {
+                            authBloc.add(ResendOtpEvent(email: widget.email));
+                          }
+                        : null,
                     child: RichText(
                       text: TextSpan(
                         text: context.tr('didnt_receive_code'),
-                        style: context.textTheme.bodyMedium,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: _remainingSeconds == 0
+                              ? null
+                              : context.colorScheme.onSurfaceVariant.withValues(
+                                  alpha: 0.5,
+                                ),
+                        ),
                         children: [
                           TextSpan(
-                            text: context.tr('resend'),
+                            text: ' ${context.tr('resend')}',
                             style: TextStyle(
-                              color: context.colorScheme.primary,
+                              color: _remainingSeconds == 0
+                                  ? context.colorScheme.primary
+                                  : context.colorScheme.primary.withValues(
+                                      alpha: 0.5,
+                                    ),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -146,7 +203,7 @@ class VerifyOtpBody extends StatelessWidget {
                           : () {
                               authBloc.add(
                                 VerifyEmailEvent(
-                                  email: email,
+                                  email: widget.email,
                                   otp: authBloc.getOtpCode(),
                                 ),
                               );

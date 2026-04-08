@@ -63,7 +63,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           obscureText: widget.isPassword ? _obscureText : false,
           style: context.textTheme.bodyMedium,
 
-          
           decoration: InputDecoration(
             hintText: widget.hintText,
             // hintStyle: context.textTheme.bodyMedium?.copyWith(

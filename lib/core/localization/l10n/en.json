@@ -69,7 +69,7 @@
   "this_is_course_details_screen": "this is course details screen",
   "verify_otp": "Verify OTP",
   "we_sent_verification_code": "We sent a verification code to your email address. Enter it below to continue.",
-  "code_expires_in": "Code expires in 01:00",
+  "code_expires_in": "Code expires in",
   "didnt_receive_code": "Didn't receive the code? ",
   "resend": "Resend",
   "verifying": "Verifying...",
@@ -101,8 +101,8 @@
   "account_unverified": "Please verify your email address.",
   "view_course": "All Course",
   "view_course_notFound": "There Are No Courses",
-  "view_course_nothing_added":  "No Courses have been added yet",
-  "about_this_course":  "About this course",
+  "view_course_nothing_added": "No Courses have been added yet",
+  "about_this_course": "About this course",
   "instructor": "Instructor",
   "enroll_success_title": "Success",
   "enroll_success_message": "Successfully enrolled in the course",
@@ -129,7 +129,12 @@
   "verify_email_resend_otp": "Please verify your email. Click \"Resend OTP\" to get a new code.",
   "please_enter_full_otp": "Please enter a 6-digit OTP code.",
   "saving": "Saving...",
-  "save_password": "Save Password"
+  "save_password": "Save Password",
+  "old_password": "Old Password",
+  "required": "Required",
+  "back": "Back",
+  "password_changed_successfully": "Password changed successfully",
+  "edit_profile": "Edit Profile",
+  "save_changes": "Save Changes",
+  "cancel": "Cancel"
 }
-
-

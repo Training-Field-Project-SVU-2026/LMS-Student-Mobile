@@ -53,9 +53,8 @@ class SettingsBody extends StatelessWidget {
               const AppPreferencesCard(),
               SizedBox(height: 24.h),
 
-              const DeleteAccountCard(),
+              // const DeleteAccountCard(),
               SizedBox(height: 24.h),
-
               CustomOutlinedButton(
                 text: 'Change Password',
                 width: double.infinity,

@@ -13,7 +13,6 @@ abstract class ProfileRepository {
   required String slug,
   required String firstName,
   required String lastName,
-  required String email,
 });
 
 }

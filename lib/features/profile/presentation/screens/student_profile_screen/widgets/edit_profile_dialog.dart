@@ -6,6 +6,7 @@ import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class EditProfileDialog extends StatefulWidget {
   final String initialFirstName;
@@ -26,7 +27,6 @@ class EditProfileDialog extends StatefulWidget {
 class _EditProfileDialogState extends State<EditProfileDialog> {
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
-  late final TextEditingController _emailController;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -34,14 +34,12 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
     super.initState();
     _firstNameController = TextEditingController(text: widget.initialFirstName);
     _lastNameController = TextEditingController(text: widget.initialLastName);
-    _emailController = TextEditingController(text: widget.initialEmail);
   }
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _emailController.dispose();
     super.dispose();
   }
 
@@ -67,7 +65,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Edit Profile',
+                      context.tr('edit_profile'),
                       style: context.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: context.colorScheme.onSurface,
@@ -84,7 +82,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 ),
                 SizedBox(height: 24.h),
                 Text(
-                  'First Name',
+                  context.tr('first_name'),
                   style: context.textTheme.labelMedium?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
@@ -92,15 +90,15 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 SizedBox(height: 8.h),
                 CustomTextFormField(
                   controller: _firstNameController,
-                  hintText: 'First Name',
+                  hintText: context.tr('first_name'),
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'Required';
+                    if (value == null || value.isEmpty) return context.tr('required');
                     return null;
                   },
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  'Last Name',
+                  context.tr('last_name'),
                   style: context.textTheme.labelMedium?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
@@ -108,42 +106,24 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 SizedBox(height: 8.h),
                 CustomTextFormField(
                   controller: _lastNameController,
-                  hintText: 'Last Name',
+                  hintText: context.tr('last_name'),
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'Required';
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  'Email Address',
-                  style: context.textTheme.labelMedium?.copyWith(
-                    color: context.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                CustomTextFormField(
-                  controller: _emailController,
-                  hintText: 'Email Address',
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return 'Required';
+                    if (value == null || value.isEmpty) return context.tr('required');
                     return null;
                   },
                 ),
                 SizedBox(height: 32.h),
                 CustomPrimaryButton(
-                  text: 'Save Changes',
+                  text: context.tr('save_changes'),
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
                       context.read<ProfileBloc>().add(
                         UpdateProfileEvent(
                           firstName: _firstNameController.text,
                           lastName: _lastNameController.text,
-                          email: _emailController.text,
                         ),
                       );
-                      context.pop(); // نقفل الـ Dialog
+                      context.pop();
                     }
                   },
                 ),
@@ -151,7 +131,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 TextButton(
                   onPressed: () => context.pop(),
                   child: Text(
-                    'Cancel',
+                    context.tr('cancel'),
                     style: context.textTheme.labelLarge?.copyWith(
                       color: context.colorScheme.onSurfaceVariant,
                     ),

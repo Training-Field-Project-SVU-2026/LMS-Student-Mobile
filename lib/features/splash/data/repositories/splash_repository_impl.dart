@@ -24,7 +24,6 @@ class SplashRepositoryImpl implements SplashRepository {
 
     return await result.fold(
       (error) async {
-        // Handle session expiration specifically if needed
         if (error.contains("Unauthorized") || error.contains("401")) {
           await _clearCache();
         }
@@ -44,6 +43,11 @@ class SplashRepositoryImpl implements SplashRepository {
     await cacheHelper.removeData(key: ApiKey.accessToken);
     await cacheHelper.removeData(key: ApiKey.refreshToken);
     await cacheHelper.removeData(key: ApiKey.user);
+    await cacheHelper.removeData(key: ApiKey.firstName);
+    await cacheHelper.removeData(key: ApiKey.lastName);
+    await cacheHelper.removeData(key: ApiKey.email);
+    await cacheHelper.removeData(key: ApiKey.image);
+    await cacheHelper.removeData(key: ApiKey.slug);
     await cacheHelper.removeData(key: ApiKey.isLoggedIn);
   }
 }

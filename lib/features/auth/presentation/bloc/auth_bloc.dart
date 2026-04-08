@@ -39,8 +39,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
         emit(AuthError(message: errorMessage));
       },
       (successResponse) {
-        clearLoginControllers();
-        emit(AuthSuccess(data: successResponse));
+        if (successResponse.user.role == 'student') {
+          clearLoginControllers();
+          emit(AuthSuccess(data: successResponse));
+        } else {
+          emit(AuthError(message: 'You are not authorized to login'));
+        }
       },
     );
   }
@@ -86,13 +90,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
 
     final result = await authRepository.verifyEmail(request);
 
-    result.fold(
-      (error) => emit(AuthError(message: error)),
-      (successMessage) {
-        clearOtpControllers();
-        emit(AuthSuccess(data: successMessage));
-      },
-    );
+    result.fold((error) => emit(AuthError(message: error)), (successMessage) {
+      clearOtpControllers();
+      emit(AuthSuccess(data: successMessage));
+    });
   }
 
   Future<void> _onResendOtp(
@@ -108,7 +109,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
       (successMessage) => emit(ResendSuccess(successMessage)),
     );
   }
-  
+
   Future<void> _onForgotPassword(
     ForgotPasswordEvent event,
     Emitter<AuthState> emit,
@@ -136,7 +137,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
       (successMessage) => emit(AuthSuccess(data: successMessage)),
     );
   }
-
 
   void _onClearForm(ClearFormEvent event, Emitter<AuthState> emit) {
     clearRegisterControllers();

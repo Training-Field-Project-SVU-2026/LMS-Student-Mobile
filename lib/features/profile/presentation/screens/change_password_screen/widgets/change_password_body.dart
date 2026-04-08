@@ -46,7 +46,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
         if (state is ChangePasswordSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Password changed successfully'),
+              content: Text(context.tr('password_changed_successfully')),
               backgroundColor: context.colorScheme.secondary,
             ),
           );
@@ -93,7 +93,9 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                     prefixIcon: Icon(Icons.lock_outline_rounded, size: 22.w),
                     isPassword: true,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Required';
+                      if (value == null || value.isEmpty) {
+                        return context.tr('required');
+                      }
                       return null;
                     },
                     keyboardType: TextInputType.visiblePassword,
@@ -118,7 +120,9 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                     prefixIcon: Icon(Icons.done_all_rounded, size: 22.w),
                     isPassword: true,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Required';
+                      if (value == null || value.isEmpty) {
+                        return context.tr('required');
+                      }
                       if (value != _newPasswordController.text) {
                         return context.tr('passwords_do_not_match');
                       }
@@ -133,20 +137,24 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                     builder: (context, state) {
                       final isLoading = state is ProfileLoading;
                       return CustomPrimaryButton(
-                        text: isLoading ? context.tr('updating') : context.tr('update_password'),
+                        text: isLoading
+                            ? context.tr('updating')
+                            : context.tr('update_password'),
                         onTap: isLoading
                             ? null
                             : () {
                                 if (_formKey.currentState!.validate()) {
                                   FocusScope.of(context).unfocus();
                                   context.read<ProfileBloc>().add(
-                                        ChangePasswordEvent(
-                                          request: ChangePasswordModel(
-                                            oldPassword: _oldPasswordController.text,
-                                            newPassword: _newPasswordController.text,
-                                          ),
-                                        ),
-                                      );
+                                    ChangePasswordEvent(
+                                      request: ChangePasswordModel(
+                                        oldPassword:
+                                            _oldPasswordController.text,
+                                        newPassword:
+                                            _newPasswordController.text,
+                                      ),
+                                    ),
+                                  );
                                 }
                               },
                         width: double.infinity,
@@ -179,4 +187,3 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
     );
   }
 }
-

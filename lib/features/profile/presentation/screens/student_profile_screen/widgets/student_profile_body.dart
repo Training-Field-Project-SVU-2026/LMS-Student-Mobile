@@ -57,12 +57,6 @@ class StudentProfileBody extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 4.h),
-                        Text(
-                          'Student ID: ${user.slug}',
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            color: context.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
                       ],
                     ),
                   ),
