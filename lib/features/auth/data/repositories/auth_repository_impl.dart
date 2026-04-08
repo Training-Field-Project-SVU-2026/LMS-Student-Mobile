@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:lms_student/core/services/local/cache_helper.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
@@ -29,7 +28,7 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
-   @override
+  @override
   Future<Either<String, LoginResponseModel>> login(
     LoginRequestModel request,
   ) async {
@@ -39,43 +38,45 @@ class AuthRepositoryImpl implements AuthRepository {
       fromJson: (json) => LoginResponseModel.fromJson(json),
     );
 
-    return await result.fold(
-      (error) => Left(error),
-      (loginResponse) async {
-        await cacheHelper.saveData(
-          key: ApiKey.accessToken,
-          value: loginResponse.accessToken,
-        );
-        await cacheHelper.saveData(
-          key: ApiKey.refreshToken,
-          value: loginResponse.refreshToken,
-        );
-        await cacheHelper.saveData(
-          key: ApiKey.isLoggedIn,
-          value: true,
-        );
+    return await result.fold((error) => Left(error), (loginResponse) async {
+      await cacheHelper.saveData(
+        key: ApiKey.accessToken,
+        value: loginResponse.accessToken,
+      );
+      await cacheHelper.saveData(
+        key: ApiKey.refreshToken,
+        value: loginResponse.refreshToken,
+      );
+      await cacheHelper.saveData(key: ApiKey.isLoggedIn, value: true);
 
-        final userJson = jsonEncode(loginResponse.user.toJson());
-        await cacheHelper.saveData(key: ApiKey.user, value: userJson);
+      final userJson = jsonEncode(loginResponse.user.toJson());
+      await cacheHelper.saveData(key: ApiKey.user, value: userJson);
+      
+      await cacheHelper.saveData(key: ApiKey.firstName, value: loginResponse.user.firstName);
+      await cacheHelper.saveData(key: ApiKey.lastName, value: loginResponse.user.lastName);
+      await cacheHelper.saveData(key: ApiKey.email, value: loginResponse.user.email);
+      await cacheHelper.saveData(key: ApiKey.image, value: loginResponse.user.image);
 
-        await cacheHelper.saveData(
+      await cacheHelper.saveData(
         key: ApiKey.slug,
         value: loginResponse.user.slug,
       );
-        return Right(loginResponse);
-      },
-    );
+      return Right(loginResponse);
+    });
   }
 
   @override
-  Future<Either<String, String>> verifyEmail(VerifyEmailRequestModel request) async {
+  Future<Either<String, String>> verifyEmail(
+    VerifyEmailRequestModel request,
+  ) async {
     final result = await apiConsumer.post<Map<String, dynamic>>(
       EndPoint.verifyEmail,
       data: request.toJson(),
     );
     return result.fold(
       (error) => Left(error),
-      (data) => Right(data['message']?.toString() ?? 'Email verified successfully'),
+      (data) =>
+          Right(data['message']?.toString() ?? 'Email verified successfully'),
     );
   }
 
@@ -99,20 +100,23 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     return result.fold(
       (error) => Left(error),
-      (data) => Right(data['message']?.toString() ?? 'Reset link sent successfully'),
+      (data) =>
+          Right(data['message']?.toString() ?? 'Reset link sent successfully'),
     );
   }
 
   @override
-  Future<Either<String, String>> resetPassword(ResetPasswordRequestModel request) async {
+  Future<Either<String, String>> resetPassword(
+    ResetPasswordRequestModel request,
+  ) async {
     final result = await apiConsumer.post<Map<String, dynamic>>(
       EndPoint.resetPassword,
       data: request.toJson(),
     );
     return result.fold(
       (error) => Left(error),
-      (data) => Right(data['message']?.toString() ?? 'Password reset successfully'),
+      (data) =>
+          Right(data['message']?.toString() ?? 'Password reset successfully'),
     );
   }
 }
-

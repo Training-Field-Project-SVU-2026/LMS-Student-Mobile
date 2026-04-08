@@ -55,7 +55,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     return result.fold(
       (error) => Left(error),
-      (data) => Right(UserModel.fromJson(data)),
+      (data) => Right(UserModel.fromJson(data['data'] ?? {})),
     );
   }
 
@@ -64,20 +64,19 @@ class ProfileRepositoryImpl implements ProfileRepository {
     required String slug,
     required String firstName,
     required String lastName,
-    required String email,
   }) async {
-    final result = await apiConsumer.patch<Map<String, dynamic>>(
+    final result = await apiConsumer.put<Map<String, dynamic>>(
       EndPoint.updateProfile(slug),
+
       data: {
         ApiKey.firstName: firstName,
         ApiKey.lastName: lastName,
-        ApiKey.email: email,
       },
     );
 
     return result.fold(
       (error) => Left(error),
-      (data) => Right(UserModel.fromJson(data)),
+      (data) => Right(UserModel.fromJson(data['data'] ?? {})),
     );
   }
 }

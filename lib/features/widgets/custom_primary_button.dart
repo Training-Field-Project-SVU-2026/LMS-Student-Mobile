@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/utils/get_responsive_size.dart';
 
 class CustomPrimaryButton extends StatelessWidget {
   final String text;
@@ -42,22 +43,25 @@ class CustomPrimaryButton extends StatelessWidget {
         context.colorScheme.onPrimary;
 
     return SizedBox(
-      width: width?.w ?? 278.w,
-      height: height?.h ?? 50.h,
+      width: width?.w ?? (context.isDesktop ? 320 : 278.w),
+      height: height?.h ?? (context.isDesktop ? 48 : 50.h),
       child: ElevatedButton(
         onPressed: onTap,
 
         style:
             style, //لو فيه ستايل اتبعت هياخده لو مفيش هيستخدم بتاع الثيم عادي
         child: IconTheme(
-          data: IconThemeData(color: defaultColor, size: iconSize?.w ?? 20.w),
+          data: IconThemeData(
+            color: defaultColor,
+            size: iconSize ?? (context.isDesktop ? 20 : 20.w),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // prefix icon if exists
               if (prefixIcon != null) ...[
                 prefixIcon!,
-                SizedBox(width: iconPadding?.w ?? 8.w),
+                SizedBox(width: iconPadding ?? (context.isDesktop ? 8 : 8.w)),
               ],
 
               Flexible(
@@ -72,7 +76,7 @@ class CustomPrimaryButton extends StatelessWidget {
 
               // suffix icon if exists
               if (suffixIcon != null) ...[
-                SizedBox(width: iconPadding?.w ?? 8.w),
+                SizedBox(width: iconPadding ?? (context.isDesktop ? 8 : 8.w)),
                 suffixIcon!,
               ],
             ],

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,44 +37,35 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
         // الـ Logo على الشمال
         title: Row(
           children: [
-            Icon(Icons.settings, color: Colors.green, size: 20.sp),
-            SizedBox(width: 6.w),
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'S',
-                    style: TextStyle(
-                      color: context.colorScheme.secondary,
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'kill',
-                    style: TextStyle(
-                      color: context.colorScheme.primary,
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'U',
-                    style: TextStyle(
-                      color: context.colorScheme.secondary,
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'p.',
-                    style: TextStyle(
-                      color: context.colorScheme.primary,
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
+            Container(
+              padding: EdgeInsets.all(6.w),
+              decoration: BoxDecoration(
+                color: context.colorScheme.surface.withValues(alpha: 0.7),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: context.colorScheme.primary.withValues(alpha: 0.5),
+                  width: 1.5.w,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: context.colorScheme.primary.withValues(alpha: 0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
                 ],
+              ),
+              child: Icon(
+                Icons.code_rounded,
+                size: 20.sp,
+                color: context.colorScheme.primary,
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Text(
+              context.tr('commit_ma3ana'),
+              style: context.textTheme.bodyLarge!.copyWith(
+                color: context.colorScheme.onSurface,
+                fontWeight: FontWeight.w900,
               ),
             ),
           ],
@@ -252,7 +245,10 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                                   onTap: () {
                                     context.push(
                                       AppRoutes.courseDetailsScreen,
-                                      extra: course.slug,
+                                      extra: {
+                                        'slug': course.slug,
+                                        'isEnrolled': course.isenrolled,
+                                      },
                                     );
                                   },
                                   child: CourseCardVertical(

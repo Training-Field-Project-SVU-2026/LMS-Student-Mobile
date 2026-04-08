@@ -11,6 +11,7 @@ import 'package:lms_student/features/auth/presentation/screens/register_screen/r
 import 'package:lms_student/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
+import 'package:lms_student/features/course/presentation/screens/course_after_enroll.dart';
 import 'package:lms_student/features/course/presentation/screens/view_all_course.dart';
 import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart';
 import 'package:lms_student/features/package_details/presentation/bloc/package_details_bloc.dart';
@@ -156,12 +157,35 @@ class RouterGenerator {
         path: AppRoutes.courseDetailsScreen,
         name: AppRoutes.courseDetailsScreen,
         builder: (context, state) {
+          String? slug;
+          bool isenroll = false;
+
+          if (state.extra is Map<String, dynamic>) {
+            final extraMap = state.extra as Map<String, dynamic>;
+            slug = extraMap['slug'] as String?;
+            isenroll = extraMap['isEnrolled'] as bool? ?? false;
+          } else if (state.extra is String) {
+            slug = state.extra as String;
+          }
+
+          log('Route received slug: $slug');
+
+          return BlocProvider(
+            create: (context) => sl<CoursedetailsBloc>(),
+            child: CourseDetailsScreen(slug: slug, isenroll: isenroll),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.courseAfterEnroll,
+        name: AppRoutes.courseAfterEnroll,
+        builder: (context, state) {
           final slug = state.extra as String?;
           log('Route received slug: $slug');
 
           return BlocProvider(
             create: (context) => sl<CoursedetailsBloc>(),
-            child: CourseDetailsScreen(slug: slug),
+            child: CourseAfterEnroll(slug: slug),
           );
         },
       ),

@@ -105,7 +105,10 @@ class _ViewAllCourseState extends State<ViewAllCourse> {
                       log('Course slug: ${course.slug}');
                       context.push(
                         AppRoutes.courseDetailsScreen,
-                        extra: course.slug,
+                        extra: {
+                          'slug': course.slug,
+                          'isEnrolled': course.isenrolled,
+                        },
                       );
                     },
                     borderRadius: BorderRadius.circular(12.r),

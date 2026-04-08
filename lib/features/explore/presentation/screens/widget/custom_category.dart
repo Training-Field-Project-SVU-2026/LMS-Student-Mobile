@@ -1,24 +1,29 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 
 class CustomCategory extends StatefulWidget {
   final String title;
   final String description;
-  final int courseslessons;
-  final int coursehours;
+  final String slug;
+  final int courses;
+  final double price;
   final List<String> category;
   const CustomCategory({
-    super.key,
+    Key? key,
     required this.title,
     required this.description,
-    required this.courseslessons,
-    required this.coursehours,
+    required this.slug,
+    required this.courses,
+    required this.price,
     required this.category,
-  });
+  }) : super(key: key);
 
   @override
   State<CustomCategory> createState() => _CustomCategoryState();
@@ -30,7 +35,7 @@ class _CustomCategoryState extends State<CustomCategory> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
       width: 332.w,
-      height: 262.h,
+      // height: 262.h,
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
         borderRadius: BorderRadius.circular(16.r),
@@ -108,7 +113,7 @@ class _CustomCategoryState extends State<CustomCategory> {
                   ),
                   SizedBox(width: 5.w),
                   Text(
-                    "${widget.courseslessons} Courses",
+                    "${widget.courses} Courses",
                     style: context.textTheme.labelMedium!.copyWith(
                       color: context.colorScheme.onSurface.withValues(
                         alpha: 0.7,
@@ -120,13 +125,10 @@ class _CustomCategoryState extends State<CustomCategory> {
               SizedBox(width: 5.w),
               Row(
                 children: [
-                  Icon(
-                    Icons.access_time_outlined,
-                    color: context.colorScheme.primary,
-                  ),
+                  Icon(Icons.attach_money, color: context.colorScheme.primary),
                   SizedBox(width: 5.w),
                   Text(
-                    "${widget.coursehours} Hours",
+                    " ${widget.price}",
                     style: context.textTheme.labelMedium!.copyWith(
                       color: context.colorScheme.onSurface.withValues(
                         alpha: 0.7,
@@ -137,13 +139,15 @@ class _CustomCategoryState extends State<CustomCategory> {
               ),
               Spacer(),
               CustomPrimaryButton(
-                text: "Join Now",
+                text: context.tr('join_now'),
                 width: 86,
                 height: 33,
                 textStyle: context.textTheme.labelLarge!.copyWith(
                   color: context.colorScheme.onPrimary,
                 ),
-                onTap: () {},
+                onTap: () {
+                  context.push(AppRoutes.packageDetails, extra: widget.slug);
+                },
               ),
             ],
           ),

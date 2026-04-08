@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,12 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
+import 'package:lms_student/core/services/local/cache_helper.dart';
+import 'package:lms_student/core/services/remote/endpoints.dart';
+
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
-import 'package:lms_student/features/home/widgets/custom_progress.dart';
-import 'package:lms_student/features/home/widgets/custom_streak.dart';
+
 import 'package:lms_student/features/widgets/course_card_horizontal.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:lms_student/features/widgets/custom_image.dart';
 
 class HomeScreenAfterLogin extends StatefulWidget {
   // final int completedVideos;
@@ -29,7 +33,10 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
   void initState() {
     super.initState();
     context.read<HomeBloc>().add(GetCoursesEvent());
+    context.read<HomeBloc>().add(GetMyEnrollmentsEvent());
   }
+
+  final user = CacheHelper.getDataString(key: ApiKey.user);
 
   @override
   Widget build(BuildContext context) {
@@ -38,133 +45,167 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
         SizedBox(height: 12.h),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 44.w,
-                    height: 44.h,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: context.colorScheme.secondary,
-                    ),
-                    child: Image.asset(
-                      'assets/images/download.jpg',
-                      width: 44.w,
-                      height: 44.h,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Column(
-                    children: [
-                      Text(
-                        context.tr('welcome_back_comma'),
-                        style: context.textTheme.bodySmall!.copyWith(
-                          color: context.colorScheme.onSurface.withValues(
-                            alpha: 0.6,
-                          ),
-                        ),
-                      ),
-
-                      Text(
-                        context.tr('user_mayoora'),
-                        style: context.textTheme.titleLarge!.copyWith(
-                          color: context.colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Icon(
-                    Icons.notifications_outlined,
-                    size: 24.sp,
-                    color: context.colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20.h),
-              CustomProgress(),
-              SizedBox(height: 25.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomStreak(
-                    hidtag: context.tr('current_streak'),
-                    body: context.tr('days'),
-                    colorContainer: Color(0xffFBE7D3),
-                    colorIcon: const Color(0xffF05A0C),
-                    icon: Icons.local_fire_department,
-                    daysOrHours: 5,
-                  ),
-                  CustomStreak(
-                    hidtag: context.tr('hours_today'),
-                    body: context.tr('hrs'),
-                    colorContainer: Color(0xffDBEAFE),
-                    colorIcon: Color(0xff2563EB),
-                    icon: Icons.access_time_outlined,
-                    daysOrHours: 3,
-                  ),
-                ],
-              ),
-              SizedBox(height: 25.h),
-              Text(
-                context.tr('my_courses'),
-                style: context.textTheme.titleLarge!.copyWith(
-                  color: context.colorScheme.onSurface,
+              Container(
+                width: 44.w,
+                height: 44.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: context.colorScheme.secondary,
+                ),
+                child: CustomImage(
+                  imagePath: jsonDecode(user!)['image'],
+                  width: 44.w,
+                  height: 44.h,
+                  borderRadius: BorderRadius.circular(22.r),
                 ),
               ),
-              SizedBox(height: 21.h),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.h),
-                    child: CourseCardHorizontal(
-                      title: 'title',
-                      instructorName: 'Mayar',
-                      imagePath:
-                          'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
-                      rating: 4.5,
-                      width: 200.w,
-                    ),
-                  );
-                },
-                itemCount: 5,
-              ),
-              SizedBox(height: 20.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              SizedBox(width: 12.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    context.tr('featured_courses'),
+                    context.tr('welcome_back_comma'),
+                    style: context.textTheme.bodySmall!.copyWith(
+                      color: context.colorScheme.onSurface.withValues(
+                        alpha: 0.6,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "${jsonDecode(user!)['first_name']} ${jsonDecode(user!)['last_name']}",
                     style: context.textTheme.titleLarge!.copyWith(
                       color: context.colorScheme.onSurface,
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      context.push(AppRoutes.viewAllCourse);
-                    },
-                    child: Text(
-                      context.tr('view_all'),
-                      style: context.textTheme.labelLarge!.copyWith(
-                        color: context.colorScheme.primary,
-                      ),
-                    ),
-                  ),
                 ],
               ),
-              SizedBox(height: 20.h),
+              const Spacer(),
+              Icon(
+                Icons.notifications_outlined,
+                size: 24.sp,
+                color: context.colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ],
           ),
         ),
+        // BlocBuilder للمسجل فيها (My Enrollments)
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: BlocBuilder<HomeBloc, HomeState>(
+            buildWhen: (previous, current) {
+              // فقط عندما تتغير حالات الـ MyEnrollments
+              return current is MyEnrollmentsLoading ||
+                  current is MyEnrollmentsError ||
+                  current is MyEnrollmentsLoaded;
+            },
+            builder: (context, state) {
+              if (state is MyEnrollmentsLoading) {
+                return SizedBox(
+                  height: 280.h,
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+              if (state is MyEnrollmentsError) {
+                return SizedBox(
+                  height: 280.h,
+                  child: Center(child: Text('Error : ${state.message}')),
+                );
+              }
+              if (state is MyEnrollmentsLoaded) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 25.h),
+                    Text(
+                      context.tr('my_courses'),
+                      style: context.textTheme.titleLarge!.copyWith(
+                        color: context.colorScheme.onSurface,
+                      ),
+                    ),
+                    SizedBox(height: 5.h),
+
+                    // هنا الحالة بتاعة الليست الفاضية
+                    if (state.enrollments.isEmpty)
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 50.h),
+
+                            Icon(
+                              Icons.error_outline,
+                              size: 64.sp,
+                              color: context.colorScheme.error,
+                            ),
+                            SizedBox(height: 12.h),
+                            Text(
+                              context.tr('no_courses_yet'),
+                              style: context.textTheme.bodyLarge,
+                            ),
+                            SizedBox(height: 8.h),
+                            Text(
+                              context.tr('explore_courses_to_start'),
+                              style: context.textTheme.bodySmall,
+                            ),
+                            SizedBox(height: 150.h),
+                          ],
+                        ),
+                      )
+                    else
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.enrollments.length,
+                        itemBuilder: (context, index) {
+                          final course = state.enrollments[index];
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.h),
+                            child: InkWell(
+                              onTap: () {
+                                log(
+                                  "tahaaaaaaaaaaaaaaaa22 ${course.instructorName}",
+                                );
+                                context.push(
+                                  AppRoutes.courseDetailsScreen,
+                                  extra: {
+                                    'slug': course.slug,
+                                    'isEnrolled': course.isenrolled,
+                                  },
+                                );
+                              },
+                              child: CourseCardHorizontal(
+                                progressPercentage: course.progress,
+                                progressValue: course.progress!.toDouble(),
+                                title: course.title,
+                                instructorName: course.instructorName,
+                                imagePath: course.image,
+                                rating: course.avgRating,
+                                width: 200.w,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    SizedBox(height: 20.h),
+                  ],
+                );
+              }
+              return CircularProgressIndicator();
+            },
+          ),
+        ),
+
+        // BlocBuilder للكورسات (Courses)
         Padding(
           padding: EdgeInsets.only(left: 20.w),
           child: BlocBuilder<HomeBloc, HomeState>(
+            buildWhen: (previous, current) {
+              return current is CoursesLoading ||
+                  current is CoursesError ||
+                  current is CoursesLoaded;
+            },
             builder: (context, state) {
               if (state is CoursesLoading) {
                 return SizedBox(
@@ -179,40 +220,76 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                 );
               }
               if (state is CoursesLoaded) {
-                log("courses from bloc: ${state.courses}");
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: IntrinsicHeight(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: state.courses.map((course) {
-                        return Padding(
-                          padding: EdgeInsets.only(right: 16.w),
-                          child: InkWell(
+                // log("courses from bloc: ${state.courses}");
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                context.tr('featured_courses'),
+                                style: context.textTheme.titleLarge!.copyWith(
+                                  color: context.colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
+                          ),
+                          InkWell(
                             onTap: () {
-                              log('Course slug: ${course.slug}');
-                              context.push(
-                                AppRoutes.courseDetailsScreen,
-                                extra: course.slug,
-                              );
+                              context.push(AppRoutes.viewAllCourse);
                             },
-                            child: CourseCardVertical(
-                              title: course.title,
-                              price: course.price,
-                              imagePath: course.image,
-                              rating: course.avgRating,
-                              totalStudents: course.studentsCount,
-                              description: course.description,
-                              instructorName: course.instructorName,
+                            child: Text(
+                              context.tr('view_all'),
+                              style: context.textTheme.labelLarge!.copyWith(
+                                color: context.colorScheme.primary,
+                              ),
                             ),
                           ),
-                        );
-                      }).toList(),
+                        ],
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 10.h),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: state.courses.map((course) {
+                            return Padding(
+                              padding: EdgeInsets.only(right: 16.w),
+                              child: InkWell(
+                                onTap: () {
+                                  log('Course slugggggggggg: ${course.slug}');
+                                  context.push(
+                                    AppRoutes.courseDetailsScreen,
+                                    extra: {
+                                      'slug': course.slug,
+                                      'isEnrolled': course.isenrolled,
+                                    },
+                                  );
+                                },
+                                child: CourseCardVertical(
+                                  title: course.title,
+                                  price: course.price,
+                                  imagePath: course.image,
+                                  rating: course.avgRating,
+                                  totalStudents: course.studentsCount,
+                                  description: course.description,
+                                  instructorName: course.instructorName,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               }
-
               return CircularProgressIndicator();
             },
           ),

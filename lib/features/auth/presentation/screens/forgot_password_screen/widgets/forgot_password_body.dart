@@ -9,6 +9,7 @@ import 'package:lms_student/features/auth/utils/auth_validation.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:lms_student/core/utils/get_responsive_size.dart';
 
 class ForgotPasswordBody extends StatelessWidget {
   const ForgotPasswordBody({super.key});
@@ -29,9 +30,7 @@ class ForgotPasswordBody extends StatelessWidget {
 
           context.go(
             AppRoutes.resetPasswordScreen,
-            extra: {
-              'email': authBloc.emailController.text.trim(),
-            },
+            extra: {'email': authBloc.emailController.text.trim()},
           );
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -42,178 +41,97 @@ class ForgotPasswordBody extends StatelessWidget {
           );
         }
       },
-      child: Column(
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 280.h,
-                decoration: BoxDecoration(
-                  color: context.colorScheme.primary,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(40.r),
-                    bottomRight: Radius.circular(40.r),
-                  ),
-                ),
-                child: SafeArea(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 10.h),
-                      // Logo
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.terminal_rounded,
-                            color: Colors.white,
-                            size: 24.w,
-                          ),
-                          SizedBox(width: 8.w),
-                          Text(
-                            context.tr('commit_ma3ana'),
-                            style: context.textTheme.labelLarge?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.9),
-                              letterSpacing: 2,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: -40.h,
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: Container(
-                    height: 120.h,
-                    width: 120.h,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(20.w),
-                      child: Image.asset(
-                        'assets/images/elkott.jpg',
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => Icon(
-                          Icons.lock_reset_rounded,
-                          color: context.colorScheme.primary,
-                          size: 50.w,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+      child: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: context.isDesktop ? 80 : 36.w,
+            vertical: context.isDesktop ? 80 : 56.h,
           ),
-
-          SizedBox(height: 60.h),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 28.w),
-              child: Form(
-                key: authBloc.forgetPasswordFormKey,
-                child: Column(
-                  children: [
-                    Text(
-                      context.tr('forgot_password_question'),
-                      style: context.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: context.colorScheme.onSurface,
-                      ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: context.isDesktop ? 450 : 400.w,
+            ),
+            child: Form(
+              key: authBloc.forgetPasswordFormKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    context.tr('forgot_password_question'),
+                    style: context.textTheme.displaySmall!.copyWith(
+                      color: context.colorScheme.onSurface,
+                      fontWeight: FontWeight.w800,
                     ),
-                    SizedBox(height: 10.h),
-                    Text(
-                      context.tr('no_worries_otp'),
-                      textAlign: TextAlign.center,
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        color: context.colorScheme.onSurfaceVariant,
-                        height: 1.5,
-                      ),
+                  ),
+                  SizedBox(height: 12.h),
+                  Text(
+                    context.tr('no_worries_otp'),
+                    style: context.textTheme.bodyLarge!.copyWith(
+                      color: context.colorScheme.onSurfaceVariant,
                     ),
-                    SizedBox(height: 40.h),
+                  ),
+                  SizedBox(height: 48.h),
 
-                    CustomTextFormField(
-                      controller: authBloc.emailController,
-                      hintText: context.tr('enter_your_email'),
-                      prefixIcon: Icon(
-                        Icons.alternate_email_rounded,
-                        color: context.colorScheme.primary,
-                        size: 20.w,
-                      ),
-                      validator: (value) => validateEmail(value),
+                  CustomTextFormField(
+                    controller: authBloc.emailController,
+                    hintText: context.tr('enter_your_email'),
+                    prefixIcon: Icon(
+                      Icons.alternate_email_rounded,
+                      size: context.isDesktop ? 22 : 18.w,
                     ),
+                    validator: (value) => validateEmail(value),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
 
-                    SizedBox(height: 32.h),
+                  SizedBox(height: 32.h),
 
-                    // Button
-                    BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        final isLoading = state is AuthLoading;
-                        return CustomPrimaryButton(
-                          text: isLoading ? context.tr('sending') : context.tr('send_otp'),
-                          onTap: isLoading
-                              ? null
-                              : () {
-                                  FocusScope.of(context).unfocus();
-                                  authBloc.add(
-                                    ForgotPasswordEvent(
-                                      email: authBloc.emailController.text
-                                          .trim(),
-                                    ),
-                                  );
-                                },
-                        );
-                      },
-                    ),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      final isLoading = state is AuthLoading;
+                      return CustomPrimaryButton(
+                        text: isLoading
+                            ? context.tr('sending')
+                            : context.tr('send_otp'),
+                        onTap: isLoading
+                            ? null
+                            : () {
+                                FocusScope.of(context).unfocus();
+                                authBloc.add(
+                                  ForgotPasswordEvent(
+                                    email: authBloc.emailController.text.trim(),
+                                  ),
+                                );
+                              },
+                        width: double.infinity,
+                      );
+                    },
+                  ),
 
-                    SizedBox(height: 20.h),
+                  SizedBox(height: 24.h),
 
-                    // Back Button
-                    TextButton.icon(
+                  Center(
+                    child: TextButton.icon(
                       onPressed: () => context.go(AppRoutes.loginScreen),
-                      icon: Icon(Icons.arrow_back_ios_new_rounded, size: 14.w),
+                      icon: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: context.isDesktop ? 22 : 18.w,
+                      ),
                       label: Text(context.tr('back_to_login')),
                       style: TextButton.styleFrom(
                         foregroundColor: context.colorScheme.outline,
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 14.sp,
+                          fontSize: context.isDesktop ? 14 : 12.sp,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
-
-          // Footer بسيط جداً
-          Padding(
-            padding: EdgeInsets.only(bottom: 20.h),
-            child: Text(
-              context.tr('commit_ma3ana_build_consistency'),
-              style: context.textTheme.labelSmall?.copyWith(
-                color: context.colorScheme.outline.withValues(alpha: 0.5),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

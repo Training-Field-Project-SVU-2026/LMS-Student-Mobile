@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -20,64 +21,40 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _logoFadeAnimation;
-  late Animation<double> _logoScaleAnimation;
-  late Animation<double> _nameFadeAnimation;
-  late Animation<double> _descFadeAnimation;
-  late Animation<double> _exitAnimation;
-
-  bool _isDataReady = false;
-  SplashState? _finalState;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
+  late DateTime _startTime;
 
   @override
   void initState() {
     super.initState();
+    _startTime = DateTime.now();
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 4000),
+      duration: const Duration(milliseconds: 4000),
     );
 
-    _logoFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.3, curve: Curves.easeIn),
+        curve: const Interval(0.0, 0.7, curve: Curves.easeIn),
       ),
     );
 
-    _logoScaleAnimation = Tween<double>(begin: 0.3, end: 1.0).animate(
+    _scaleAnimation = Tween<double>(begin: 0.95, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.4, curve: Curves.easeOutBack),
+        curve: const Interval(0.0, 0.7, curve: Curves.easeOutBack),
       ),
     );
 
-    _nameFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Interval(0.35, 0.65, curve: Curves.easeIn),
-      ),
-    );
+    _controller.forward();
 
-    _descFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Interval(0.55, 0.85, curve: Curves.easeIn),
-      ),
-    );
-
-    _exitAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Interval(0.9, 1.0, curve: Curves.easeOut),
-      ),
-    );
-
-    _controller.animateTo(0.85).then((_) {
-      if (_isDataReady && _finalState != null) {
-        _controller.forward().then((_) {
-          if (mounted) _handleNavigation(context, _finalState!);
-        });
+    // Start with data loading
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<SplashBloc>().add(SplashStarted());
       }
     });
   }
@@ -90,121 +67,137 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocListener<SplashBloc, SplashState>(
       listener: (context, state) {
         if (state is SplashLoaded || state is SplashError) {
-          _isDataReady = true;
-          _finalState = state;
+          final timeSinceStart =
+              DateTime.now().difference(_startTime).inMilliseconds;
+          // Ensure a minimum splash duration of 3 seconds for better UX
+          final remainingDelay = (3000 - timeSinceStart).clamp(0, 3000);
 
-          if (!_controller.isAnimating) {
-            if (_controller.value < 1.0) {
-              _controller.forward().then((_) {
-                if (mounted) _handleNavigation(context, state);
-              });
-            } else {
-              _handleNavigation(context, state);
-            }
-          }
+          Future.delayed(Duration(milliseconds: remainingDelay), () {
+            if (mounted) _handleNavigation(context, state);
+          });
         }
       },
       child: Scaffold(
-        backgroundColor: context.colorScheme.primary,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return Opacity(
-                    opacity: _logoFadeAnimation.value * _exitAnimation.value,
-                    child: Transform.scale(
-                      scale: _logoScaleAnimation.value,
-                      child: Container(
-                        width: 150.w,
-                        height: 150.h,
+        backgroundColor: theme.colorScheme.surface,
+        body: Stack(
+          children: [
+            // Top Right Decorative Circle
+            Positioned(
+              top: -150.h,
+              right: -100.w,
+              child: Container(
+                width: 450.w,
+                height: 450.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      theme.colorScheme.primary.withValues(alpha: 0.18),
+                      theme.colorScheme.primary.withValues(alpha: 0.05),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // Bottom Left Decorative Circle
+            Positioned(
+              bottom: -200.h,
+              left: -150.w,
+              child: Container(
+                width: 600.w,
+                height: 600.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      theme.colorScheme.secondary.withValues(alpha: 0.15),
+                      theme.colorScheme.secondary.withValues(alpha: 0.05),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // Center Content
+            Center(
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: ScaleTransition(
+                  scale: _scaleAnimation,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Glassmorphic Logo Container
+                      Container(
+                        padding: EdgeInsets.all(32.w),
                         decoration: BoxDecoration(
+                          color: context.colorScheme.surface.withValues(
+                            alpha: 0.7,
+                          ),
                           shape: BoxShape.circle,
-                          color: context.colorScheme.surface,
+                          border: Border.all(
+                            color: context.colorScheme.surface,
+                            width: 2.5.w,
+                          ),
                           boxShadow: [
                             BoxShadow(
-                              color: context.colorScheme.onSurface.withValues(
-                                alpha: 0.3,
+                              color: context.colorScheme.primary.withValues(
+                                alpha: 0.1,
                               ),
-                              blurRadius: 20,
-                              offset: Offset(0, 10),
+                              blurRadius: 40,
+                              offset: const Offset(0, 15),
                             ),
                           ],
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/splash2.jpg'),
-                            fit: BoxFit.cover,
+                        ),
+                        child: ClipOval(
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                            child: Icon(
+                              Icons.code_rounded,
+                              size: 85.sp,
+                              color: context.colorScheme.primary,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(height: 30),
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return Opacity(
-                    opacity: _nameFadeAnimation.value * _exitAnimation.value,
-                    child: Transform.translate(
-                      offset: Offset(0, 20 * (1 - _nameFadeAnimation.value)),
-                      child: Text(
-                        context.tr('splash_title'),
-                        style: context.textTheme.headlineMedium!.copyWith(
-                          color: context.colorScheme.onPrimary,
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(
-                              color: context.colorScheme.onSurface.withValues(
-                                alpha: 0.3,
-                              ),
-                              blurRadius: 10,
-                              offset: Offset(2, 2),
-                            ),
-                          ],
+                      SizedBox(height: 48.h),
+                      // Main Title
+                      Text(
+                        context.tr('commit_ma3ana'),
+                        style: context.textTheme.displaySmall!.copyWith(
+                          color: context.colorScheme.onSurface,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 2.0.sp,
+                          fontSize: 28.sp,
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(height: 15),
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return Opacity(
-                    opacity: _descFadeAnimation.value * _exitAnimation.value,
-                    child: Transform.translate(
-                      offset: Offset(0, 20 * (1 - _descFadeAnimation.value)),
-                      child: Text(
-                        context.tr('splash_desc'),
-                        style: context.textTheme.bodyMedium!.copyWith(
-                          color: context.colorScheme.onPrimary,
-                          fontSize: 18,
-                          shadows: [
-                            Shadow(
-                              color: context.colorScheme.onSurface.withValues(
-                                alpha: 0.2,
-                              ),
-                              blurRadius: 5,
-                              offset: Offset(1, 1),
-                            ),
-                          ],
+                      SizedBox(height: 12.h),
+                      // Subtitle
+                      Text(
+                        context.tr('commit_ma3ana_build_consistency'),
+                        style: context.textTheme.labelMedium!.copyWith(
+                          color: context.colorScheme.onSurfaceVariant
+                              .withValues(alpha: 0.6),
+                          letterSpacing: 1.5.sp, // Adjusted from 6.0 for better readability
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12.sp,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                    ),
-                  );
-                },
+                    ],
+                  ),
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -214,8 +207,10 @@ class _SplashScreenState extends State<SplashScreen>
     if (state is SplashLoaded) {
       context.go(AppRoutes.rootAfterLogin);
     } else if (state is SplashError) {
-      context.go(AppRoutes.loginScreen);
-      if (state.message != null && state.message!.isNotEmpty) {
+      if (state.message != null &&
+          state.message != "No token found" &&
+          state.message != "Session expired" &&
+          state.message!.isNotEmpty) {
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -224,16 +219,6 @@ class _SplashScreenState extends State<SplashScreen>
             message: state.message!,
             onRetry: () {
               context.pop();
-              _isDataReady = false;
-              _finalState = null;
-              _controller.reset();
-              _controller.animateTo(0.85).then((_) {
-                if (_isDataReady && _finalState != null) {
-                  _controller.forward().then((_) {
-                    if (mounted) _handleNavigation(context, _finalState!);
-                  });
-                }
-              });
               context.read<SplashBloc>().add(SplashStarted());
             },
           ),
@@ -249,6 +234,7 @@ class _SplashScreenState extends State<SplashScreen>
         } else if (state.isVerified == false) {
           msg = context.tr('account_unverified');
         }
+
         if (msg != context.tr('authentication_failed')) {
           ScaffoldMessenger.of(
             context,
@@ -259,3 +245,4 @@ class _SplashScreenState extends State<SplashScreen>
     }
   }
 }
+

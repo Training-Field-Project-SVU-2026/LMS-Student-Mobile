@@ -9,7 +9,7 @@ class CacheHelper {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  String? getDataString({required String key}) {
+  static String? getDataString({required String key}) {
     return sharedPreferences.getString(key);
   }
 
@@ -89,8 +89,11 @@ class CacheHelper {
     await removeData(key: ApiKey.accessToken);
     await removeData(key: ApiKey.refreshToken);
     await removeData(key: ApiKey.user);
-    await removeData(key: ApiKey.isLoggedIn);
-    await removeData(key: ApiKey.slug);
+    await removeData(key: ApiKey.firstName);
+    await removeData(key: ApiKey.lastName);
+    await removeData(key: ApiKey.email);
     await removeData(key: ApiKey.image);
+    await removeData(key: ApiKey.slug);
+    await removeData(key: ApiKey.isLoggedIn);
   }
 }

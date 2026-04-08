@@ -58,7 +58,6 @@ class CustomStreak extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // SizedBox(height: 16.h),
               Text(
                 hidtag,
                 style: context.textTheme.labelSmall!.copyWith(
@@ -66,11 +65,10 @@ class CustomStreak extends StatelessWidget {
                   color: context.colorScheme.onSurface.withValues(alpha: 0.3),
                 ),
               ),
-              // SizedBox(height: 4.h),
               Text(
                 "$daysOrHours $body",
                 style: context.textTheme.labelMedium!.copyWith(
-                  fontSize: 18.sp,
+                  fontSize: 15.sp,
                   color: context.colorScheme.onSurface,
                 ),
               ),

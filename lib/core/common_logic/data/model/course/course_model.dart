@@ -16,8 +16,10 @@ class CourseModel {
   double? avgRating;
   int? ratingsCount;
   int? studentsCount;
-  // int? courseCount;
-  // TODO :: we need from omniya add it
+  int? progress;
+  String? enrollStatus;
+  String? enrolledAt;
+  bool? isenrolled;
 
   CourseModel({
     // this.id,
@@ -36,7 +38,10 @@ class CourseModel {
     this.avgRating,
     this.ratingsCount,
     this.studentsCount,
-    // this.courseCount,
+    this.progress,
+    this.enrollStatus,
+    this.enrolledAt,
+    this.isenrolled,
   });
 
   factory CourseModel.fromJson(Map<String, dynamic> json) {
@@ -60,15 +65,17 @@ class CourseModel {
       instructorImage: json['instructor_image'],
       avgRating: double.tryParse(json['avg_rating']?.toString() ?? '') ?? 0.0,
       ratingsCount: int.tryParse(json['ratings_count']?.toString() ?? '') ?? 0,
-      // courseCount: int.tryParse(json['ratings_count']?.toString() ?? '') ?? 500,
       studentsCount: int.tryParse(json['course_count']?.toString() ?? '') ?? 0,
       instructorBio: json['instructor_bio'] ?? "",
+      progress: json['progress'],
+      enrollStatus: json['status'],
+      enrolledAt: json['enrolled_at'],
+      isenrolled: json['is_enrolled'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      // 'id': id,
       'title': title,
       'slug': slug,
       'description': description,
@@ -84,7 +91,10 @@ class CourseModel {
       'avg_rating': avgRating.toString(),
       'ratings_count': ratingsCount.toString(),
       'students_count': studentsCount.toString(),
-      // 'course_count': courseCount.toString(),
+      'progress': progress,
+      'status': enrollStatus,
+      'enrolled_at': enrolledAt,
+      'is_enrolled': isenrolled,
     };
   }
 }

@@ -28,5 +28,22 @@ class CoursedetailsBloc extends Bloc<CoursedetailsEvent, CoursedetailsState> {
         emit(CourseError(message: 'error: ${e.toString()}'));
       }
     });
+
+    on<EnrollCourse>((event, emit) async {
+      emit(CourseEnrollLoading());
+      try {
+        final result = await courseRepository.enrollCourseBySlug(event.slug);
+        result.fold(
+          (error) {
+            emit(CourseEnrollError(message: error));
+          },
+          (course) {
+            emit(CourseEnrollLoaded(course: course.data));
+          },
+        );
+      } catch (e) {
+        emit(CourseEnrollError(message: 'error: ${e.toString()}'));
+      }
+    });
   }
 }
