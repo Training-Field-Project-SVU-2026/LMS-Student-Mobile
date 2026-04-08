@@ -101,8 +101,8 @@
   "account_unverified": "Please verify your email address.",
   "view_course": "All Course",
   "view_course_notFound": "There Are No Courses",
-  "view_course_nothing_added":  "No Courses have been added yet",
-  "about_this_course":  "About this course",
+  "view_course_nothing_added": "No Courses have been added yet",
+  "about_this_course": "About this course",
   "instructor": "Instructor",
   "enroll_success_title": "Success",
   "enroll_success_message": "Successfully enrolled in the course",
@@ -129,7 +129,7 @@
   "verify_email_resend_otp": "Please verify your email. Click \"Resend OTP\" to get a new code.",
   "please_enter_full_otp": "Please enter a 6-digit OTP code.",
   "saving": "Saving...",
-  "save_password": "Save Password"
+  "save_password": "Save Password",
+  "no_courses_yet": "No courses enrolled yet",
+  "explore_courses_to_start": "Explore courses and start your learning journey now"
 }
-
-

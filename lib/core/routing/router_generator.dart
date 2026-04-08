@@ -157,12 +157,14 @@ class RouterGenerator {
         path: AppRoutes.courseDetailsScreen,
         name: AppRoutes.courseDetailsScreen,
         builder: (context, state) {
-          final slug = state.extra as String?;
+          final extra = state.extra as Map<String, dynamic>?;
+          final slug = extra?['slug'] as String?;
+          final isenroll = extra?['isEnrolled'] as bool? ?? false;
           log('Route received slug: $slug');
 
           return BlocProvider(
             create: (context) => sl<CoursedetailsBloc>(),
-            child: CourseDetailsScreen(slug: slug),
+            child: CourseDetailsScreen(slug: slug, isenroll: isenroll),
           );
         },
       ),

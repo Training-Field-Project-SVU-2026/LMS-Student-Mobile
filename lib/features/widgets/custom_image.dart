@@ -21,16 +21,13 @@ class CustomImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return AspectRatio(
       aspectRatio: aspectRatio ?? 16 / 10,
       child: ClipRRect(
         borderRadius:
             borderRadius ?? BorderRadius.vertical(top: Radius.circular(12.r)),
         child: CachedNetworkImage(
-          imageUrl:
-              imagePath ??
-              'https://i.pinimg.com/736x/77/97/7e/77977e0f51ec76e51b1360e5f0685d13.jpg',
+          imageUrl: imagePath ?? '',
           width: width?.w,
           height: height?.h,
           fit: BoxFit.cover,
@@ -39,13 +36,11 @@ class CustomImage extends StatelessWidget {
             child: const Center(child: CircularProgressIndicator()),
           ),
           errorWidget: (context, url, error) {
-            return Container(
-              color: context.colorScheme.onSurfaceVariant,
-              child: Icon(
-                Icons.broken_image,
-                color: context.colorScheme.outline,
-                size: 40,
-              ),
+            return Image.asset(
+              "assets/images/default_image.jpeg",
+              width: width?.w,
+              height: height?.h,
+              fit: BoxFit.cover,
             );
           },
         ),

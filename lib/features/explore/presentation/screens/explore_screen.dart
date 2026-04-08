@@ -200,12 +200,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         children: state.courses.map((course) {
                           return InkWell(
                             onTap: () {
-                              log(
-                                " nammmmmmmmmmmmmmmme ${course.instructorName}",
-                              );
+                              log(" nammmmmmmmmmmmmmmme ${course.isenrolled}");
                               context.push(
                                 AppRoutes.courseDetailsScreen,
-                                extra: course.slug,
+                                extra: {
+                                  'slug': course.slug,
+                                  'isEnrolled': course.isenrolled,
+                                },
                               );
                             },
                             child: CourseCardVertical(

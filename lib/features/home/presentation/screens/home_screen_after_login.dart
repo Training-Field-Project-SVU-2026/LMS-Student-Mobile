@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,12 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
+import 'package:lms_student/core/services/local/cache_helper.dart';
+import 'package:lms_student/core/services/remote/endpoints.dart';
 
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 
 import 'package:lms_student/features/widgets/course_card_horizontal.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:lms_student/features/widgets/custom_image.dart';
 
 class HomeScreenAfterLogin extends StatefulWidget {
   // final int completedVideos;
@@ -32,12 +36,60 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
     context.read<HomeBloc>().add(GetMyEnrollmentsEvent());
   }
 
+  final user = CacheHelper.getDataString(key: ApiKey.user);
+
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
         SizedBox(height: 12.h),
-
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Row(
+            children: [
+              Container(
+                width: 44.w,
+                height: 44.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: context.colorScheme.secondary,
+                ),
+                child: CustomImage(
+                  imagePath: jsonDecode(user!)['image'],
+                  width: 44.w,
+                  height: 44.h,
+                  borderRadius: BorderRadius.circular(22.r),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    context.tr('welcome_back_comma'),
+                    style: context.textTheme.bodySmall!.copyWith(
+                      color: context.colorScheme.onSurface.withValues(
+                        alpha: 0.6,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "${jsonDecode(user!)['first_name']} ${jsonDecode(user!)['last_name']}",
+                    style: context.textTheme.titleLarge!.copyWith(
+                      color: context.colorScheme.onSurface,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Icon(
+                Icons.notifications_outlined,
+                size: 24.sp,
+                color: context.colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
+            ],
+          ),
+        ),
         // BlocBuilder للمسجل فيها (My Enrollments)
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -62,55 +114,9 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                 );
               }
               if (state is MyEnrollmentsLoaded) {
-                log("courses from bloc taha: ${state.enrollments.first.title}");
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 44.w,
-                          height: 44.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: context.colorScheme.secondary,
-                          ),
-                          child: Image.asset(
-                            'assets/images/download.jpg',
-                            width: 44.w,
-                            height: 44.h,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        SizedBox(width: 12.w),
-                        Column(
-                          children: [
-                            Text(
-                              context.tr('welcome_back_comma'),
-                              style: context.textTheme.bodySmall!.copyWith(
-                                color: context.colorScheme.onSurface.withValues(
-                                  alpha: 0.6,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              context.tr('user_mayoora'),
-                              style: context.textTheme.titleLarge!.copyWith(
-                                color: context.colorScheme.onSurface,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        Icon(
-                          Icons.notifications_outlined,
-                          size: 24.sp,
-                          color: context.colorScheme.onSurface.withValues(
-                            alpha: 0.6,
-                          ),
-                        ),
-                      ],
-                    ),
                     SizedBox(height: 25.h),
                     Text(
                       context.tr('my_courses'),
@@ -118,61 +124,67 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                         color: context.colorScheme.onSurface,
                       ),
                     ),
-                    SizedBox(height: 15.h),
-                    // استخدم Column بدلاً من ListView
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final course = state.enrollments[index];
-                        return Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.h),
-                          child: InkWell(
-                            onTap: () {
-                              log(
-                                "is enrolledddddddddddddddddddd: ${course.isenrolled}",
-                              );
-                              context.push(
-                                AppRoutes.courseAfterEnroll,
-                                extra: course.slug,
-                              );
-                            },
-                            child: CourseCardHorizontal(
-                              title: course.title,
-                              instructorName: course.instructorName,
-                              imagePath: course.image,
-                              rating: course.avgRating,
-                              width: 200.w,
+                    SizedBox(height: 5.h),
+
+                    // هنا الحالة بتاعة الليست الفاضية
+                    if (state.enrollments.isEmpty)
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 50.h),
+
+                            Icon(
+                              Icons.error_outline,
+                              size: 64.sp,
+                              color: context.colorScheme.error,
                             ),
-                          ),
-                        );
-                      },
-                      itemCount: state.enrollments.length,
-                    ),
-                    SizedBox(height: 20.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          context.tr('featured_courses'),
-                          style: context.textTheme.titleLarge!.copyWith(
-                            color: context.colorScheme.onSurface,
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            context.push(AppRoutes.viewAllCourse);
-                          },
-                          child: Text(
-                            context.tr('view_all'),
-                            style: context.textTheme.labelLarge!.copyWith(
-                              color: context.colorScheme.primary,
+                            SizedBox(height: 12.h),
+                            Text(
+                              context.tr('no_courses_yet'),
+                              style: context.textTheme.bodyLarge,
                             ),
-                          ),
+                            SizedBox(height: 8.h),
+                            Text(
+                              context.tr('explore_courses_to_start'),
+                              style: context.textTheme.bodySmall,
+                            ),
+                            SizedBox(height: 150.h),
+                          ],
                         ),
-                      ],
-                    ),
+                      )
+                    else
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.enrollments.length,
+                        itemBuilder: (context, index) {
+                          final course = state.enrollments[index];
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.h),
+                            child: InkWell(
+                              onTap: () {
+                                log(
+                                  "tahaaaaaaaaaaaaaaaa22 ${course.instructorName}",
+                                );
+                                context.push(
+                                  AppRoutes.courseAfterEnroll,
+                                  extra: course.slug,
+                                );
+                              },
+                              child: CourseCardHorizontal(
+                                title: course.title,
+                                instructorName: course.instructorName,
+                                imagePath: course.image,
+                                rating: course.avgRating,
+                                width: 200.w,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     SizedBox(height: 20.h),
+                    // باقي الكود (Featured Courses section)
                   ],
                 );
               }
