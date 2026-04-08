@@ -343,9 +343,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                     textStyle: context.textTheme.labelLarge!
                                         .copyWith(fontSize: 16.sp),
                                     onTap: () {
+                                      context.read<CoursedetailsBloc>().add(
+                                        EnrollCourse(slug: course.slug),
+                                      );
                                       context.pushReplacement(
                                         AppRoutes.courseAfterEnroll,
-                                        extra: state.course.slug,
+                                        extra: course.slug,
                                       );
                                     },
                                   ),

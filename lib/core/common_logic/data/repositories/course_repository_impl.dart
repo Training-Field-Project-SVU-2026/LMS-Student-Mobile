@@ -49,4 +49,14 @@ class CourseRepositoryImpl implements CourseRepository {
       fromJson: (json) => ResponseCourseModel.fromJson(json),
     );
   }
+
+  @override
+  Future<Either<String, ResponseCourseBySlugModel>> enrollCourseBySlug(
+    String slug,
+  ) async {
+    return await apiConsumer.post<ResponseCourseBySlugModel>(
+      '${EndPoint.enrollCourse}$slug/',
+      fromJson: (json) => ResponseCourseBySlugModel.fromJson(json),
+    );
+  }
 }

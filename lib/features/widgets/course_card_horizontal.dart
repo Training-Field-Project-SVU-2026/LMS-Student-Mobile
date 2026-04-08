@@ -66,6 +66,7 @@ class CourseCardHorizontal extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 5.h),
                       Text(
                         title,
                         style: context.textTheme.titleMedium?.copyWith(
@@ -78,12 +79,49 @@ class CourseCardHorizontal extends StatelessWidget {
                       Text(
                         instructorName,
                         maxLines: 1,
-                        style: context.textTheme.labelMedium?.copyWith(
+                        style: context.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.normal,
                           color: context.colorScheme.onSurfaceVariant,
                         ),
                       ),
-                      SizedBox(height: 14.h),
+                      SizedBox(height: 5.h),
+                      // progress
+                      if (progressValue != null &&
+                          progressPercentage != null) ...[
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Progress',
+                                  style: context.textTheme.labelSmall,
+                                ),
+                                Text(
+                                  '$progressPercentage%',
+                                  style: context.textTheme.labelSmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8.h),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.r),
+                              child: LinearProgressIndicator(
+                                value: progressValue,
+                                minHeight: 6.h,
+                                backgroundColor: context.colorScheme.primary
+                                    .withValues(alpha: 0.1),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  context.colorScheme.primary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      SizedBox(height: 10.h),
 
                       if (rating != null)
                         Row(
@@ -104,42 +142,6 @@ class CourseCardHorizontal extends StatelessWidget {
                 ),
               ],
             ),
-
-            SizedBox(height: 16.h),
-
-            // progress
-            if (progressValue != null && progressPercentage != null) ...[
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Progress', style: context.textTheme.labelSmall),
-                      Text(
-                        '$progressPercentage%',
-                        style: context.textTheme.labelSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.r),
-                    child: LinearProgressIndicator(
-                      value: progressValue,
-                      minHeight: 6.h,
-                      backgroundColor: context.colorScheme.primary.withValues(
-                        alpha: 0.1,
-                      ),
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        context.colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
           ],
         ),
       ),

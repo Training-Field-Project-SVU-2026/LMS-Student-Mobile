@@ -16,3 +16,12 @@ class GetCourseDetails extends CoursedetailsEvent {
   @override
   List<Object> get props => [slug];
 }
+
+class EnrollCourse extends CoursedetailsEvent {
+  final String slug;
+
+  const EnrollCourse({required this.slug});
+
+  @override
+  List<Object> get props => [slug];
+}

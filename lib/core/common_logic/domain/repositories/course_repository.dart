@@ -15,5 +15,8 @@ abstract class CourseRepository {
   Future<Either<String, ResponseCourseBySlugModel>> getCourseBySlug(
     String slug,
   );
+  Future<Either<String, ResponseCourseBySlugModel>> enrollCourseBySlug(
+    String slug,
+  );
   Future<Either<String, List<CourseModel>>> searchInCourses(String query);
 }
