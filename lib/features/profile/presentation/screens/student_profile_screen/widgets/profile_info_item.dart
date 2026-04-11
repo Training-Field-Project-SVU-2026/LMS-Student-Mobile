@@ -16,45 +16,38 @@ class ProfileInfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                label.toUpperCase(),
-                style: context.textTheme.labelMedium?.copyWith(
-                  color: context.colorScheme.onSurfaceVariant.withValues(
-                    alpha: 0.6,
-                  ),
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.2,
-                ),
-              ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: Text(
-                  value.replaceAll('@', '@\u200B').replaceAll('.', '.\u200B'),
-                  textAlign: TextAlign.right,
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: context.colorScheme.onSurface,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: context.colorScheme.surfaceContainerHighest.withValues(
+          alpha: 0.3,
         ),
-        if (hasDivider)
-          Divider(
-            height: 1,
-            indent: 16.w,
-            endIndent: 16.w,
-            color: context.colorScheme.outline.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label.toUpperCase(),
+            style: context.textTheme.labelSmall?.copyWith(
+              color: context.colorScheme.onSurfaceVariant.withValues(
+                alpha: 0.7,
+              ),
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0.5,
+            ),
           ),
-      ],
+          SizedBox(height: 8.h),
+          Text(
+            value,
+            style: context.textTheme.titleMedium?.copyWith(
+              color: context.colorScheme.primary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

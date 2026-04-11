@@ -59,7 +59,7 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<ProfileRepository>(
     () => ProfileRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
-  sl.registerFactory(
+  sl.registerLazySingleton(
     () => ProfileBloc(profileRepository: sl(), cacheHelper: sl()),
   );
 

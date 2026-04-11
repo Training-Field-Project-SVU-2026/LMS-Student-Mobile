@@ -138,5 +138,12 @@
   "save_changes": "Save Changes",
   "cancel": "Cancel",
   "no_courses_yet": "No courses enrolled yet",
-  "explore_courses_to_start": "Explore courses and start your learning journey now"
+  "explore_courses_to_start": "Explore courses and start your learning journey now",
+  "settings": "Settings",
+  "manage_account_desc": "Manage your account and learning experience",
+  "security": "Security",
+  "sign_out": "Sign Out",
+  "signing_out": "Signing Out...",
+  "student_profile_title": "STUDENT PROFILE",
+  "student": "STUDENT"
 }
