@@ -18,8 +18,7 @@ class ForgotPasswordBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final authBloc = context.read<AuthBloc>();
 
-    return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
+    return BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is ForgotPasswordSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -120,7 +119,7 @@ class ForgotPasswordBody extends StatelessWidget {
                         ),
                         label: Text(context.tr('back_to_login')),
                         style: TextButton.styleFrom(
-                          foregroundColor: context.colorScheme.outline,
+                          foregroundColor: context.colorScheme.onSecondary.withValues(alpha: 0.5),
                           textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: context.isDesktop ? 14 : 12.sp,
@@ -134,7 +133,6 @@ class ForgotPasswordBody extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
   }
 }

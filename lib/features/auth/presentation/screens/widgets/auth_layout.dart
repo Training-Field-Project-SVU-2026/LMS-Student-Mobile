@@ -10,9 +10,9 @@ class AuthLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.colorScheme.surfaceVariant.withValues(alpha: 0.4),
-      body: Row(
+    return Container(
+      color: context.colorScheme.surfaceVariant.withValues(alpha: 0.4),
+      child: Row(
         children: [
           if (context.isDesktop)
             const Expanded(flex: 1, child: LoginLeftSide()),

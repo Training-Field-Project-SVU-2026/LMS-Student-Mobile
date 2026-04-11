@@ -56,184 +56,183 @@ class _VerifyOtpBodyState extends State<VerifyOtpBody> {
   Widget build(BuildContext context) {
     final authBloc = context.read<AuthBloc>();
 
-    return Scaffold(
-      body: MultiBlocListener(
-        listeners: [
-          BlocListener<AuthBloc, AuthState>(
-            listenWhen: (previous, current) => current is AuthSuccess,
-            listener: (context, state) {
-              context.go(AppRoutes.loginScreen);
-            },
-          ),
-          BlocListener<AuthBloc, AuthState>(
-            listenWhen: (previous, current) => current is ResendSuccess,
-            listener: (context, state) {
-              final resendState = state as ResendSuccess;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(resendState.message),
-                  backgroundColor: context.colorScheme.secondary,
-                ),
-              );
-              // Reset timer when resend is successful
-              setState(() {
-                _remainingSeconds = 120;
-              });
-              _startTimer();
-            },
-          ),
-        ],
-        child: Center(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: context.isDesktop ? 80 : 36.w,
-              vertical: context.isDesktop ? 80 : 56.h,
-            ),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 400.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    context.tr('verify_otp'),
-                    style: context.textTheme.displaySmall!.copyWith(
-                      color: context.colorScheme.onSurface,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Text(
-                    context.tr('we_sent_verification_code'),
-                    style: context.textTheme.bodyLarge!.copyWith(
-                      color: context.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  SizedBox(height: 48.h),
-
-                  Text(
-                    context.tr('verification_code'),
-                    style: context.textTheme.labelLarge?.copyWith(
-                      color: context.colorScheme.onSurface,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-
-                  Form(
-                    key: authBloc.otpFormKey,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        6,
-                        (index) => _buildOtpBox(context, index, authBloc),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 32.h),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.timer_outlined,
-                        size: context.isDesktop ? 22 : 18.w,
-                        color: context.colorScheme.primary,
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        '${context.tr('code_expires_in').replaceFirst(' 01:00', '')}: ${_formatTime(_remainingSeconds)}',
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: context.colorScheme.primary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 16.h),
-
-                  Center(
-                    child: TextButton(
-                      onPressed: _remainingSeconds == 0
-                          ? () {
-                              authBloc.add(ResendOtpEvent(email: widget.email));
-                            }
-                          : null,
-                      child: RichText(
-                        text: TextSpan(
-                          text: context.tr('didnt_receive_code'),
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            color: _remainingSeconds == 0
-                                ? null
-                                : context.colorScheme.onSurfaceVariant.withValues(
-                                    alpha: 0.5,
-                                  ),
-                          ),
-                          children: [
-                            TextSpan(
-                              text: ' ${context.tr('resend')}',
-                              style: TextStyle(
-                                color: _remainingSeconds == 0
-                                    ? context.colorScheme.primary
-                                    : context.colorScheme.primary.withValues(
-                                        alpha: 0.5,
-                                      ),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 40.h),
-
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      final isLoading = state is AuthLoading;
-                      return CustomPrimaryButton(
-                        text: isLoading
-                            ? context.tr('verifying')
-                            : context.tr('verify_otp'),
-                        onTap: isLoading
-                            ? null
-                            : () {
-                                authBloc.add(
-                                  VerifyEmailEvent(
-                                    email: widget.email,
-                                    otp: authBloc.getOtpCode(),
-                                  ),
-                                );
-                              },
-                        width: double.infinity,
-                      );
-                    },
-                  ),
-
-                  SizedBox(height: 24.h),
-
-                  Center(
-                    child: TextButton.icon(
-                      onPressed: () => context.go(AppRoutes.loginScreen),
-                      icon: Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        size: context.isDesktop ? 22 : 14.w,
-                      ),
-                      label: Text(context.tr('back_to_login')),
-                      style: TextButton.styleFrom(
-                        foregroundColor: context.colorScheme.outline,
-                        textStyle: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: context.isDesktop ? 16 : 14.sp,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthBloc, AuthState>(
+          listenWhen: (previous, current) => current is AuthSuccess,
+          listener: (context, state) {
+            context.go(AppRoutes.loginScreen);
+          },
+        ),
+        BlocListener<AuthBloc, AuthState>(
+          listenWhen: (previous, current) => current is ResendSuccess,
+          listener: (context, state) {
+            final resendState = state as ResendSuccess;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(resendState.message),
+                backgroundColor: context.colorScheme.secondary,
               ),
+            );
+            // Reset timer when resend is successful
+            setState(() {
+              _remainingSeconds = 120;
+            });
+            _startTimer();
+          },
+        ),
+      ],
+      child: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: context.isDesktop ? 80 : 36.w,
+            vertical: context.isDesktop ? 80 : 56.h,
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 400.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  context.tr('verify_otp'),
+                  style: context.textTheme.displaySmall!.copyWith(
+                    color: context.colorScheme.onSurface,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                Text(
+                  context.tr('we_sent_verification_code'),
+                  style: context.textTheme.bodyLarge!.copyWith(
+                    color: context.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                SizedBox(height: 48.h),
+
+                Text(
+                  context.tr('verification_code'),
+                  style: context.textTheme.labelLarge?.copyWith(
+                    color: context.colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 12.h),
+
+                Form(
+                  key: authBloc.otpFormKey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      6,
+                      (index) => _buildOtpBox(context, index, authBloc),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 32.h),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.timer_outlined,
+                      size: context.isDesktop ? 22 : 18.w,
+                      color: context.colorScheme.primary,
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      '${context.tr('code_expires_in').replaceFirst(' 01:00', '')}: ${_formatTime(_remainingSeconds)}',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        color: context.colorScheme.primary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 16.h),
+
+                Center(
+                  child: TextButton(
+                    onPressed: _remainingSeconds == 0
+                        ? () {
+                            authBloc.add(ResendOtpEvent(email: widget.email));
+                          }
+                        : null,
+                    child: RichText(
+                      text: TextSpan(
+                        text: context.tr('didnt_receive_code'),
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: _remainingSeconds == 0
+                              ? null
+                              : context.colorScheme.onSurfaceVariant.withValues(
+                                  alpha: 0.5,
+                                ),
+                        ),
+                        children: [
+                          TextSpan(
+                            text: ' ${context.tr('resend')}',
+                            style: TextStyle(
+                              color: _remainingSeconds == 0
+                                  ? context.colorScheme.primary
+                                  : context.colorScheme.primary.withValues(
+                                      alpha: 0.5,
+                                    ),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 40.h),
+
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    final isLoading = state is AuthLoading;
+                    return CustomPrimaryButton(
+                      text: isLoading
+                          ? context.tr('verifying')
+                          : context.tr('verify_otp'),
+                      onTap: isLoading
+                          ? null
+                          : () {
+                              authBloc.add(
+                                VerifyEmailEvent(
+                                  email: widget.email,
+                                  otp: authBloc.getOtpCode(),
+                                ),
+                              );
+                            },
+                      width: double.infinity,
+                    );
+                  },
+                ),
+
+                SizedBox(height: 24.h),
+
+                Center(
+                  child: TextButton.icon(
+                    onPressed: () => context.go(AppRoutes.loginScreen),
+                    icon: Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      size: context.isDesktop ? 22 : 14.w,
+                    ),
+                    label: Text(context.tr('back_to_login')),
+                    style: TextButton.styleFrom(
+                      foregroundColor: context.colorScheme.onSecondary
+                          .withValues(alpha: 0.5),
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: context.isDesktop ? 14 : 12.sp,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

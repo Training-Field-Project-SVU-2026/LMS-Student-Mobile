@@ -8,8 +8,10 @@ class ResetPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AuthLayout(
-      child: ResetPasswordBody(email: email),
+    return Scaffold(
+      body: AuthLayout(
+        child: ResetPasswordBody(email: email),
+      ),
     );
   }
 }
