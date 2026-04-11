@@ -21,3 +21,5 @@ class UpdateProfileEvent extends ProfileEvent {
     required this.lastName,
   });
 }
+
+class ClearProfileDataEvent extends ProfileEvent {}
