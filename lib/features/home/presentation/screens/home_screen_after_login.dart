@@ -12,6 +12,8 @@ import 'package:lms_student/core/services/remote/endpoints.dart';
 
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 
+import 'package:lms_student/features/home/presentation/get_data_from_cache.dart';
+
 import 'package:lms_student/features/widgets/course_card_horizontal.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
@@ -36,7 +38,6 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
     context.read<HomeBloc>().add(GetMyEnrollmentsEvent());
   }
 
-  final user = CacheHelper.getDataString(key: ApiKey.user);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                   color: context.colorScheme.secondary,
                 ),
                 child: CustomImage(
-                  imagePath: jsonDecode(user!)['image'],
+                  imagePath: getDataFromCache(ApiKey.image),
                   width: 44.w,
                   height: 44.h,
                   borderRadius: BorderRadius.circular(22.r),
@@ -74,7 +75,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                     ),
                   ),
                   Text(
-                    "${jsonDecode(user!)['first_name']} ${jsonDecode(user!)['last_name']}",
+                    "${getDataFromCache(ApiKey.firstName)} ${getDataFromCache(ApiKey.lastName)}",
                     style: context.textTheme.titleLarge!.copyWith(
                       color: context.colorScheme.onSurface,
                     ),
