@@ -12,7 +12,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeRepository homeRepository;
 
   HomeBloc({required this.courseRepository, required this.homeRepository})
-    : super(CoursesInitial()) {
+    : super(const HomeState()) {
     on<GetCoursesEvent>(_onGetCourses);
     on<GetMyEnrollmentsEvent>(_onGetMyEnrollments);
   }
@@ -21,15 +21,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     GetCoursesEvent event,
     Emitter<HomeState> emit,
   ) async {
-    emit(CoursesLoading());
+    emit(state.copyWith(coursesStatus: RequestStatus.loading));
 
     try {
       final result = await courseRepository.getAllCourses();
 
       result.fold(
-        (error) => emit(CoursesError(message: error)),
+        (error) => emit(
+          state.copyWith(
+            coursesStatus: RequestStatus.error,
+            coursesErrorMessage: error,
+          ),
+        ),
         (response) => emit(
-          CoursesLoaded(
+          state.copyWith(
+            coursesStatus: RequestStatus.loaded,
             courses: response.data,
             totalCourses: response.totalCourses,
             totalPages: response.totalPages,
@@ -38,7 +44,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } catch (e) {
-      emit(CoursesError(message: e.toString()));
+      emit(
+        state.copyWith(
+          coursesStatus: RequestStatus.error,
+          coursesErrorMessage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -46,23 +57,34 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     GetMyEnrollmentsEvent event,
     Emitter<HomeState> emit,
   ) async {
-    emit(MyEnrollmentsLoading());
+    emit(state.copyWith(enrollmentsStatus: RequestStatus.loading));
 
     try {
       final result = await courseRepository.getMyEnrollments();
 
       result.fold(
-        (error) => emit(MyEnrollmentsError(message: error)),
+        (error) => emit(
+          state.copyWith(
+            enrollmentsStatus: RequestStatus.error,
+            enrollmentsErrorMessage: error,
+          ),
+        ),
         (response) => emit(
-          MyEnrollmentsLoaded(
+          state.copyWith(
+            enrollmentsStatus: RequestStatus.loaded,
             enrollments: response.data,
-            totalPages: response.totalPages,
-            currentPage: response.currentPage,
+            enrollmentsTotalPages: response.totalPages,
+            enrollmentsCurrentPage: response.currentPage,
           ),
         ),
       );
     } catch (e) {
-      emit(MyEnrollmentsError(message: e.toString()));
+      emit(
+        state.copyWith(
+          enrollmentsStatus: RequestStatus.error,
+          enrollmentsErrorMessage: e.toString(),
+        ),
+      );
     }
   }
 }

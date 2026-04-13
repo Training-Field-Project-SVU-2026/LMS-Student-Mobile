@@ -7,6 +7,8 @@ import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
+import 'package:lms_student/features/widgets/loading_indicator_widget.dart';
+import 'package:lms_student/features/widgets/error_feedback_widget.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 
 class ViewAllCourse extends StatefulWidget {
@@ -29,27 +31,26 @@ class _ViewAllCourseState extends State<ViewAllCourse> {
       appBar: AppBar(
         title: Text(
           context.tr('view_course'),
-          style: context.textTheme.bodyLarge!.copyWith(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: context.colorScheme.onSurface,
-          ),
+          style: context.textTheme.titleLarge,
         ),
         centerTitle: true,
         elevation: 0,
       ),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          if (state is CoursesLoading) {
-            return const Center(child: CircularProgressIndicator());
+          if (state.coursesStatus == RequestStatus.loading) {
+            return const LoadingIndicatorWidget(height: double.infinity);
           }
-          if (state is CoursesError) {
-            return SizedBox(
-              height: 280.h,
-              child: Center(child: Text('Error : ${state.message}')),
+          if (state.coursesStatus == RequestStatus.error) {
+            return ErrorFeedbackWidget(
+              height: double.infinity,
+              errorMessage: state.coursesErrorMessage ?? 'Error',
+              onRetry: () {
+                context.read<HomeBloc>().add(GetCoursesEvent());
+              },
             );
           }
-          if (state is CoursesLoaded) {
+          if (state.coursesStatus == RequestStatus.loaded) {
             final courses = state.courses;
 
             if (courses.isEmpty) {
@@ -128,7 +129,7 @@ class _ViewAllCourseState extends State<ViewAllCourse> {
             );
           }
 
-          return const Center(child: CircularProgressIndicator());
+          return const SizedBox.shrink();
         },
       ),
     );

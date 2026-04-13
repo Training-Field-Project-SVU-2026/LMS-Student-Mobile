@@ -3,6 +3,7 @@ import 'package:lms_student/core/common_logic/data/model/course/response_package
 import 'package:lms_student/core/common_logic/domain/repositories/package_repository.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
+import 'package:lms_student/core/utils/api_query_params.dart';
 import 'package:lms_student/features/explore/data/model/packages_model.dart';
 import 'package:lms_student/features/explore/data/model/packages_response_model.dart';
 
@@ -16,7 +17,7 @@ class PackageRepositoryImpl implements PackageRepository {
   }) async {
     return await apiConsumer.get<List<PackagesModel>>(
       EndPoint.allPackages,
-      queryParameters: {'page': page, 'page_size': pageSize},
+      queryParameters: ApiQueryParams.pagination(page: page, pageSize: pageSize),
       fromJson: (json) => PackagesResponseModel.fromJson(json).data,
     );
   }

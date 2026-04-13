@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -7,13 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
-import 'package:lms_student/core/services/local/cache_helper.dart';
+import 'package:lms_student/core/routing/router_generator.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
 
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
-
 import 'package:lms_student/features/home/presentation/get_data_from_cache.dart';
 
+import 'package:lms_student/features/widgets/loading_indicator_widget.dart';
+import 'package:lms_student/features/widgets/error_feedback_widget.dart';
 import 'package:lms_student/features/widgets/course_card_horizontal.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
@@ -29,15 +29,36 @@ class HomeScreenAfterLogin extends StatefulWidget {
   State<HomeScreenAfterLogin> createState() => _HomeScreenAfterLoginState();
 }
 
-class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
+class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> with RouteAware {
   // double progress = completedVideos / totalVideos;
-  @override
-  void initState() {
-    super.initState();
+
+  void loadData() {
     context.read<HomeBloc>().add(GetCoursesEvent());
     context.read<HomeBloc>().add(GetMyEnrollmentsEvent());
   }
 
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    homeRouteObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    homeRouteObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,30 +112,22 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
             ],
           ),
         ),
-        // BlocBuilder للمسجل فيها (My Enrollments)
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: BlocBuilder<HomeBloc, HomeState>(
-            buildWhen: (previous, current) {
-              // فقط عندما تتغير حالات الـ MyEnrollments
-              return current is MyEnrollmentsLoading ||
-                  current is MyEnrollmentsError ||
-                  current is MyEnrollmentsLoaded;
-            },
             builder: (context, state) {
-              if (state is MyEnrollmentsLoading) {
-                return SizedBox(
-                  height: 280.h,
-                  child: Center(child: CircularProgressIndicator()),
+              if (state.enrollmentsStatus == RequestStatus.loading) {
+                return const LoadingIndicatorWidget();
+              }
+              if (state.enrollmentsStatus == RequestStatus.error) {
+                return ErrorFeedbackWidget(
+                  errorMessage: state.enrollmentsErrorMessage ?? 'Error',
+                  onRetry: () {
+                    context.read<HomeBloc>().add(GetMyEnrollmentsEvent());
+                  },
                 );
               }
-              if (state is MyEnrollmentsError) {
-                return SizedBox(
-                  height: 280.h,
-                  child: Center(child: Text('Error : ${state.message}')),
-                );
-              }
-              if (state is MyEnrollmentsLoaded) {
+              if (state.enrollmentsStatus == RequestStatus.loaded) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -127,7 +140,6 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                     ),
                     SizedBox(height: 5.h),
 
-                    // هنا الحالة بتاعة الليست الفاضية
                     if (state.enrollments.isEmpty)
                       Center(
                         child: Column(
@@ -172,7 +184,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                                   AppRoutes.courseDetailsScreen,
                                   extra: {
                                     'slug': course.slug,
-                                    'isEnrolled': course.isenrolled,
+                                    'isEnrolled': true,
                                   },
                                 );
                               },
@@ -193,7 +205,7 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                   ],
                 );
               }
-              return CircularProgressIndicator();
+              return const SizedBox.shrink();
             },
           ),
         ),
@@ -202,26 +214,20 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
         Padding(
           padding: EdgeInsets.only(left: 20.w),
           child: BlocBuilder<HomeBloc, HomeState>(
-            buildWhen: (previous, current) {
-              return current is CoursesLoading ||
-                  current is CoursesError ||
-                  current is CoursesLoaded;
-            },
             builder: (context, state) {
-              if (state is CoursesLoading) {
-                return SizedBox(
-                  height: 280.h,
-                  child: Center(child: CircularProgressIndicator()),
+              if (state.coursesStatus == RequestStatus.loading) {
+                return const LoadingIndicatorWidget();
+              }
+              if (state.coursesStatus == RequestStatus.error) {
+                return ErrorFeedbackWidget(
+                  errorMessage: state.coursesErrorMessage ?? 'Error',
+                  onRetry: () {
+                    context.read<HomeBloc>().add(GetCoursesEvent());
+                  },
                 );
               }
-              if (state is CoursesError) {
-                return SizedBox(
-                  height: 280.h,
-                  child: Center(child: Text('Error : ${state.message}')),
-                );
-              }
-              if (state is CoursesLoaded) {
-                // log("courses from bloc: ${state.courses}");
+              if (state.coursesStatus == RequestStatus.loaded) {
+                log("courses from bloc: ${state.courses}");
                 return Column(
                   children: [
                     Padding(
@@ -288,10 +294,11 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 16.h),
                   ],
                 );
               }
-              return CircularProgressIndicator();
+              return const SizedBox.shrink();
             },
           ),
         ),

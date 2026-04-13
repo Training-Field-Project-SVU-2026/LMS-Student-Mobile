@@ -1,64 +1,75 @@
 part of 'home_bloc.dart';
 
-sealed class HomeState extends Equatable {
-  const HomeState();
+enum RequestStatus { initial, loading, loaded, error }
 
-  @override
-  List<Object?> get props => [];
-}
-
-class CoursesInitial extends HomeState {}
-
-class CoursesLoading extends HomeState {}
-
-class CoursesLoaded extends HomeState {
+class HomeState extends Equatable {
+  final RequestStatus coursesStatus;
   final List<CourseModel> courses;
+  final String? coursesErrorMessage;
   final int? totalCourses;
   final int? totalPages;
   final int? currentPage;
 
-  const CoursesLoaded({
-    required this.courses,
+  final RequestStatus enrollmentsStatus;
+  final List<CourseModel> enrollments;
+  final String? enrollmentsErrorMessage;
+  final int? enrollmentsTotalPages;
+  final int? enrollmentsCurrentPage;
+
+  const HomeState({
+    this.coursesStatus = RequestStatus.initial,
+    this.courses = const [],
+    this.coursesErrorMessage,
     this.totalCourses,
     this.totalPages,
     this.currentPage,
+    this.enrollmentsStatus = RequestStatus.initial,
+    this.enrollments = const [],
+    this.enrollmentsErrorMessage,
+    this.enrollmentsTotalPages,
+    this.enrollmentsCurrentPage,
   });
 
-  @override
-  List<Object?> get props => [courses, totalCourses, totalPages, currentPage];
-}
-
-class CoursesError extends HomeState {
-  final String message;
-
-  const CoursesError({required this.message});
-
-  @override
-  List<Object> get props => [message];
-}
-
-class MyEnrollmentsLoading extends HomeState {}
-
-class MyEnrollmentsLoaded extends HomeState {
-  final List<CourseModel> enrollments;
-  final int? totalPages;
-  final int? currentPage;
-
-  const MyEnrollmentsLoaded({
-    required this.enrollments,
-    this.totalPages,
-    this.currentPage,
-  });
-
-  @override
-  List<Object?> get props => [enrollments, totalPages, currentPage];
-}
-
-class MyEnrollmentsError extends HomeState {
-  final String message;
-
-  const MyEnrollmentsError({required this.message});
+  HomeState copyWith({
+    RequestStatus? coursesStatus,
+    List<CourseModel>? courses,
+    String? coursesErrorMessage,
+    int? totalCourses,
+    int? totalPages,
+    int? currentPage,
+    RequestStatus? enrollmentsStatus,
+    List<CourseModel>? enrollments,
+    String? enrollmentsErrorMessage,
+    int? enrollmentsTotalPages,
+    int? enrollmentsCurrentPage,
+  }) {
+    return HomeState(
+      coursesStatus: coursesStatus ?? this.coursesStatus,
+      courses: courses ?? this.courses,
+      coursesErrorMessage: coursesErrorMessage ?? this.coursesErrorMessage,
+      totalCourses: totalCourses ?? this.totalCourses,
+      totalPages: totalPages ?? this.totalPages,
+      currentPage: currentPage ?? this.currentPage,
+      enrollmentsStatus: enrollmentsStatus ?? this.enrollmentsStatus,
+      enrollments: enrollments ?? this.enrollments,
+      enrollmentsErrorMessage: enrollmentsErrorMessage ?? this.enrollmentsErrorMessage,
+      enrollmentsTotalPages: enrollmentsTotalPages ?? this.enrollmentsTotalPages,
+      enrollmentsCurrentPage: enrollmentsCurrentPage ?? this.enrollmentsCurrentPage,
+    );
+  }
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [
+    coursesStatus,
+    courses,
+    coursesErrorMessage,
+    totalCourses,
+    totalPages,
+    currentPage,
+    enrollmentsStatus,
+    enrollments,
+    enrollmentsErrorMessage,
+    enrollmentsTotalPages,
+    enrollmentsCurrentPage,
+  ];
 }
