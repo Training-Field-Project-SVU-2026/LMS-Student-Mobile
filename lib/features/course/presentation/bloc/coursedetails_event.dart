@@ -19,9 +19,10 @@ class GetCourseDetails extends CoursedetailsEvent {
 
 class EnrollCourse extends CoursedetailsEvent {
   final String slug;
+  final CourseModel course;
 
-  const EnrollCourse({required this.slug});
+  const EnrollCourse({required this.slug, required this.course});
 
   @override
-  List<Object> get props => [slug];
+  List<Object> get props => [slug, course];
 }

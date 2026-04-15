@@ -139,11 +139,16 @@
   "cancel": "إلغاء",
   "no_courses_yet": "لا توجد كورسات مسجل فيها بعد",
   "explore_courses_to_start": "استكشف الكورسات وابدأ رحلة التعلم الآن",
+  "enroll_confirm_title": "تأكيد الاشتراك",
+  "enroll_confirm_message": "هل تريد الاشتراك في هذا الكورس؟",
+  "yes": "نعم",
+  "no": "لا",
   "settings": "الإعدادات",
   "manage_account_desc": "إدارة حسابك وتجربة التعلم الخاصة بك",
   "security": "الأمان",
   "sign_out": "تسجيل الخروج",
   "signing_out": "جاري تسجيل الخروج...",
   "student_profile_title": "الملف الشخصي للطالب",
-  "student": "طالب"
+  "student": "طالب",
+  "progress": "التقدم"
 }

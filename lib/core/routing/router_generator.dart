@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/di/service_locator.dart';
@@ -29,9 +30,12 @@ import 'package:lms_student/features/splash/presentation/screens/splash_screen.d
 import 'package:lms_student/root/root_after_login.dart';
 import 'package:lms_student/root/root_before_login.dart';
 
+final RouteObserver<ModalRoute<void>> homeRouteObserver = RouteObserver<ModalRoute<void>>();
+
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
     initialLocation: AppRoutes.splashScreen,
+    observers: [homeRouteObserver],
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,

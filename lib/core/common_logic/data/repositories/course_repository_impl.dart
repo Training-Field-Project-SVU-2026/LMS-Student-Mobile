@@ -5,6 +5,7 @@ import 'package:lms_student/core/services/remote/endpoints.dart';
 import 'package:lms_student/core/common_logic/data/model/course/course_model.dart';
 import 'package:lms_student/core/common_logic/data/model/course/response_course_model.dart';
 import 'package:lms_student/core/common_logic/domain/repositories/course_repository.dart';
+import 'package:lms_student/core/utils/api_query_params.dart';
 
 class CourseRepositoryImpl implements CourseRepository {
   final ApiConsumer apiConsumer;
@@ -18,7 +19,7 @@ class CourseRepositoryImpl implements CourseRepository {
   }) async {
     return await apiConsumer.get<ResponseCourseModel>(
       EndPoint.allCourses,
-      queryParameters: {'page': page, 'page_size': pageSize},
+      queryParameters: ApiQueryParams.pagination(page: page, pageSize: pageSize),
       fromJson: (json) => ResponseCourseModel.fromJson(json),
     );
   }
@@ -45,7 +46,7 @@ class CourseRepositoryImpl implements CourseRepository {
   }) async {
     return await apiConsumer.get<ResponseCourseModel>(
       EndPoint.myEnrollments,
-      queryParameters: {'page': page, 'page_size': pageSize},
+      queryParameters: ApiQueryParams.pagination(page: page, pageSize: pageSize),
       fromJson: (json) => ResponseCourseModel.fromJson(json),
     );
   }

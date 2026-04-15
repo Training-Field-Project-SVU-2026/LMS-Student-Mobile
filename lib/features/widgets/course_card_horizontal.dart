@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/features/widgets/custom_image.dart';
 
 class CourseCardHorizontal extends StatelessWidget {
@@ -69,7 +70,7 @@ class CourseCardHorizontal extends StatelessWidget {
                       SizedBox(height: 5.h),
                       Text(
                         title,
-                        style: context.textTheme.titleMedium?.copyWith(
+                        style: context.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: context.colorScheme.onSurface,
                         ),
@@ -79,7 +80,7 @@ class CourseCardHorizontal extends StatelessWidget {
                       Text(
                         instructorName,
                         maxLines: 1,
-                        style: context.textTheme.titleLarge?.copyWith(
+                        style: context.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.normal,
                           color: context.colorScheme.onSurfaceVariant,
                         ),
@@ -94,7 +95,7 @@ class CourseCardHorizontal extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Progress',
+                                  context.tr('progress'),
                                   style: context.textTheme.labelSmall,
                                 ),
                                 Text(

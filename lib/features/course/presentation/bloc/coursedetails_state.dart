@@ -29,7 +29,14 @@ class CourseError extends CoursedetailsState {
   List<Object> get props => [message];
 }
 
-class CourseEnrollLoading extends CoursedetailsState {}
+class CourseEnrollLoading extends CoursedetailsState {
+  final CourseModel course;
+
+  const CourseEnrollLoading({required this.course});
+
+  @override
+  List<Object> get props => [course];
+}
 
 class CourseEnrollLoaded extends CoursedetailsState {
   final CourseModel course;
@@ -42,9 +49,10 @@ class CourseEnrollLoaded extends CoursedetailsState {
 
 class CourseEnrollError extends CoursedetailsState {
   final String message;
+  final CourseModel course;
 
-  const CourseEnrollError({required this.message});
+  const CourseEnrollError({required this.message, required this.course});
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message, course];
 }
