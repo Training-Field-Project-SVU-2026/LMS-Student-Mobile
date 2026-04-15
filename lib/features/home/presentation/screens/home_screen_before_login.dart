@@ -12,6 +12,8 @@ import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:lms_student/features/widgets/loading_indicator_widget.dart';
+import 'package:lms_student/features/widgets/error_feedback_widget.dart';
 
 class HomeScreenBeforeLogin extends StatefulWidget {
   const HomeScreenBeforeLogin({super.key});
@@ -218,19 +220,18 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                 SizedBox(height: 20.h),
                 BlocBuilder<HomeBloc, HomeState>(
                   builder: (context, state) {
-                    if (state is CoursesLoading) {
-                      return SizedBox(
-                        height: 280.h,
-                        child: Center(child: CircularProgressIndicator()),
+                    if (state.coursesStatus == RequestStatus.loading) {
+                      return const LoadingIndicatorWidget();
+                    }
+                    if (state.coursesStatus == RequestStatus.error) {
+                      return ErrorFeedbackWidget(
+                        errorMessage: state.coursesErrorMessage ?? 'Error',
+                        onRetry: () {
+                          context.read<HomeBloc>().add(GetCoursesEvent());
+                        },
                       );
                     }
-                    if (state is CoursesError) {
-                      return SizedBox(
-                        height: 280.h,
-                        child: Center(child: Text('Error : ${state.message}')),
-                      );
-                    }
-                    if (state is CoursesLoaded) {
+                    if (state.coursesStatus == RequestStatus.loaded) {
                       return SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: IntrinsicHeight(
@@ -268,7 +269,7 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                       );
                     }
 
-                    return CircularProgressIndicator();
+                    return const SizedBox.shrink();
                   },
                 ),
                 SizedBox(height: 40.h),

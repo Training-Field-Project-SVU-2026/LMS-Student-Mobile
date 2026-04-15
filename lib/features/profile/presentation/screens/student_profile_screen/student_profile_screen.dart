@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/features/profile/presentation/screens/student_profile_screen/widgets/student_profile_body.dart';
 
 class StudentProfileScreen extends StatelessWidget {
@@ -12,43 +12,22 @@ class StudentProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: context.colorScheme.background,
       appBar: AppBar(
-        backgroundColor: context.colorScheme.surface,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 0,
-        leadingWidth: 120.w,
-        leading: TextButton.icon(
+        leading: IconButton(
           onPressed: () => context.pop(),
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 16.sp,
-            color: context.colorScheme.primary,
-          ),
-          label: Text(
-            'Settings',
-            maxLines: 1,
-            softWrap: false,
-            overflow: TextOverflow.visible,
-            style: context.textTheme.labelLarge?.copyWith(
-              color: context.colorScheme.primary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          icon: Icon(Icons.arrow_back, color: context.colorScheme.onSurface),
         ),
         title: Text(
-          'Profile',
-          style: context.textTheme.titleLarge?.copyWith(
+          context.tr('student_profile_title'),
+          style: context.textTheme.labelLarge?.copyWith(
             color: context.colorScheme.onSurface,
             fontWeight: FontWeight.bold,
+            letterSpacing: 1.2,
           ),
         ),
         centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.h),
-          child: Divider(
-            height: 1.h,
-            color: context.colorScheme.outline.withValues(alpha: 0.1),
-          ),
-        ),
       ),
       body: const StudentProfileBody(),
     );

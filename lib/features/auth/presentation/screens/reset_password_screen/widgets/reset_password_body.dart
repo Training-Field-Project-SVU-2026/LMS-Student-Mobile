@@ -184,7 +184,8 @@ class ResetPasswordBody extends StatelessWidget {
                       ),
                       label: Text(context.tr('back_to_login')),
                       style: TextButton.styleFrom(
-                        foregroundColor: context.colorScheme.outline,
+                        foregroundColor: context.colorScheme.onSecondary
+                            .withValues(alpha: 0.5),
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: context.isDesktop ? 14 : 12.sp,

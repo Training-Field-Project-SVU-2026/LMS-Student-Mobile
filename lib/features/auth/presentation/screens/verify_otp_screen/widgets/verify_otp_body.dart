@@ -143,7 +143,6 @@ class _VerifyOtpBodyState extends State<VerifyOtpBody> {
                     SizedBox(width: 8.w),
                     Text(
                       '${context.tr('code_expires_in').replaceFirst(' 01:00', '')}: ${_formatTime(_remainingSeconds)}',
-
                       style: context.textTheme.bodyMedium?.copyWith(
                         color: context.colorScheme.primary,
                         fontWeight: FontWeight.w500,
@@ -224,10 +223,11 @@ class _VerifyOtpBodyState extends State<VerifyOtpBody> {
                     ),
                     label: Text(context.tr('back_to_login')),
                     style: TextButton.styleFrom(
-                      foregroundColor: context.colorScheme.outline,
+                      foregroundColor: context.colorScheme.onSecondary
+                          .withValues(alpha: 0.5),
                       textStyle: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: context.isDesktop ? 16 : 14.sp,
+                        fontSize: context.isDesktop ? 14 : 12.sp,
                       ),
                     ),
                   ),

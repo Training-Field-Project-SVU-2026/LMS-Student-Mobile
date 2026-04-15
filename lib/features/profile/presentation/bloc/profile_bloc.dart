@@ -21,6 +21,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ChangePasswordEvent>(_onChangePassword);
     on<GetProfileEvent>(_onGetProfile);
     on<UpdateProfileEvent>(_onUpdateProfile);
+    on<ClearProfileDataEvent>(_onClearProfileData);
   }
 
   Future<void> _onLogout(LogoutEvent event, Emitter<ProfileState> emit) async {
@@ -31,7 +32,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     if (refreshToken == null) {
       await cacheHelper.clearUserData();
-
       emit(LogoutSuccess());
       return;
     }
@@ -40,10 +40,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     final result = await profileRepository.logout(request);
 
-    result.fold(
-      (error) => emit(ProfileError(message: error)),
-      (data) => emit(LogoutSuccess()),
-    );
+    result.fold((error) => emit(ProfileError(message: error)), (data) {
+      emit(LogoutSuccess());
+      add(ClearProfileDataEvent());
+    });
+  }
+
+  Future<void> _onClearProfileData(
+    ClearProfileDataEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(ProfileInitial());
   }
 
   Future<void> _onChangePassword(
@@ -126,17 +133,40 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
 
     await result.fold((error) async => emit(ProfileError(message: error)), (
-      user,
+      updatedUser,
     ) async {
-      await cacheHelper.saveData(key: ApiKey.firstName, value: user.firstName);
-      await cacheHelper.saveData(key: ApiKey.lastName, value: user.lastName);
-      await cacheHelper.saveData(key: ApiKey.email, value: user.email);
-      await cacheHelper.saveData(key: ApiKey.image, value: user.image);
 
-      final userJson = jsonEncode(user.toJson());
-      await cacheHelper.saveData(key: ApiKey.user, value: userJson);
+      final email = cacheHelper.getData(key: ApiKey.email) as String? ?? '';
+      final slugFromCache =
+          cacheHelper.getData(key: ApiKey.slug) as String? ?? '';
+      final imageFromCache = cacheHelper.getData(key: ApiKey.image) as String?;
 
-      emit(GetProfileSuccess(user: user));
+
+      final mergedUser = UserModel(
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: email,
+        slug: updatedUser.slug.isNotEmpty ? updatedUser.slug : slugFromCache,
+        image: updatedUser.image ?? imageFromCache,
+        role: updatedUser.role,
+        isActive: updatedUser.isActive,
+        isVerified: updatedUser.isVerified,
+      );
+
+      await cacheHelper.saveData(
+        key: ApiKey.user,
+        value: jsonEncode(mergedUser.toJson()),
+      );
+      await cacheHelper.saveData(
+        key: ApiKey.firstName,
+        value: mergedUser.firstName,
+      );
+      await cacheHelper.saveData(
+        key: ApiKey.lastName,
+        value: mergedUser.lastName,
+      );
+
+      emit(GetProfileSuccess(user: mergedUser));
     });
   }
 }

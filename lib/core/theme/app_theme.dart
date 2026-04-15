@@ -113,7 +113,7 @@ class AppTheme {
       background: _backgroundLight,
       onSurface: _textPrimaryLight,
       surface: Colors.white,
-      surfaceVariant: _backgroundLight,
+      surfaceVariant: Color(0xFFd1dde1),
       onSurfaceVariant: _textSecondaryLight,
       error: _error,
       outline: _outline,

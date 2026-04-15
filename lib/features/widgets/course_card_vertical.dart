@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -78,9 +77,9 @@ class CourseCardVertical extends StatelessWidget {
                     //  title
                     Text(
                       title,
-                      style: context.textTheme.titleSmall?.copyWith(
-                        color: context.colorScheme.onSurfaceVariant,
-                        height: 1.2,
+                      style: context.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: context.colorScheme.onSurface,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -94,8 +93,8 @@ class CourseCardVertical extends StatelessWidget {
                         style: context.textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.w400,
                           color: context.colorScheme.onSurfaceVariant
-                              .withValues(alpha: 0.6),
-                        ), // استخدمت هنا خط تاني غير التايتل عشان اصغر واهدي مش يكونوا شبه بعض
+                              .withValues(alpha: 0.8),
+                        ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -106,9 +105,9 @@ class CourseCardVertical extends StatelessWidget {
                       SizedBox(height: 4.h),
                       Text(
                         instructorName!,
-                        style: context.textTheme.labelSmall?.copyWith(
-                          color: context.colorScheme.primary,
-                          fontWeight: FontWeight.w600,
+                        style: context.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.normal,
+                          color: context.colorScheme.onSurfaceVariant,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -119,9 +118,9 @@ class CourseCardVertical extends StatelessWidget {
                       SizedBox(height: 4.h),
                       Text(
                         '\$$price',
-                        style: context.textTheme.labelSmall?.copyWith(
+                        style: context.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: context.colorScheme.onSurface,
+                          color: context.colorScheme.primary,
                         ),
                       ),
                     ],

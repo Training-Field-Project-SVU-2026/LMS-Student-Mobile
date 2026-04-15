@@ -16,7 +16,7 @@ class AuthToggleSwitch extends StatelessWidget {
       height: context.isDesktop ? 48 : 48.h,
       padding: EdgeInsets.all(context.isDesktop ? 4 : 4.w),
       decoration: BoxDecoration(
-        color: context.colorScheme.surfaceVariant.withValues(alpha: 0.5),
+        color: context.colorScheme.surfaceVariant.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(context.isDesktop ? 12 : 12.r),
       ),
       child: Row(
@@ -28,7 +28,11 @@ class AuthToggleSwitch extends StatelessWidget {
     );
   }
 
-  Widget _buildTab(BuildContext context, String label, {required bool isActive}) {
+  Widget _buildTab(
+    BuildContext context,
+    String label, {
+    required bool isActive,
+  }) {
     return Expanded(
       child: GestureDetector(
         onTap: () {
@@ -52,7 +56,7 @@ class AuthToggleSwitch extends StatelessWidget {
                       color: context.colorScheme.primary.withValues(alpha: 0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
-                    )
+                    ),
                   ]
                 : null,
           ),

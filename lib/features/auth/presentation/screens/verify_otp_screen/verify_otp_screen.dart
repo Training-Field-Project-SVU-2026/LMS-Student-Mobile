@@ -8,8 +8,10 @@ class VerifyOtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AuthLayout(
-      child: VerifyOtpBody(email: email),
+    return Scaffold(
+      body: AuthLayout(
+        child: VerifyOtpBody(email: email),
+      ),
     );
   }
 }

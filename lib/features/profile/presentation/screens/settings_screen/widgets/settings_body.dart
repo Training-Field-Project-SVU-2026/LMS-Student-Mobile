@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
-import 'package:lms_student/features/widgets/custom_outlined_button.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:lms_student/features/profile/presentation/screens/settings_screen/widgets/profile_card.dart';
 import 'package:lms_student/features/profile/presentation/screens/settings_screen/widgets/app_preferences_card.dart';
-import 'package:lms_student/features/profile/presentation/screens/settings_screen/widgets/delete_account_card.dart';
+import 'package:lms_student/features/profile/presentation/screens/settings_screen/widgets/security_card.dart';
 
 class SettingsBody extends StatelessWidget {
   const SettingsBody({super.key});
@@ -35,14 +35,14 @@ class SettingsBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Settings',
+                context.tr('settings'),
                 style: context.textTheme.displayLarge?.copyWith(
                   color: context.colorScheme.primary,
                 ),
               ),
               SizedBox(height: 8.h),
               Text(
-                'Manage your account and learning experience',
+                context.tr('manage_account_desc'),
                 style: context.textTheme.bodyMedium,
               ),
               SizedBox(height: 24.h),
@@ -54,33 +54,19 @@ class SettingsBody extends StatelessWidget {
               SizedBox(height: 24.h),
 
               // const DeleteAccountCard(),
-              SizedBox(height: 24.h),
-              CustomOutlinedButton(
-                text: 'Change Password',
-                width: double.infinity,
-                onTap: () {
-                  context.pushNamed(AppRoutes.changePasswordScreen);
-                },
-                textStyle: context.textTheme.titleMedium?.copyWith(
-                  color: context.colorScheme.onSurfaceVariant,
-                ),
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: context.colorScheme.outline),
-                ),
-              ),
-              SizedBox(height: 24.h),
+              const SecurityCard(),
+              SizedBox(height: 32.h),
 
-              BlocBuilder<ProfileBloc, ProfileState>(
-                builder: (context, state) {
-                  final isLoading = state is LogoutLoading;
+              Center(
+                child: BlocBuilder<ProfileBloc, ProfileState>(
+                  builder: (context, state) {
+                    final isLoading = state is LogoutLoading;
 
-                  return Center(
-                    child: TextButton.icon(
+                    return TextButton.icon(
                       onPressed: isLoading
                           ? null
-                          : () {
-                              context.read<ProfileBloc>().add(LogoutEvent());
-                            },
+                          : () =>
+                                context.read<ProfileBloc>().add(LogoutEvent()),
                       icon: isLoading
                           ? SizedBox(
                               width: 20.w,
@@ -91,13 +77,16 @@ class SettingsBody extends StatelessWidget {
                               ),
                             )
                           : Icon(
-                              Icons.logout,
+                              Icons.logout_rounded,
                               color: context.colorScheme.error,
                             ),
                       label: Text(
-                        isLoading ? 'Signing Out...' : 'Sign Out',
+                        isLoading
+                            ? context.tr('signing_out')
+                            : context.tr('sign_out'),
                         style: context.textTheme.titleMedium?.copyWith(
                           color: context.colorScheme.error,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       style: TextButton.styleFrom(
@@ -106,9 +95,9 @@ class SettingsBody extends StatelessWidget {
                           vertical: 12.h,
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
               SizedBox(height: 40.h),
             ],

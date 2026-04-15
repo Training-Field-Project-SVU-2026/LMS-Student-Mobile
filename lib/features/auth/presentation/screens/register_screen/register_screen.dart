@@ -7,8 +7,10 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AuthLayout(
-      child: RegisterBody(),
+    return const Scaffold(
+      body: AuthLayout(
+        child: RegisterBody(),
+      ),
     );
   }
 }

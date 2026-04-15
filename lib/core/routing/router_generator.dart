@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/di/service_locator.dart';
@@ -29,9 +30,12 @@ import 'package:lms_student/features/splash/presentation/screens/splash_screen.d
 import 'package:lms_student/root/root_after_login.dart';
 import 'package:lms_student/root/root_before_login.dart';
 
+final RouteObserver<ModalRoute<void>> homeRouteObserver = RouteObserver<ModalRoute<void>>();
+
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
     initialLocation: AppRoutes.splashScreen,
+    observers: [homeRouteObserver],
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
@@ -70,8 +74,8 @@ class RouterGenerator {
         path: AppRoutes.settingsScreen,
         name: AppRoutes.settingsScreen,
         builder: (context, state) {
-          return BlocProvider(
-            create: (context) => sl<ProfileBloc>(),
+          return BlocProvider.value(
+            value: sl<ProfileBloc>(),
             child: const SettingsScreen(),
           );
         },
@@ -80,8 +84,8 @@ class RouterGenerator {
         path: AppRoutes.studentProfileScreen,
         name: AppRoutes.studentProfileScreen,
         builder: (context, state) {
-          return BlocProvider(
-            create: (context) => sl<ProfileBloc>()..add(GetProfileEvent()),
+          return BlocProvider.value(
+            value: sl<ProfileBloc>()..add(GetProfileEvent()),
             child: const StudentProfileScreen(),
           );
         },
@@ -90,8 +94,8 @@ class RouterGenerator {
         path: AppRoutes.changePasswordScreen,
         name: AppRoutes.changePasswordScreen,
         builder: (context, state) {
-          return BlocProvider(
-            create: (context) => sl<ProfileBloc>(),
+          return BlocProvider.value(
+            value: sl<ProfileBloc>(),
             child: const ChangePasswordScreen(),
           );
         },
@@ -208,7 +212,7 @@ class RouterGenerator {
             providers: [
               BlocProvider(create: (context) => sl<HomeBloc>()),
               BlocProvider(create: (context) => sl<ExploreBloc>()),
-              BlocProvider(create: (context) => sl<ProfileBloc>()),
+              BlocProvider.value(value: sl<ProfileBloc>()),
             ],
             child: const RootAfterLogin(),
           );
