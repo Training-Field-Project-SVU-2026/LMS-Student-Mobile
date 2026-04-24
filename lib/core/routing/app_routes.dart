@@ -17,4 +17,5 @@ class AppRoutes {
   static const String packageDetails = '/package_details';
   static const String viewAllCourse = '/view_all_course';
   static const String courseAfterEnroll = '/course_after_enroll';
+  static const String courseVideosScreen = '/course_videos_screen';
 }

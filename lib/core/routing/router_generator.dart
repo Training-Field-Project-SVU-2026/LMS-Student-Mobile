@@ -13,6 +13,7 @@ import 'package:lms_student/features/auth/presentation/screens/reset_password_sc
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/course_after_enroll.dart';
+import 'package:lms_student/features/course/presentation/screens/course_videos_screen.dart';
 import 'package:lms_student/features/course/presentation/screens/view_all_course.dart';
 import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart';
 import 'package:lms_student/features/package_details/presentation/bloc/package_details_bloc.dart';
@@ -30,7 +31,8 @@ import 'package:lms_student/features/splash/presentation/screens/splash_screen.d
 import 'package:lms_student/root/root_after_login.dart';
 import 'package:lms_student/root/root_before_login.dart';
 
-final RouteObserver<ModalRoute<void>> homeRouteObserver = RouteObserver<ModalRoute<void>>();
+final RouteObserver<ModalRoute<void>> homeRouteObserver =
+    RouteObserver<ModalRoute<void>>();
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
@@ -203,7 +205,11 @@ class RouterGenerator {
           );
         },
       ),
-
+      GoRoute(
+        path: AppRoutes.courseVideosScreen,
+        name: AppRoutes.courseVideosScreen,
+        builder: (context, state) => CourseVideosScreen(),
+      ),
       GoRoute(
         path: AppRoutes.rootAfterLogin,
         name: AppRoutes.rootAfterLogin,

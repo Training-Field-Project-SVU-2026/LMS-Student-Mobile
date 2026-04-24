@@ -38,7 +38,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
             SizedBox(height: 10.h),
             Row(
               children: [
-                Expanded(
+                SizedBox(
+                  width: 300.w,
                   child: CustomTextFormField(
                     prefixIcon: Icon(
                       Icons.search,

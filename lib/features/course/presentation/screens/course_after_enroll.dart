@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/widget/custom_course_material.dart';
 import 'package:lms_student/features/widgets/custom_image.dart';
@@ -98,7 +100,11 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                               child: Row(
                                 children: [
                                   CustomCourseMaterial(
-                                    onTap: () {},
+                                    onTap: () {
+                                      context.push(
+                                        AppRoutes.courseVideosScreen,
+                                      );
+                                    },
                                     text: context.tr('videos'),
                                     icon: Icons.play_circle,
                                     width: 105.w,

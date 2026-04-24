@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:lms_student/core/services/local/cache_helper.dart';
 import 'package:lms_student/core/services/remote/api_consumer.dart';
@@ -49,10 +48,22 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       await cacheHelper.saveData(key: ApiKey.isLoggedIn, value: true);
 
-      await cacheHelper.saveData(key: ApiKey.firstName, value: loginResponse.user.firstName);
-      await cacheHelper.saveData(key: ApiKey.lastName, value: loginResponse.user.lastName);
-      await cacheHelper.saveData(key: ApiKey.email, value: loginResponse.user.email);
-      await cacheHelper.saveData(key: ApiKey.image, value: loginResponse.user.image);
+      await cacheHelper.saveData(
+        key: ApiKey.firstName,
+        value: loginResponse.user.firstName,
+      );
+      await cacheHelper.saveData(
+        key: ApiKey.lastName,
+        value: loginResponse.user.lastName,
+      );
+      await cacheHelper.saveData(
+        key: ApiKey.email,
+        value: loginResponse.user.email,
+      );
+      await cacheHelper.saveData(
+        key: ApiKey.image,
+        value: loginResponse.user.image,
+      );
 
       await cacheHelper.saveData(
         key: ApiKey.slug,
