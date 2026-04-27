@@ -31,7 +31,7 @@ dependencies:
   flutter_svg: ^2.2.4
   provider: ^6.1.5+1
 
-  json_serializable: ^6.13.1
+  json_annotation: ^4.9.0
 
   flutter_localizations:
     sdk: flutter
@@ -45,6 +45,8 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^6.0.0
+  build_runner: ^2.4.15
+  json_serializable: ^6.13.1
 
 
 flutter:
