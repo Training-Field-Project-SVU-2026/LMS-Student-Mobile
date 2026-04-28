@@ -9,9 +9,9 @@ class QuestionPaginatedData {
   final int totalPages;
   @JsonKey(name: 'current_page')
   final int currentPage;
-  @JsonKey(name: 'total_questions')
+  @JsonKey(name: 'total_quizzes')
   final int totalQuestions;
-  @JsonKey(name: 'questions')
+  @JsonKey(name: 'quizzes')
   final List<QuestionModel> questions;
 
   QuestionPaginatedData({

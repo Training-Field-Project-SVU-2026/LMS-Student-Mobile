@@ -10,8 +10,6 @@ class PerformanceSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final completedQuizzes = quizzes.where((q) => q.quizStatus == 'completed').toList();
     
     return Container(
       margin: EdgeInsets.all(16.w),

@@ -2,6 +2,17 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'quiz_model.g.dart';
 
+enum QuizStatus {
+  @JsonValue('not_started')
+  notStarted,
+  @JsonValue('passed')
+  passed,
+  @JsonValue('failed')
+  failed,
+  @JsonValue('can_retry')
+  canRetry,
+}
+
 @JsonSerializable()
 class QuizModel {
   @JsonKey(name: 'quiz_name')
@@ -15,7 +26,7 @@ class QuizModel {
   @JsonKey(name: 'attempts_used')
   final int? attemptsUsed;
   @JsonKey(name: 'quiz_status')
-  final String? quizStatus;
+  final QuizStatus? quizStatus;
   @JsonKey(name: 'best_score')
   final int? bestScore;
   final String slug;

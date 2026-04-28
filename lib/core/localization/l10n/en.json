@@ -191,5 +191,11 @@
   "submit": "Submit",
   "try_again": "Try Again",
   "exam_failed_desc": "Don't give up! You can retake the exam to improve your score.",
-  "total": "Total"
+  "total": "Total",
+  "quiz": "Quiz",
+  "passed": "Passed",
+  "failed": "Failed",
+  "your_answer": "Your Answer",
+  "better_luck_next_time": "Better Luck Next Time!",
+  "max_attempts_reached_desc": "You have reached the maximum number of attempts for this quiz."
 }

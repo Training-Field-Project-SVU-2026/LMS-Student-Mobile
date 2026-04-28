@@ -30,10 +30,8 @@ import 'package:lms_student/features/profile/presentation/screens/student_profil
 import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
 import 'package:lms_student/features/quiz_course/presentation/bloc/quiz_course_bloc.dart';
 import 'package:lms_student/features/quiz_course/presentation/screens/quiz_list_screen.dart';
-import 'package:lms_student/features/quiz_course/presentation/screens/quiz_intro_screen.dart';
 import 'package:lms_student/features/quiz_course/presentation/screens/quiz_session_screen.dart';
 import 'package:lms_student/features/quiz_course/presentation/screens/quiz_result_screen.dart';
-import 'package:lms_student/features/quiz_course/data/model/quiz_model.dart';
 import 'package:lms_student/features/quiz_course/data/model/attempt_result_model.dart';
 import 'package:lms_student/root/root_after_login.dart';
 import 'package:lms_student/root/root_before_login.dart';
@@ -253,17 +251,6 @@ class RouterGenerator {
           return BlocProvider(
             create: (context) => sl<QuizCourseBloc>()..add(GetQuizzesByCourseEvent(courseSlug)),
             child: QuizListScreen(courseSlug: courseSlug),
-          );
-        },
-      ),
-      GoRoute(
-        path: AppRoutes.quizIntro,
-        name: AppRoutes.quizIntro,
-        builder: (context, state) {
-          final quiz = state.extra as QuizModel;
-          return BlocProvider.value(
-            value: sl<QuizCourseBloc>(),
-            child: QuizIntroScreen(quiz: quiz),
           );
         },
       ),

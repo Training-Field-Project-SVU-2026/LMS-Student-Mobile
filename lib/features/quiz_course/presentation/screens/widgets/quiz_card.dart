@@ -13,7 +13,11 @@ class QuizCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isCompleted = quiz.quizStatus == 'completed';
+    final status = quiz.quizStatus;
+    final isPassed = status == QuizStatus.passed;
+    final isFailed = status == QuizStatus.failed;
+    final isCanRetry = status == QuizStatus.canRetry;
+    final isMaxAttemptsReached = (quiz.attemptsUsed ?? 0) >= quiz.maxAttempts;
 
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -34,7 +38,7 @@ class QuizCard extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  isCompleted ? Icons.check_circle : Icons.assignment_outlined,
+                  isPassed ? Icons.check_circle : Icons.assignment_outlined,
                   color: context.colorScheme.primary,
                   size: 20.sp,
                 ),
@@ -51,24 +55,12 @@ class QuizCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      '${quiz.totalMark} ${context.tr('marks')}',
+                      '${quiz.bestScore ?? 0}/${quiz.totalMark} ${context.tr('marks')}',
                       style: context.textTheme.bodySmall,
                     ),
                   ],
                 ),
               ),
-              if (isCompleted)
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(4.r),
-                  ),
-                  child: Text(
-                    context.tr('completed'),
-                    style: context.textTheme.labelSmall?.copyWith(color: Colors.green),
-                  ),
-                ),
             ],
           ),
           SizedBox(height: 16.h),
@@ -84,16 +76,25 @@ class QuizCard extends StatelessWidget {
                     ),
                     Text(
                       '${quiz.attemptsUsed ?? 0}/${quiz.maxAttempts}',
-                      style: context.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
               ),
               CustomPrimaryButton(
-                text: isCompleted ? context.tr('retake') : context.tr('start'),
-                onTap: () => context.pushNamed(AppRoutes.quizIntro, extra: quiz),
-                width: 100.w,
-                height: 36.h,
+                text: (isPassed || isCanRetry)
+                    ? context.tr('retake')
+                    : context.tr('start'),
+                onTap: (isFailed || (isPassed && isMaxAttemptsReached))
+                    ? null
+                    : () => context.pushNamed(
+                        AppRoutes.quizSession,
+                        extra: quiz.slug,
+                      ),
+                width: 100,
+                height: 36,
               ),
             ],
           ),

@@ -48,7 +48,7 @@ class QuizCourseBloc extends Bloc<QuizCourseEvent, QuizCourseState>
           page: event.page,
           newEntity: newEntity,
           currentState: state,
-          emit: emit,
+          emit: emit.call,
           loadedStateBuilder: (model, isPaginating) => GetQuizzesSuccess(model, isPaginationLoading: isPaginating),
           errorStateBuilder: (msg) => GetQuizzesError(msg),
           loadingStateBuilder: () => GetQuizzesLoading(),
@@ -71,8 +71,6 @@ class QuizCourseBloc extends Bloc<QuizCourseEvent, QuizCourseState>
     result.fold(
       (error) => emit(GetQuestionsError(error)),
       (newEntity) {
-        // Since we can't mixin twice with different types easily, we implement the logic here
-        // or just use a helper. I'll implement it following the mixin pattern.
         if (event.page == 1 || state is! GetQuestionsSuccess) {
           emit(GetQuestionsSuccess(newEntity));
         } else {
@@ -83,7 +81,7 @@ class QuizCourseBloc extends Bloc<QuizCourseEvent, QuizCourseState>
               accumulatedItems,
               totalPages: newEntity.totalPages,
               currentPage: newEntity.currentPage,
-            ) as QuestionPaginatedUIModel;
+            );
             emit(GetQuestionsSuccess(updatedModel));
           } else {
             emit(GetQuestionsSuccess(newEntity));

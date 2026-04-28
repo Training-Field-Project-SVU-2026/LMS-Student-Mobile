@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
-import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/quiz_course/presentation/bloc/quiz_course_bloc.dart';
 import 'package:lms_student/features/widgets/loading_indicator_widget.dart';
 import 'package:lms_student/features/widgets/error_feedback_widget.dart';
 import 'package:go_router/go_router.dart';
-import '../widgets/performance_summary_card.dart';
-import '../widgets/quiz_card.dart';
+import 'widgets/performance_summary_card.dart';
+import 'widgets/quiz_card.dart';
+import 'package:lms_student/features/quiz_course/data/model/quiz_model.dart';
 
 class QuizListScreen extends StatefulWidget {
   final String courseSlug;
@@ -87,8 +87,8 @@ class _QuizListScreenState extends State<QuizListScreen> with SingleTickerProvid
                     controller: _tabController,
                     children: [
                       _buildQuizList(quizzes, state.isPaginationLoading),
-                      _buildQuizList(quizzes.where((q) => q.quizStatus == 'completed').toList(), false),
-                      _buildQuizList(quizzes.where((q) => q.quizStatus != 'completed').toList(), false),
+                      _buildQuizList(quizzes.where((q) => q.quizStatus == QuizStatus.passed || q.quizStatus == QuizStatus.failed).toList(), false),
+                      _buildQuizList(quizzes.where((q) => q.quizStatus == QuizStatus.notStarted || q.quizStatus == QuizStatus.canRetry).toList(), false),
                     ],
                   ),
                 ),
