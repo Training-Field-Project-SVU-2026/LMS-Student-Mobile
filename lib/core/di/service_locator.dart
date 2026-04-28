@@ -24,6 +24,9 @@ import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_student/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:lms_student/features/profile/domain/repositories/profile_repository.dart';
 import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:lms_student/features/videos/data/repositories/videos_repository_impl.dart';
+import 'package:lms_student/features/videos/domain/repositories/videos_repository.dart';
+import 'package:lms_student/features/videos/presentation/bloc/videos_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -99,5 +102,13 @@ Future<void> setupServiceLocator() async {
   // إضافة PackageDetailsBloc
   sl.registerFactory(
     () => PackageDetailsBloc(packageRepository: sl<PackageRepository>()),
+  );
+
+  // Features - Videos
+  sl.registerLazySingleton<VideosRepository>(
+    () => VideosRepositoryImpl(apiConsumer: sl()),
+  );
+  sl.registerFactory(
+    () => VideosBloc(videosRepository: sl<VideosRepository>()),
   );
 }

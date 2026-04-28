@@ -103,6 +103,7 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                                     onTap: () {
                                       context.push(
                                         AppRoutes.courseVideosScreen,
+                                        extra: course.slug,
                                       );
                                     },
                                     text: context.tr('videos'),

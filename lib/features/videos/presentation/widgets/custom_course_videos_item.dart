@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lms_student/features/course/data/models/video_model.dart';
+import 'package:lms_student/features/videos/data/models/video_model.dart';
 
 class CustomCourseVideosItem extends StatelessWidget {
   final VideoModel video;
