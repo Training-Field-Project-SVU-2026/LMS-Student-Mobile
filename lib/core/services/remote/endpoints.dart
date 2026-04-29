@@ -32,6 +32,12 @@ class EndPoint {
   // student
   static String studentProfile(String slug) => '/students/$slug/';
   static String updateProfile(String slug) => '/students/$slug/';
+
+  // quiz
+  static String allQuizzzesByCourse(String courseSlug) =>"/courses/$courseSlug/quizzes/";
+  static String quizQuestions(String quizSlug) => "/quizzes/$quizSlug/questions/";
+  static String submitQuiz(String quizSlug) => "/quizzes/$quizSlug/submit/";
+  static String quizResults(String quizSlug) => "/quizzes/$quizSlug/my-results/";
 }
 
 class ApiKey {

@@ -119,7 +119,9 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                                   ),
                                   SizedBox(width: 16.w),
                                   CustomCourseMaterial(
-                                    onTap: () {},
+                                    onTap: () {
+                                      context.push(AppRoutes.quizList, extra: widget.slug);
+                                    },
                                     text: context.tr('quizzes'),
                                     icon: Icons.quiz,
                                     width: 105.w,

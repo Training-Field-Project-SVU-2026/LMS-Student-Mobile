@@ -48,8 +48,10 @@ class CustomPrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onTap,
 
-        style:
-            style, //لو فيه ستايل اتبعت هياخده لو مفيش هيستخدم بتاع الثيم عادي
+        style: style ??
+            ElevatedButton.styleFrom(
+              backgroundColor: color,
+            ),
         child: IconTheme(
           data: IconThemeData(
             color: defaultColor,

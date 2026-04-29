@@ -27,6 +27,9 @@ import 'package:lms_student/features/profile/presentation/bloc/profile_bloc.dart
 import 'package:lms_student/features/videos/data/repositories/videos_repository_impl.dart';
 import 'package:lms_student/features/videos/domain/repositories/videos_repository.dart';
 import 'package:lms_student/features/videos/presentation/bloc/videos_bloc.dart';
+import 'package:lms_student/features/quiz_course/data/repository/quiz_course_repository_impl.dart';
+import 'package:lms_student/features/quiz_course/domain/repository/quiz_course_repository.dart';
+import 'package:lms_student/features/quiz_course/presentation/bloc/quiz_course_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -99,7 +102,6 @@ Future<void> setupServiceLocator() async {
     () => CoursedetailsBloc(courseRepository: sl<CourseRepository>()),
   );
 
-  // إضافة PackageDetailsBloc
   sl.registerFactory(
     () => PackageDetailsBloc(packageRepository: sl<PackageRepository>()),
   );
@@ -111,4 +113,9 @@ Future<void> setupServiceLocator() async {
   sl.registerFactory(
     () => VideosBloc(videosRepository: sl<VideosRepository>()),
   );
+  // Features - Quiz
+  sl.registerLazySingleton<QuizCourseRepository>(
+    () => QuizCourseRepositoryImpl(apiConsumer: sl()),
+  );
+  sl.registerFactory(() => QuizCourseBloc(repository: sl()));
 }

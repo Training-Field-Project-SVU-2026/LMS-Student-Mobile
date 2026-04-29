@@ -29,6 +29,11 @@ import 'package:lms_student/features/profile/presentation/screens/change_passwor
 import 'package:lms_student/features/profile/presentation/screens/settings_screen/settings_screen.dart';
 import 'package:lms_student/features/profile/presentation/screens/student_profile_screen/student_profile_screen.dart';
 import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
+import 'package:lms_student/features/quiz_course/presentation/bloc/quiz_course_bloc.dart';
+import 'package:lms_student/features/quiz_course/presentation/screens/quiz_list_screen.dart';
+import 'package:lms_student/features/quiz_course/presentation/screens/quiz_session_screen.dart';
+import 'package:lms_student/features/quiz_course/presentation/screens/quiz_result_screen.dart';
+import 'package:lms_student/features/quiz_course/data/model/attempt_result_model.dart';
 import 'package:lms_student/root/root_after_login.dart';
 import 'package:lms_student/root/root_before_login.dart';
 
@@ -243,6 +248,36 @@ class RouterGenerator {
             ],
             child: const RootBeforeLogin(),
           );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.quizList,
+        name: AppRoutes.quizList,
+        builder: (context, state) {
+          final courseSlug = state.extra as String;
+          return BlocProvider(
+            create: (context) => sl<QuizCourseBloc>()..add(GetQuizzesByCourseEvent(courseSlug)),
+            child: QuizListScreen(courseSlug: courseSlug),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.quizSession,
+        name: AppRoutes.quizSession,
+        builder: (context, state) {
+          final quizSlug = state.extra as String;
+          return BlocProvider(
+            create: (context) => sl<QuizCourseBloc>()..add(GetQuizQuestionsEvent(quizSlug)),
+            child: QuizSessionScreen(quizSlug: quizSlug),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.quizResult,
+        name: AppRoutes.quizResult,
+        builder: (context, state) {
+          final result = state.extra as AttemptResultModel;
+          return QuizResultScreen(result: result);
         },
       ),
     ],
