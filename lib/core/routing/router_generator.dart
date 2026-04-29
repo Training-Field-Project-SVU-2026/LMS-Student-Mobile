@@ -13,7 +13,8 @@ import 'package:lms_student/features/auth/presentation/screens/reset_password_sc
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/course_after_enroll.dart';
-import 'package:lms_student/features/course/presentation/screens/course_videos_screen.dart';
+import 'package:lms_student/features/videos/presentation/screens/course_videos_screen.dart';
+import 'package:lms_student/features/videos/presentation/bloc/videos_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/view_all_course.dart';
 import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart';
 import 'package:lms_student/features/package_details/presentation/bloc/package_details_bloc.dart';
@@ -213,7 +214,13 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.courseVideosScreen,
         name: AppRoutes.courseVideosScreen,
-        builder: (context, state) => CourseVideosScreen(),
+        builder: (context, state) {
+          final slug = state.extra as String;
+          return BlocProvider(
+            create: (context) => sl<VideosBloc>(),
+            child: CourseVideosScreen(slug: slug),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.rootAfterLogin,
