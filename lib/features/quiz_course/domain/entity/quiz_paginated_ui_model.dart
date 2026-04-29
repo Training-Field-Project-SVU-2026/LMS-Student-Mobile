@@ -34,4 +34,7 @@ class QuizPaginatedUIModel extends PaginatedUIModel<QuizModel> {
       totalQuizzes: totalQuizzes ?? this.totalQuizzes,
     );
   }
+
+  List<QuizModel> get completedQuizzes => quizzes.where((q) => q.isPassed || q.isFailed).toList();
+  List<QuizModel> get pendingQuizzes => quizzes.where((q) => q.isNotStarted || q.isCanRetry).toList();
 }

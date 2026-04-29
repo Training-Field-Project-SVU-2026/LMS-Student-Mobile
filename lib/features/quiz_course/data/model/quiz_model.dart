@@ -29,6 +29,8 @@ class QuizModel {
   final QuizStatus? quizStatus;
   @JsonKey(name: 'best_score')
   final int? bestScore;
+  @JsonKey(name: 'passing_percentage')
+  final int? passingPercentage;
   final String slug;
 
   QuizModel({
@@ -39,9 +41,17 @@ class QuizModel {
     this.attemptsUsed,
     this.quizStatus,
     this.bestScore,
+    this.passingPercentage,
     required this.slug,
   });
 
   factory QuizModel.fromJson(Map<String, dynamic> json) => _$QuizModelFromJson(json);
   Map<String, dynamic> toJson() => _$QuizModelToJson(this);
+
+  bool get isPassed => quizStatus == QuizStatus.passed;
+  bool get isFailed => quizStatus == QuizStatus.failed;
+  bool get isCanRetry => quizStatus == QuizStatus.canRetry;
+  bool get isNotStarted => quizStatus == QuizStatus.notStarted;
+  bool get isMaxAttemptsReached => (attemptsUsed ?? 0) >= maxAttempts;
+  bool get canStartOrRetake => !(isFailed || (isPassed && isMaxAttemptsReached));
 }

@@ -13,12 +13,6 @@ class QuizCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final status = quiz.quizStatus;
-    final isPassed = status == QuizStatus.passed;
-    final isFailed = status == QuizStatus.failed;
-    final isCanRetry = status == QuizStatus.canRetry;
-    final isMaxAttemptsReached = (quiz.attemptsUsed ?? 0) >= quiz.maxAttempts;
-
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -38,7 +32,7 @@ class QuizCard extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  isPassed ? Icons.check_circle : Icons.assignment_outlined,
+                  quiz.isPassed ? Icons.check_circle : Icons.assignment_outlined,
                   color: context.colorScheme.primary,
                   size: 20.sp,
                 ),
@@ -83,16 +77,34 @@ class QuizCard extends StatelessWidget {
                   ],
                 ),
               ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      context.tr('passing'),
+                      style: context.textTheme.labelSmall,
+                    ),
+                    Text(
+                      '${quiz.passingPercentage ?? 0}%',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: context.colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               CustomPrimaryButton(
-                text: (isPassed || isCanRetry)
+                text: (quiz.isPassed || quiz.isCanRetry || quiz.isFailed)
                     ? context.tr('retake')
                     : context.tr('start'),
-                onTap: (isFailed || (isPassed && isMaxAttemptsReached))
-                    ? null
-                    : () => context.pushNamed(
+                onTap: quiz.canStartOrRetake
+                    ? () => context.pushNamed(
                         AppRoutes.quizSession,
                         extra: quiz.slug,
-                      ),
+                      )
+                    : null,
                 width: 100,
                 height: 36,
               ),

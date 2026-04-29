@@ -9,7 +9,10 @@ import 'package:lms_student/features/quiz_course/presentation/bloc/quiz_course_b
 import 'package:lms_student/features/widgets/loading_indicator_widget.dart';
 import 'package:lms_student/features/widgets/error_feedback_widget.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
+import 'package:lms_student/features/quiz_course/presentation/bloc/cubit/quiz_answers_cubit.dart';
+import 'package:lms_student/features/quiz_course/presentation/bloc/cubit/quiz_session_index_cubit.dart';
 import 'widgets/choice_item.dart';
+import 'package:lms_student/features/widgets/custom_confirmation_dialog.dart';
 
 class QuizSessionScreen extends StatefulWidget {
   final String quizSlug;
@@ -20,21 +23,26 @@ class QuizSessionScreen extends StatefulWidget {
 }
 
 class _QuizSessionScreenState extends State<QuizSessionScreen> {
-  int _currentIndex = 0;
-  final Map<String, List<String>> _selectedAnswers = {};
+  late final QuizAnswersCubit _answersCubit;
+  late final QuizSessionIndexCubit _indexCubit;
+  bool _canPop = false;
 
   @override
   void initState() {
     super.initState();
+    _answersCubit = QuizAnswersCubit();
+    _indexCubit = QuizSessionIndexCubit();
   }
 
   @override
   void dispose() {
+    _answersCubit.close();
+    _indexCubit.close();
     super.dispose();
   }
 
   void _submitQuiz() {
-    final answersList = _selectedAnswers.entries
+    final answersList = _answersCubit.state.entries
         .map((e) => {'question_slug': e.key, 'choice_slugs': e.value})
         .toList();
     context.read<QuizCourseBloc>().add(
@@ -60,130 +68,170 @@ class _QuizSessionScreenState extends State<QuizSessionScreen> {
           );
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            context.tr('quiz'),
-            style: context.textTheme.titleMedium?.copyWith(
-              color: context.colorScheme.primary,
-            ),
-          ),
-          centerTitle: true,
-          actions: [
-            TextButton(
-              onPressed: _submitQuiz,
-              child: Text(
-                context.tr('finish'),
-                style: TextStyle(color: context.colorScheme.error),
+      child: PopScope(
+        canPop: _canPop,
+        onPopInvoked: (didPop) async {
+          if (didPop) return;
+          final shouldPop =
+              await showDialog<bool>(
+                context: context,
+                builder: (context) => CustomConfirmationDialog(
+                  title: context.tr('quit_quiz') == 'quit_quiz'
+                      ? 'Quit Quiz?'
+                      : context.tr('quit_quiz'),
+                  description: context.tr('quit_quiz_desc') == 'quit_quiz_desc'
+                      ? 'Are you sure you want to exit? Your progress will be lost and this attempt will not be saved.'
+                      : context.tr('quit_quiz_desc'),
+                  confirmText: context.tr('quit') == 'quit'
+                      ? 'Quit'
+                      : context.tr('quit'),
+                ),
+              ) ??
+              false;
+          if (shouldPop && context.mounted) {
+            setState(() {
+              _canPop = true;
+            });
+            context.pop();
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              context.tr('quiz'),
+              style: context.textTheme.titleMedium?.copyWith(
+                color: context.colorScheme.primary,
               ),
             ),
-          ],
-        ),
-        body: BlocBuilder<QuizCourseBloc, QuizCourseState>(
-          buildWhen: (previous, current) =>
-              current is GetQuestionsLoading ||
-              current is GetQuestionsSuccess ||
-              current is GetQuestionsError,
-          builder: (context, state) {
-            if (state is GetQuestionsLoading) {
-              return const LoadingIndicatorWidget();
-            } else if (state is GetQuestionsError) {
-              return ErrorFeedbackWidget(
-                errorMessage: state.message,
-                onRetry: () => context.read<QuizCourseBloc>().add(
-                  GetQuizQuestionsEvent(widget.quizSlug),
+            centerTitle: true,
+            actions: [
+              TextButton(
+                onPressed: _submitQuiz,
+                child: Text(
+                  context.tr('finish'),
+                  style: TextStyle(color: context.colorScheme.error),
                 ),
-              );
-            } else if (state is GetQuestionsSuccess) {
-              final questions = state.uiModel?.questions ?? [];
-              if (questions.isEmpty) {
-                return const Center(child: Text('No questions found'));
-              }
-
-              final isCurrentIndexValid = _currentIndex < questions.length;
-              final totalQuestions =
-                  state.uiModel?.totalQuestions ?? questions.length;
-              final progress = (_currentIndex + 1) / totalQuestions;
-
-              if (!isCurrentIndexValid) {
+              ),
+            ],
+          ),
+          body: BlocBuilder<QuizCourseBloc, QuizCourseState>(
+            buildWhen: (previous, current) =>
+                current is GetQuestionsLoading ||
+                current is GetQuestionsSuccess ||
+                current is GetQuestionsError,
+            builder: (context, state) {
+              if (state is GetQuestionsLoading) {
                 return const LoadingIndicatorWidget();
-              }
-
-              final currentQuestion = questions[_currentIndex];
-
-              return Column(
-                children: [
-                  LinearProgressIndicator(
-                    value: progress,
-                    backgroundColor: context.colorScheme.outline.withOpacity(
-                      0.2,
-                    ),
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      context.colorScheme.primary,
-                    ),
+              } else if (state is GetQuestionsError) {
+                return ErrorFeedbackWidget(
+                  errorMessage: state.message,
+                  onRetry: () => context.read<QuizCourseBloc>().add(
+                    GetQuizQuestionsEvent(widget.quizSlug),
                   ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.all(24.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${context.tr('question')} ${_currentIndex + 1} ${context.tr('of')} $totalQuestions',
-                            style: context.textTheme.labelSmall?.copyWith(
-                              color: context.colorScheme.primary,
+                );
+              } else if (state is GetQuestionsSuccess) {
+                final questions = state.uiModel?.questions ?? [];
+                if (questions.isEmpty) {
+                  return const Center(child: Text('No questions found'));
+                }
+
+                return BlocBuilder<QuizSessionIndexCubit, int>(
+                  bloc: _indexCubit,
+                  builder: (context, currentIndex) {
+                    final isCurrentIndexValid = currentIndex < questions.length;
+                    final totalQuestions =
+                        state.uiModel?.totalQuestions ?? questions.length;
+                    final progress = (currentIndex + 1) / totalQuestions;
+
+                    if (!isCurrentIndexValid) {
+                      return const LoadingIndicatorWidget();
+                    }
+
+                    final currentQuestion = questions[currentIndex];
+
+                    return Column(
+                      children: [
+                        LinearProgressIndicator(
+                          value: progress,
+                          backgroundColor: context.colorScheme.outline
+                              .withOpacity(0.2),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            context.colorScheme.primary,
+                          ),
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            padding: EdgeInsets.all(24.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${context.tr('question')} ${currentIndex + 1} ${context.tr('of')} $totalQuestions',
+                                  style: context.textTheme.labelSmall?.copyWith(
+                                    color: context.colorScheme.primary,
+                                  ),
+                                ),
+                                SizedBox(height: 12.h),
+                                Text(
+                                  currentQuestion.questionName,
+                                  style: context.textTheme.headlineSmall,
+                                ),
+                                SizedBox(height: 24.h),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: currentQuestion.choices.map((
+                                    choice,
+                                  ) {
+                                    return BlocSelector<
+                                      QuizAnswersCubit,
+                                      Map<String, List<String>>,
+                                      bool
+                                    >(
+                                      bloc: _answersCubit,
+                                      selector: (selectedAnswers) {
+                                        return selectedAnswers[currentQuestion
+                                                    .slug]
+                                                ?.contains(choice.slug) ??
+                                            false;
+                                      },
+                                      builder: (context, isSelected) {
+                                        return ChoiceItem(
+                                          choice: choice,
+                                          isSelected: isSelected,
+                                          isMultiple:
+                                              currentQuestion.questionType ==
+                                              'multiple',
+                                          onTap: () {
+                                            _answersCubit.toggleAnswer(
+                                              currentQuestion.slug,
+                                              choice.slug,
+                                              currentQuestion.questionType ==
+                                                  'multiple',
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(height: 12.h),
-                          Text(
-                            currentQuestion.questionName,
-                            style: context.textTheme.headlineSmall,
-                          ),
-                          SizedBox(height: 24.h),
-                          ...currentQuestion.choices.map((choice) {
-                            final isSelected =
-                                _selectedAnswers[currentQuestion.slug]
-                                    ?.contains(choice.slug) ??
-                                false;
-                            return ChoiceItem(
-                              choice: choice,
-                              isSelected: isSelected,
-                              isMultiple:
-                                  currentQuestion.questionType == 'multiple',
-                              onTap: () {
-                                setState(() {
-                                  if (currentQuestion.questionType ==
-                                      'single') {
-                                    _selectedAnswers[currentQuestion.slug] = [
-                                      choice.slug,
-                                    ];
-                                  } else {
-                                    final currentSelected =
-                                        _selectedAnswers[currentQuestion
-                                            .slug] ??
-                                        [];
-                                    if (isSelected) {
-                                      currentSelected.remove(choice.slug);
-                                    } else {
-                                      currentSelected.add(choice.slug);
-                                    }
-                                    _selectedAnswers[currentQuestion.slug] =
-                                        currentSelected;
-                                  }
-                                });
-                              },
-                            );
-                          }),
-                        ],
-                      ),
-                    ),
-                  ),
-                  _buildFooter(context, questions.length, state),
-                ],
-              );
-            }
-            return const SizedBox.shrink();
-          },
+                        ),
+                        _buildFooter(
+                          context,
+                          questions.length,
+                          state,
+                          currentIndex,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ),
       ),
     );
@@ -193,6 +241,7 @@ class _QuizSessionScreenState extends State<QuizSessionScreen> {
     BuildContext context,
     int totalInCurrentList,
     GetQuestionsSuccess state,
+    int currentIndex,
   ) {
     final uiModel = state.uiModel;
     final hasNextPage =
@@ -213,20 +262,20 @@ class _QuizSessionScreenState extends State<QuizSessionScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          if (_currentIndex > 0)
+          if (currentIndex > 0)
             OutlinedButton(
-              onPressed: () => setState(() => _currentIndex--),
+              onPressed: () => _indexCubit.decrement(),
               child: Text(context.tr('previous')),
             )
           else
             const SizedBox.shrink(),
           CustomPrimaryButton(
-            text: (_currentIndex == totalInCurrentList - 1 && !hasNextPage)
+            text: (currentIndex == totalInCurrentList - 1 && !hasNextPage)
                 ? context.tr('submit')
                 : context.tr('next'),
             onTap: () {
-              if (_currentIndex < totalInCurrentList - 1) {
-                setState(() => _currentIndex++);
+              if (currentIndex < totalInCurrentList - 1) {
+                _indexCubit.increment();
               } else if (hasNextPage) {
                 if (!state.isPaginationLoading) {
                   context.read<QuizCourseBloc>().add(
@@ -235,7 +284,7 @@ class _QuizSessionScreenState extends State<QuizSessionScreen> {
                       page: uiModel.currentPage + 1,
                     ),
                   );
-                  setState(() => _currentIndex++);
+                  _indexCubit.increment();
                 }
               } else {
                 _submitQuiz();

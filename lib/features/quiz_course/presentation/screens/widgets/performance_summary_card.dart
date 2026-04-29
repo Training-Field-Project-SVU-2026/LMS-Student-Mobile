@@ -10,10 +10,28 @@ class PerformanceSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    return Container(
-      margin: EdgeInsets.all(16.w),
-      padding: EdgeInsets.all(20.w),
+    int totalPossible = 0;
+    int totalAchieved = 0;
+    int quizzesTaken = 0;
+
+    for (final quiz in quizzes) {
+      if ((quiz.attemptsUsed ?? 0) > 0 || quiz.isPassed || quiz.isFailed) {
+        quizzesTaken++;
+        totalPossible += quiz.totalMark;
+        totalAchieved += (quiz.bestScore ?? 0);
+      }
+    }
+
+    final bestScorePercentage = totalPossible > 0 
+        ? ((totalAchieved / totalPossible) * 100).round()
+        : 0;
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: Container(
+          margin: EdgeInsets.all(16.w),
+          padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: context.colorScheme.primary,
         borderRadius: BorderRadius.circular(16.r),
@@ -25,13 +43,15 @@ class PerformanceSummaryCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildScoreItem(context, context.tr('best_score'), '85%'),
-          Container(width: 1.w, height: 40.h, color: context.colorScheme.onPrimary.withOpacity(0.3)),
-          _buildScoreItem(context, context.tr('last_score'), '72%'),
-        ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildScoreItem(context, context.tr('best_score'), '$bestScorePercentage%'),
+              Container(width: 1.w, height: 40.h, color: context.colorScheme.onPrimary.withOpacity(0.3)),
+              _buildScoreItem(context, context.tr('completed'), '$quizzesTaken / ${quizzes.length}'),
+            ],
+          ),
+        ),
       ),
     );
   }

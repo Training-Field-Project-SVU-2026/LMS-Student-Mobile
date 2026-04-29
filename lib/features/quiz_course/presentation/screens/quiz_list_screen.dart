@@ -9,7 +9,6 @@ import 'package:lms_student/features/widgets/error_feedback_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'widgets/performance_summary_card.dart';
 import 'widgets/quiz_card.dart';
-import 'package:lms_student/features/quiz_course/data/model/quiz_model.dart';
 
 class QuizListScreen extends StatefulWidget {
   final String courseSlug;
@@ -21,17 +20,16 @@ class QuizListScreen extends StatefulWidget {
 
 class _QuizListScreenState extends State<QuizListScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _scrollController.addListener(_onScroll);
   }
 
-  void _onScroll() {
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent * 0.8) {
+  bool _onScrollNotification(ScrollNotification notification) {
+    if (notification is ScrollEndNotification &&
+        notification.metrics.pixels >= notification.metrics.maxScrollExtent * 0.8) {
       final state = context.read<QuizCourseBloc>().state;
       if (state is GetQuizzesSuccess) {
         final uiModel = state.uiModel;
@@ -40,12 +38,12 @@ class _QuizListScreenState extends State<QuizListScreen> with SingleTickerProvid
         }
       }
     }
+    return false;
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -87,8 +85,8 @@ class _QuizListScreenState extends State<QuizListScreen> with SingleTickerProvid
                     controller: _tabController,
                     children: [
                       _buildQuizList(quizzes, state.isPaginationLoading),
-                      _buildQuizList(quizzes.where((q) => q.quizStatus == QuizStatus.passed || q.quizStatus == QuizStatus.failed).toList(), false),
-                      _buildQuizList(quizzes.where((q) => q.quizStatus == QuizStatus.notStarted || q.quizStatus == QuizStatus.canRetry).toList(), false),
+                      _buildQuizList(state.uiModel!.completedQuizzes, false),
+                      _buildQuizList(state.uiModel!.pendingQuizzes, false),
                     ],
                   ),
                 ),
@@ -132,12 +130,13 @@ class _QuizListScreenState extends State<QuizListScreen> with SingleTickerProvid
     if (quizzes.isEmpty) {
       return Center(child: Text(context.tr('view_course_notFound')));
     }
-    return ListView.separated(
-      controller: _scrollController,
-      padding: EdgeInsets.all(16.w),
-      itemCount: quizzes.length + (isPaginating ? 1 : 0),
-      separatorBuilder: (context, index) => SizedBox(height: 12.h),
-      itemBuilder: (context, index) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: _onScrollNotification,
+      child: ListView.separated(
+        padding: EdgeInsets.all(16.w),
+        itemCount: quizzes.length + (isPaginating ? 1 : 0),
+        separatorBuilder: (context, index) => SizedBox(height: 12.h),
+        itemBuilder: (context, index) {
         if (index < quizzes.length) {
           return QuizCard(quiz: quizzes[index]);
         } else {
@@ -147,6 +146,7 @@ class _QuizListScreenState extends State<QuizListScreen> with SingleTickerProvid
           );
         }
       },
+      ),
     );
   }
 }

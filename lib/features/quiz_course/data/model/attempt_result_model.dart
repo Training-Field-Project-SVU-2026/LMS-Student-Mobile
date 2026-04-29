@@ -10,6 +10,8 @@ class AttemptResultModel {
   final int totalMark;
   final int score;
   final int? percentage;
+  @JsonKey(name: 'passing_percentage')
+  final int? passingPercentage;
   final String status;
   @JsonKey(name: 'attempt_number')
   final int attemptNumber;
@@ -26,6 +28,7 @@ class AttemptResultModel {
     required this.totalMark,
     required this.score,
     this.percentage,
+    this.passingPercentage,
     required this.status,
     required this.attemptNumber,
     this.maxAttempts,
