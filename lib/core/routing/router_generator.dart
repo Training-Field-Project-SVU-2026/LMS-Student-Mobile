@@ -256,7 +256,8 @@ class RouterGenerator {
         builder: (context, state) {
           final courseSlug = state.extra as String;
           return BlocProvider(
-            create: (context) => sl<QuizCourseBloc>()..add(GetQuizzesByCourseEvent(courseSlug)),
+            create: (context) =>
+                sl<QuizCourseBloc>()..add(GetQuizzesByCourseEvent(courseSlug)),
             child: QuizListScreen(courseSlug: courseSlug),
           );
         },
@@ -267,7 +268,8 @@ class RouterGenerator {
         builder: (context, state) {
           final quizSlug = state.extra as String;
           return BlocProvider(
-            create: (context) => sl<QuizCourseBloc>()..add(GetQuizQuestionsEvent(quizSlug)),
+            create: (context) =>
+                sl<QuizCourseBloc>()..add(GetQuizQuestionsEvent(quizSlug)),
             child: QuizSessionScreen(quizSlug: quizSlug),
           );
         },

@@ -152,7 +152,10 @@ class _PackageDetailsState extends State<PackageDetails> {
                               onTap: () {
                                 context.push(
                                   AppRoutes.courseDetailsScreen,
-                                  extra: course.slug,
+                                  extra: {
+                                    'slug': course.slug,
+                                    'isEnrolled': course.isenrolled,
+                                  },
                                 );
                               },
                               child: IntrinsicHeight(
