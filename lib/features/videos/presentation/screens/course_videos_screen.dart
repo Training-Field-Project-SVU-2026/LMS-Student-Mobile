@@ -59,7 +59,6 @@ class _CourseVideosScreenState extends State<CourseVideosScreen> {
 
             return Column(
               children: [
-                /// 🎬 الفيديو
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: CustomVideoPlayer(video: videos[currentIndex]),
@@ -67,7 +66,6 @@ class _CourseVideosScreenState extends State<CourseVideosScreen> {
 
                 SizedBox(height: 10.h),
 
-                /// 📄 العنوان + زرار
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 20.r,
@@ -96,7 +94,6 @@ class _CourseVideosScreenState extends State<CourseVideosScreen> {
                   ),
                 ),
 
-                /// 📚 ليست الفيديوهات
                 Expanded(
                   child: ListView.builder(
                     itemCount: videos.length,
