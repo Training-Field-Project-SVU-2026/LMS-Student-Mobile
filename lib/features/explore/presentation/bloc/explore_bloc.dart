@@ -1,13 +1,12 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lms_student/core/common_logic/data/model/course/course_model.dart';
 import 'package:lms_student/core/common_logic/domain/repositories/course_repository.dart';
 import 'package:lms_student/core/common_logic/domain/repositories/package_repository.dart';
-import 'package:lms_student/features/explore/data/model/packages_model.dart';
-import 'package:lms_student/features/explore/domain/repositories/explore_repository.dart';
 
-part 'explore_event.dart';
-part 'explore_state.dart';
+import 'package:lms_student/features/explore/domain/repositories/explore_repository.dart';
+import 'package:lms_student/features/explore/presentation/bloc/explore_event.dart';
+
+import 'package:lms_student/features/explore/presentation/bloc/explore_state.dart';
+
 
 class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
   final ExploreRepository exploreRepository;
@@ -27,7 +26,11 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     GetpackagesEvent event,
     Emitter<ExploreState> emit,
   ) async {
-    emit(state.copyWith(packageStatus: ExploreStatus.loading));
+    if (event.page == 1) {
+      emit(state.copyWith(packageStatus: ExploreStatus.loading));
+    } else {
+      emit(state.copyWith(isPackagePaginationLoading: true));
+    }
 
     try {
       final response = await packageRepository.getAllPackages(
@@ -39,21 +42,42 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
           state.copyWith(
             packageStatus: ExploreStatus.failure,
             packageError: error,
+            isPackagePaginationLoading: false,
           ),
         ),
-        (packages) => emit(
-          state.copyWith(
-            packageStatus: ExploreStatus.success,
-            packages: packages,
-          ),
-        ),
+        (newModel) {
+          if (event.page == 1) {
+            emit(
+              state.copyWith(
+                packageStatus: ExploreStatus.success,
+                packageUIModel: newModel,
+                isPackagePaginationLoading: false,
+              ),
+            );
+          } else {
+            final currentModel = state.packageUIModel;
+            final updatedModel = newModel.copyWithItems(
+              [...currentModel?.packages ?? [], ...newModel.packages],
+              totalPages: newModel.totalPages,
+              currentPage: newModel.currentPage,
+              totalPackages: newModel.totalPackages,
+            );
+            emit(
+              state.copyWith(
+                packageStatus: ExploreStatus.success,
+                packageUIModel: updatedModel,
+                isPackagePaginationLoading: false,
+              ),
+            );
+          }
+        },
       );
-
     } catch (e) {
       emit(
         state.copyWith(
           packageStatus: ExploreStatus.failure,
           packageError: e.toString(),
+          isPackagePaginationLoading: false,
         ),
       );
     }
@@ -63,7 +87,11 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     GetCoursesEvent event,
     Emitter<ExploreState> emit,
   ) async {
-    emit(state.copyWith(courseStatus: ExploreStatus.loading));
+    if (event.page == 1) {
+      emit(state.copyWith(courseStatus: ExploreStatus.loading));
+    } else {
+      emit(state.copyWith(isCoursePaginationLoading: true));
+    }
 
     try {
       final result = await courseRepository.getAllCourses(
@@ -76,24 +104,42 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
           state.copyWith(
             courseStatus: ExploreStatus.failure,
             courseError: error,
+            isCoursePaginationLoading: false,
           ),
         ),
-        (response) => emit(
-          state.copyWith(
-            courseStatus: ExploreStatus.success,
-            courses: response.data,
-            totalCourses: response.totalCourses,
-            totalPages: response.totalPages,
-            currentPage: response.currentPage,
-          ),
-        ),
+        (newModel) {
+          if (event.page == 1) {
+            emit(
+              state.copyWith(
+                courseStatus: ExploreStatus.success,
+                courseUIModel: newModel,
+                isCoursePaginationLoading: false,
+              ),
+            );
+          } else {
+            final currentModel = state.courseUIModel;
+            final updatedModel = newModel.copyWithItems(
+              [...currentModel?.courses ?? [], ...newModel.courses],
+              totalPages: newModel.totalPages,
+              currentPage: newModel.currentPage,
+              totalCourses: newModel.totalCourses,
+            );
+            emit(
+              state.copyWith(
+                courseStatus: ExploreStatus.success,
+                courseUIModel: updatedModel,
+                isCoursePaginationLoading: false,
+              ),
+            );
+          }
+        },
       );
-
     } catch (e) {
       emit(
         state.copyWith(
           courseStatus: ExploreStatus.failure,
           courseError: e.toString(),
+          isCoursePaginationLoading: false,
         ),
       );
     }

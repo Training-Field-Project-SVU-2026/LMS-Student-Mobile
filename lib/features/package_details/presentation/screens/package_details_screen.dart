@@ -12,15 +12,15 @@ import 'package:lms_student/features/package_details/presentation/bloc/package_d
 import 'package:lms_student/features/widgets/course_card_horizontal.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 
-class PackageDetails extends StatefulWidget {
+class PackageDetailsScreen extends StatefulWidget {
   final String slug;
-  const PackageDetails({super.key, required this.slug});
+  const PackageDetailsScreen({super.key, required this.slug});
 
   @override
-  State<PackageDetails> createState() => _PackageDetailsState();
+  State<PackageDetailsScreen> createState() => _PackageDetailsScreenState();
 }
 
-class _PackageDetailsState extends State<PackageDetails> {
+class _PackageDetailsScreenState extends State<PackageDetailsScreen> {
   @override
   void initState() {
     super.initState();
