@@ -18,33 +18,27 @@ class QuizListScreen extends StatefulWidget {
   State<QuizListScreen> createState() => _QuizListScreenState();
 }
 
-class _QuizListScreenState extends State<QuizListScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
+class _QuizListScreenState extends State<QuizListScreen> {
   bool _onScrollNotification(ScrollNotification notification) {
     if (notification is ScrollEndNotification &&
-        notification.metrics.pixels >= notification.metrics.maxScrollExtent * 0.8) {
+        notification.metrics.pixels >=
+            notification.metrics.maxScrollExtent * 0.8) {
       final state = context.read<QuizCourseBloc>().state;
       if (state is GetQuizzesSuccess) {
         final uiModel = state.uiModel;
-        if (uiModel != null && uiModel.currentPage < uiModel.totalPages && !state.isPaginationLoading) {
-          context.read<QuizCourseBloc>().add(GetQuizzesByCourseEvent(widget.courseSlug, page: uiModel.currentPage + 1));
+        if (uiModel != null &&
+            uiModel.currentPage < uiModel.totalPages &&
+            !state.isPaginationLoading) {
+          context.read<QuizCourseBloc>().add(
+            GetQuizzesByCourseEvent(
+              widget.courseSlug,
+              page: uiModel.currentPage + 1,
+            ),
+          );
         }
       }
     }
     return false;
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   @override
@@ -60,68 +54,41 @@ class _QuizListScreenState extends State<QuizListScreen> with SingleTickerProvid
       ),
       body: BlocBuilder<QuizCourseBloc, QuizCourseState>(
         buildWhen: (previous, current) =>
-            current is GetQuizzesLoading || current is GetQuizzesSuccess || current is GetQuizzesError,
+            current is GetQuizzesLoading ||
+            current is GetQuizzesSuccess ||
+            current is GetQuizzesError,
         builder: (context, state) {
           if (state is GetQuizzesLoading) {
             return const LoadingIndicatorWidget();
           } else if (state is GetQuizzesError) {
             return ErrorFeedbackWidget(
               errorMessage: state.message,
-              onRetry: () => context.read<QuizCourseBloc>().add(GetQuizzesByCourseEvent(widget.courseSlug)),
+              onRetry: () => context.read<QuizCourseBloc>().add(
+                GetQuizzesByCourseEvent(widget.courseSlug),
+              ),
             );
           } else if (state is GetQuizzesSuccess) {
             final quizzes = state.uiModel?.quizzes ?? [];
             if (quizzes.isEmpty) {
-              return Center(child: Text(context.tr('view_course_nothing_added')));
+              return Center(
+                child: Text(context.tr('view_course_nothing_added')),
+              );
             }
 
             return Column(
               children: [
-                PerformanceSummaryCard(quizzes: quizzes),
-                SizedBox(height: 20.h),
-                _buildTabBar(context),
+                PerformanceSummaryCard(
+                  overallBestScore: state.uiModel?.overallBestScore ?? '?%',
+                  completedQuizzes: state.uiModel?.completedQuizzes ?? '?',
+                ),
                 Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      _buildQuizList(quizzes, state.isPaginationLoading),
-                      _buildQuizList(state.uiModel!.completedQuizzes, false),
-                      _buildQuizList(state.uiModel!.pendingQuizzes, false),
-                    ],
-                  ),
+                  child: _buildQuizList(quizzes, state.isPaginationLoading),
                 ),
               ],
             );
           }
           return const SizedBox.shrink();
         },
-      ),
-    );
-  }
-
-  Widget _buildTabBar(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
-      decoration: BoxDecoration(
-        color: context.colorScheme.surfaceVariant.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: TabBar(
-        controller: _tabController,
-        indicatorSize: TabBarIndicatorSize.tab,
-        dividerColor: Colors.transparent,
-        indicator: BoxDecoration(
-          color: context.colorScheme.primary,
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        labelColor: context.colorScheme.onPrimary,
-        unselectedLabelColor: context.colorScheme.onSurfaceVariant,
-        labelStyle: context.textTheme.titleSmall,
-        tabs: [
-          Tab(text: context.tr('all_exams')),
-          Tab(text: context.tr('completed')),
-          Tab(text: context.tr('pending')),
-        ],
       ),
     );
   }
@@ -137,15 +104,15 @@ class _QuizListScreenState extends State<QuizListScreen> with SingleTickerProvid
         itemCount: quizzes.length + (isPaginating ? 1 : 0),
         separatorBuilder: (context, index) => SizedBox(height: 12.h),
         itemBuilder: (context, index) {
-        if (index < quizzes.length) {
-          return QuizCard(quiz: quizzes[index]);
-        } else {
-          return const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-      },
+          if (index < quizzes.length) {
+            return QuizCard(quiz: quizzes[index]);
+          } else {
+            return const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+        },
       ),
     );
   }

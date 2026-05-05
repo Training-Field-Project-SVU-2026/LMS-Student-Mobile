@@ -49,6 +49,7 @@ class _CustomCategoryState extends State<CustomCategory> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             widget.title,
@@ -66,7 +67,7 @@ class _CustomCategoryState extends State<CustomCategory> {
               color: context.colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
-          Spacer(),
+          SizedBox(height: 15.h),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -97,12 +98,12 @@ class _CustomCategoryState extends State<CustomCategory> {
               }),
             ),
           ),
-          Spacer(),
+          SizedBox(height: 15.h),
           Divider(
             color: context.colorScheme.onSurface.withValues(alpha: 0.3),
             height: 2.w,
           ),
-          Spacer(),
+          SizedBox(height: 15.h),
           Row(
             children: [
               Row(
