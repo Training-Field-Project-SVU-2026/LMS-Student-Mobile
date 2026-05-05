@@ -34,118 +34,119 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
         }
       });
     }
+    if (widget.isenroll == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.pushReplacement(
+            AppRoutes.courseAfterEnroll,
+            extra: widget.slug,
+          );
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CoursedetailsBloc, CoursedetailsState>(
-      builder: (context, state) {
-        if (widget.isenroll == true) {
-          Future.microtask(() {
-            if (mounted) {
-              context.pushReplacement(
-                AppRoutes.courseAfterEnroll,
-                extra: widget.slug,
-              );
-            }
-          });
-        }
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text(
-              context.tr('course_details'),
-              style: context.textTheme.titleLarge,
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.share_outlined, size: 22.sp),
+    return BlocListener<CoursedetailsBloc, CoursedetailsState>(
+      listener: (context, state) {
+        if (state is CourseLoaded && state.course.isenrolled == true) {
+          context.pushReplacement(
+            AppRoutes.courseAfterEnroll,
+            extra: state.course.slug,
+          );
+        } else if (state is CourseEnrollLoaded) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (dialogContext) => CustomDialog(
+              icon: Icon(
+                Icons.check_circle,
+                color: dialogContext.colorScheme.secondary,
+                size: 60.sp,
               ),
-            ],
-          ),
-          body: (() {
-            if (state is CourseLoading) {
-              return const LoadingIndicatorWidget();
-            }
-            if (state is CourseError) {
-              return ErrorFeedbackWidget(
-                errorMessage: state.message,
-                onRetry: () {
-                  if (widget.slug != null) {
-                    context.read<CoursedetailsBloc>().add(
-                      GetCourseDetails(slug: widget.slug!),
-                    );
-                  }
-                },
-              );
-            }
-            if (state is CourseLoaded ||
-                state is CourseEnrollLoading ||
-                state is CourseEnrollLoaded ||
-                state is CourseEnrollError) {
-              final course = state is CourseLoaded
-                  ? state.course
-                  : state is CourseEnrollLoading
-                  ? state.course
-                  : state is CourseEnrollLoaded
-                  ? state.course
-                  : (state as CourseEnrollError).course;
-              final isEnrollLoading = state is CourseEnrollLoading;
-
-              return BlocListener<CoursedetailsBloc, CoursedetailsState>(
-                listenWhen: (previous, current) =>
-                    current is CourseEnrollLoaded ||
-                    current is CourseEnrollError,
-                listener: (context, state) {
-                  if (state is CourseEnrollLoaded) {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (dialogContext) => CustomDialog(
-                        icon: Icon(
-                          Icons.check_circle,
-                          color: dialogContext.colorScheme.secondary,
-                          size: 60.sp,
-                        ),
-                        title: dialogContext.tr('enroll_success_title'),
-                        description: dialogContext.tr('enroll_success_message'),
-                        primaryButtonText: dialogContext.tr('go_to_course'),
-                        primaryButtonOnTap: () {
-                          dialogContext.pop();
-                          context.pushReplacement(
-                            AppRoutes.courseAfterEnroll,
-                            extra: course.slug,
-                          );
-                        },
-                      ),
-                    );
-                  } else if (state is CourseEnrollError) {
-                    showDialog(
-                      context: context,
-                      builder: (dialogContext) => CustomDialog(
-                        icon: Icon(
-                          Icons.error_outline,
-                          color: dialogContext.colorScheme.error,
-                          size: 60.sp,
-                        ),
-                        title: dialogContext.tr('error'),
-                        description: state.message,
-                        primaryButtonText: dialogContext.tr('retry'),
-                        primaryButtonOnTap: () {
-                          final bloc = context.read<CoursedetailsBloc>();
-                          dialogContext.pop();
-                          bloc.add(
-                            EnrollCourse(slug: course.slug, course: course),
-                          );
-                        },
-                        secondaryButtonText: dialogContext.tr('cancel'),
-                        secondaryButtonOnTap: () => dialogContext.pop(),
-                      ),
-                    );
-                  }
-                },
-                child: Column(
+              title: dialogContext.tr('enroll_success_title'),
+              description: dialogContext.tr('enroll_success_message'),
+              primaryButtonText: dialogContext.tr('go_to_course'),
+              primaryButtonOnTap: () {
+                dialogContext.pop();
+                context.pushReplacement(
+                  AppRoutes.courseAfterEnroll,
+                  extra: state.course.slug,
+                );
+              },
+            ),
+          );
+        } else if (state is CourseEnrollError) {
+          showDialog(
+            context: context,
+            builder: (dialogContext) => CustomDialog(
+              icon: Icon(
+                Icons.error_outline,
+                color: dialogContext.colorScheme.error,
+                size: 60.sp,
+              ),
+              title: dialogContext.tr('error'),
+              description: state.message,
+              primaryButtonText: dialogContext.tr('retry'),
+              primaryButtonOnTap: () {
+                final bloc = context.read<CoursedetailsBloc>();
+                dialogContext.pop();
+                bloc.add(
+                  EnrollCourse(slug: state.course.slug, course: state.course),
+                );
+              },
+              secondaryButtonText: dialogContext.tr('cancel'),
+              secondaryButtonOnTap: () => dialogContext.pop(),
+            ),
+          );
+        }
+      },
+      child: BlocBuilder<CoursedetailsBloc, CoursedetailsState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: Text(
+                context.tr('course_details'),
+                style: context.textTheme.titleLarge,
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.share_outlined, size: 22.sp),
+                ),
+              ],
+            ),
+            body: (() {
+              if (state is CourseLoading) {
+                return const LoadingIndicatorWidget();
+              }
+              if (state is CourseError) {
+                return ErrorFeedbackWidget(
+                  errorMessage: state.message,
+                  onRetry: () {
+                    if (widget.slug != null) {
+                      context.read<CoursedetailsBloc>().add(
+                        GetCourseDetails(slug: widget.slug!),
+                      );
+                    }
+                  },
+                );
+              }
+              if (state is CourseLoaded ||
+                  state is CourseEnrollLoading ||
+                  state is CourseEnrollLoaded ||
+                  state is CourseEnrollError) {
+                final course = state is CourseLoaded
+                    ? state.course
+                    : state is CourseEnrollLoading
+                    ? state.course
+                    : state is CourseEnrollLoaded
+                    ? state.course
+                    : (state as CourseEnrollError).course;
+                final isEnrollLoading = state is CourseEnrollLoading;
+                return Column(
                   children: [
                     Expanded(
                       child: ListView(
@@ -349,15 +350,15 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                       ),
                     ),
                   ],
-                ),
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            ); // initial state
-          })(),
-        );
-      },
+            })(),
+          );
+        },
+      ),
     );
   }
 }

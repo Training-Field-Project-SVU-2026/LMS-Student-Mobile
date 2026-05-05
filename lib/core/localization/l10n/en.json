@@ -197,5 +197,9 @@
   "failed": "Failed",
   "your_answer": "Your Answer",
   "better_luck_next_time": "Better Luck Next Time!",
-  "max_attempts_reached_desc": "You have reached the maximum number of attempts for this quiz."
+  "max_attempts_reached_desc": "You have reached the maximum number of attempts for this quiz.",
+  "incomplete_quiz_title": "Incomplete Quiz",
+  "incomplete_quiz_msg": "You have not answered all questions. Please complete all questions before finishing.",
+  "finish_quiz_title": "Finish Quiz",
+  "finish_quiz_msg": "Are you sure you want to finish the quiz and submit your answers?"
 }

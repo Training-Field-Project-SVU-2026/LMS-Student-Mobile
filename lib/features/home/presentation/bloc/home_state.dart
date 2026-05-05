@@ -4,72 +4,63 @@ enum RequestStatus { initial, loading, loaded, error }
 
 class HomeState extends Equatable {
   final RequestStatus coursesStatus;
-  final List<CourseModel> courses;
+  final CoursePaginatedUIModel? coursesUIModel;
   final String? coursesErrorMessage;
-  final int? totalCourses;
-  final int? totalPages;
-  final int? currentPage;
+  final bool isCoursesPaginationLoading;
 
   final RequestStatus enrollmentsStatus;
-  final List<CourseModel> enrollments;
+  final CoursePaginatedUIModel? enrollmentsUIModel;
   final String? enrollmentsErrorMessage;
-  final int? enrollmentsTotalPages;
-  final int? enrollmentsCurrentPage;
+  final bool isEnrollmentsPaginationLoading;
 
   const HomeState({
     this.coursesStatus = RequestStatus.initial,
-    this.courses = const [],
+    this.coursesUIModel,
     this.coursesErrorMessage,
-    this.totalCourses,
-    this.totalPages,
-    this.currentPage,
+    this.isCoursesPaginationLoading = false,
     this.enrollmentsStatus = RequestStatus.initial,
-    this.enrollments = const [],
+    this.enrollmentsUIModel,
     this.enrollmentsErrorMessage,
-    this.enrollmentsTotalPages,
-    this.enrollmentsCurrentPage,
+    this.isEnrollmentsPaginationLoading = false,
   });
+
+  List<CourseModel> get courses => coursesUIModel?.courses ?? [];
+  List<CourseModel> get enrollments => enrollmentsUIModel?.courses ?? [];
 
   HomeState copyWith({
     RequestStatus? coursesStatus,
-    List<CourseModel>? courses,
+    CoursePaginatedUIModel? coursesUIModel,
     String? coursesErrorMessage,
-    int? totalCourses,
-    int? totalPages,
-    int? currentPage,
+    bool? isCoursesPaginationLoading,
     RequestStatus? enrollmentsStatus,
-    List<CourseModel>? enrollments,
+    CoursePaginatedUIModel? enrollmentsUIModel,
     String? enrollmentsErrorMessage,
-    int? enrollmentsTotalPages,
-    int? enrollmentsCurrentPage,
+    bool? isEnrollmentsPaginationLoading,
   }) {
     return HomeState(
       coursesStatus: coursesStatus ?? this.coursesStatus,
-      courses: courses ?? this.courses,
+      coursesUIModel: coursesUIModel ?? this.coursesUIModel,
       coursesErrorMessage: coursesErrorMessage ?? this.coursesErrorMessage,
-      totalCourses: totalCourses ?? this.totalCourses,
-      totalPages: totalPages ?? this.totalPages,
-      currentPage: currentPage ?? this.currentPage,
+      isCoursesPaginationLoading:
+          isCoursesPaginationLoading ?? this.isCoursesPaginationLoading,
       enrollmentsStatus: enrollmentsStatus ?? this.enrollmentsStatus,
-      enrollments: enrollments ?? this.enrollments,
-      enrollmentsErrorMessage: enrollmentsErrorMessage ?? this.enrollmentsErrorMessage,
-      enrollmentsTotalPages: enrollmentsTotalPages ?? this.enrollmentsTotalPages,
-      enrollmentsCurrentPage: enrollmentsCurrentPage ?? this.enrollmentsCurrentPage,
+      enrollmentsUIModel: enrollmentsUIModel ?? this.enrollmentsUIModel,
+      enrollmentsErrorMessage:
+          enrollmentsErrorMessage ?? this.enrollmentsErrorMessage,
+      isEnrollmentsPaginationLoading:
+          isEnrollmentsPaginationLoading ?? this.isEnrollmentsPaginationLoading,
     );
   }
 
   @override
   List<Object?> get props => [
-    coursesStatus,
-    courses,
-    coursesErrorMessage,
-    totalCourses,
-    totalPages,
-    currentPage,
-    enrollmentsStatus,
-    enrollments,
-    enrollmentsErrorMessage,
-    enrollmentsTotalPages,
-    enrollmentsCurrentPage,
-  ];
+        coursesStatus,
+        coursesUIModel,
+        coursesErrorMessage,
+        isCoursesPaginationLoading,
+        enrollmentsStatus,
+        enrollmentsUIModel,
+        enrollmentsErrorMessage,
+        isEnrollmentsPaginationLoading,
+      ];
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:lms_student/core/utils/get_responsive_size.dart';
 import 'package:lms_student/features/auth/utils/auth_validation.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
@@ -86,11 +87,14 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                     ),
                   ),
                   SizedBox(height: 40.h),
-
+asdf
                   CustomTextFormField(
                     controller: _oldPasswordController,
                     hintText: context.tr('old_password'),
-                    prefixIcon: Icon(Icons.lock_outline_rounded, size: 22.w),
+                    prefixIcon: Icon(
+                      Icons.lock_outline_rounded,
+                      size: context.isDesktop ? 22 : 18.w,
+                    ),
                     isPassword: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -106,7 +110,10 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                   CustomTextFormField(
                     controller: _newPasswordController,
                     hintText: context.tr('new_password'),
-                    prefixIcon: Icon(Icons.key_rounded, size: 22.w),
+                    prefixIcon: Icon(
+                      Icons.key_rounded,
+                      size: context.isDesktop ? 22 : 18.w,
+                    ),
                     isPassword: true,
                     validator: (value) => validatePassword(value),
                     keyboardType: TextInputType.visiblePassword,
@@ -117,7 +124,10 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                   CustomTextFormField(
                     controller: _confirmPasswordController,
                     hintText: context.tr('confirm_new_password'),
-                    prefixIcon: Icon(Icons.done_all_rounded, size: 22.w),
+                    prefixIcon: Icon(
+                      Icons.done_all_rounded,
+                      size: context.isDesktop ? 22 : 18.w,
+                    ),
                     isPassword: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
