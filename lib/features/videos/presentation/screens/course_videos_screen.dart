@@ -59,11 +59,10 @@ class _CourseVideosScreenState extends State<CourseVideosScreen> {
 
             return Column(
               children: [
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: CustomVideoPlayer(video: videos[currentIndex]),
-                ),
-
+                // AspectRatio(
+                //   aspectRatio: 16 / 9,
+                //   child: CustomVideoPlayer(video: videos[currentIndex]),
+                // ),
                 SizedBox(height: 10.h),
 
                 Padding(
