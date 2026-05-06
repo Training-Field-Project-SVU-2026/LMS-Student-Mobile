@@ -143,6 +143,10 @@ class DioConsumer extends ApiConsumer {
             return Right(responseData as T);
           }
         } else {
+          final errors = responseData[ApiKey.errors];
+          if (errors is List && errors.isNotEmpty) {
+            return Left(errors.join(', '));
+          }
           return Left(message);
         }
       }

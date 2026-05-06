@@ -9,6 +9,8 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
   VideosBloc({required this.videosRepository}) : super(VideosInitial()) {
     on<GetCourseVideos>(_onGetCourseVideos);
     on<PlayVideoEvent>(_onPlayVideo);
+    on<VideoPlayerErrorEvent>(_onVideoPlayerError);
+    on<VideoPlayerLoadingEvent>(_onVideoPlayerLoading);
   }
 
   Future<void> _onGetCourseVideos(
@@ -39,6 +41,29 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
 
       // Emit a new loaded state to update the UI
       emit(VideosLoaded(videos: videos));
+    }
+  }
+
+  void _onVideoPlayerError(
+    VideoPlayerErrorEvent event,
+    Emitter<VideosState> emit,
+  ) {
+    if (state is VideosLoaded) {
+      emit(
+        (state as VideosLoaded).copyWith(
+          playerError: event.message,
+          isVideoLoading: false,
+        ),
+      );
+    }
+  }
+
+  void _onVideoPlayerLoading(
+    VideoPlayerLoadingEvent event,
+    Emitter<VideosState> emit,
+  ) {
+    if (state is VideosLoaded) {
+      emit((state as VideosLoaded).copyWith(isVideoLoading: event.isLoading));
     }
   }
 }
