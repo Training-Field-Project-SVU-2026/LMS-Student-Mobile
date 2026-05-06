@@ -5,7 +5,7 @@ abstract class VideosState extends Equatable {
   const VideosState();
   
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class VideosInitial extends VideosState {}
@@ -14,11 +14,29 @@ class VideosLoading extends VideosState {}
 
 class VideosLoaded extends VideosState {
   final List<VideoModel> videos;
+  final String? playerError;
+  final bool isVideoLoading;
 
-  const VideosLoaded({required this.videos});
+  const VideosLoaded({
+    required this.videos,
+    this.playerError,
+    this.isVideoLoading = false,
+  });
+
+  VideosLoaded copyWith({
+    List<VideoModel>? videos,
+    String? playerError,
+    bool? isVideoLoading,
+  }) {
+    return VideosLoaded(
+      videos: videos ?? this.videos,
+      playerError: playerError,
+      isVideoLoading: isVideoLoading ?? this.isVideoLoading,
+    );
+  }
 
   @override
-  List<Object> get props => [videos];
+  List<Object?> get props => [videos, playerError, isVideoLoading];
 }
 
 class VideosError extends VideosState {
@@ -27,5 +45,5 @@ class VideosError extends VideosState {
   const VideosError({required this.message});
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }

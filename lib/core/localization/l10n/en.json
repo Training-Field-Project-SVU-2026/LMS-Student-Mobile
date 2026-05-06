@@ -201,5 +201,11 @@
   "incomplete_quiz_title": "Incomplete Quiz",
   "incomplete_quiz_msg": "You have not answered all questions. Please complete all questions before finishing.",
   "finish_quiz_title": "Finish Quiz",
-  "finish_quiz_msg": "Are you sure you want to finish the quiz and submit your answers?"
+  "finish_quiz_msg": "Are you sure you want to finish the quiz and submit your answers?",
+  "failed_to_load_video": "Failed to load video. Please check your connection.",
+  "invalid_youtube_url": "Invalid YouTube URL",
+  "no_video_content": "No video content available",
+  "initializing_player": "Initializing player...",
+  "course_videos": "Course Videos",
+  "next_lesson": "Next Lesson"
 }
