@@ -112,7 +112,15 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                                   ),
                                   SizedBox(width: 16.w),
                                   CustomCourseMaterial(
-                                    onTap: () {},
+                                    onTap: () {
+                                      context.push(
+                                        AppRoutes.materialCourseScreen,
+                                        extra: {
+                                          'courseTitle': course.title,
+                                          'courseSlug': course.slug,
+                                        },
+                                      );
+                                    },
                                     text: context.tr('files'),
                                     icon: Icons.folder,
                                     width: 105.w,
@@ -120,7 +128,10 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                                   SizedBox(width: 16.w),
                                   CustomCourseMaterial(
                                     onTap: () {
-                                      context.push(AppRoutes.quizList, extra: widget.slug);
+                                      context.push(
+                                        AppRoutes.quizList,
+                                        extra: widget.slug,
+                                      );
                                     },
                                     text: context.tr('quizzes'),
                                     icon: Icons.quiz,

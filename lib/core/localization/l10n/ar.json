@@ -211,5 +211,7 @@
   "no_video_content": "لا يوجد محتوى فيديو متاح",
   "initializing_player": "جاري تهيئة المشغل...",
   "course_videos": "فيديوهات الكورس",
-  "next_lesson": "الدرس التالي"
+  "next_lesson": "الدرس التالي",
+  "search_materials_hint": "ابحث عن المواد، الكتب، أو المصادر...",
+  "view": "عرض"
 }

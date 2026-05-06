@@ -211,5 +211,7 @@
   "no_video_content": "No video content available",
   "initializing_player": "Initializing player...",
   "course_videos": "Course Videos",
-  "next_lesson": "Next Lesson"
+  "next_lesson": "Next Lesson",
+  "search_materials_hint": "Search materials, books, or resources...",
+  "view": "View"
 }

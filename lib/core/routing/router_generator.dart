@@ -13,6 +13,7 @@ import 'package:lms_student/features/auth/presentation/screens/reset_password_sc
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/course_after_enroll.dart';
+import 'package:lms_student/features/material_course/presentation/bloc/material_course_bloc.dart';
 import 'package:lms_student/features/videos/presentation/screens/course_videos_screen.dart';
 import 'package:lms_student/features/videos/presentation/bloc/videos_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/view_all_course.dart';
@@ -37,6 +38,8 @@ import 'package:lms_student/features/quiz_course/presentation/screens/quiz_list_
 import 'package:lms_student/features/quiz_course/presentation/screens/quiz_session_screen.dart';
 import 'package:lms_student/features/quiz_course/presentation/screens/quiz_result_screen.dart';
 import 'package:lms_student/features/quiz_course/data/model/attempt_result_model.dart';
+import 'package:lms_student/features/material_course/presentation/screens/material_course_screen.dart';
+import 'package:lms_student/features/material_course/presentation/screens/pdf_viewer_screen.dart';
 import 'package:lms_student/root/root_after_login.dart';
 import 'package:lms_student/root/root_before_login.dart';
 
@@ -299,6 +302,32 @@ class RouterGenerator {
         builder: (context, state) {
           final result = state.extra as AttemptResultModel;
           return QuizResultScreen(result: result);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.materialCourseScreen,
+        name: AppRoutes.materialCourseScreen,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final courseTitle = extra['courseTitle'] as String;
+          final courseSlug = extra['courseSlug'] as String;
+          return BlocProvider(
+            create: (context) => sl<CourseMaterialsBloc>(),
+            child: MaterialCourseScreen(
+              courseTitle: courseTitle,
+              courseSlug: courseSlug,
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.pdfViewerScreen,
+        name: AppRoutes.pdfViewerScreen,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final url = extra['url'] as String;
+          final title = extra['title'] as String;
+          return PdfViewerScreen(url: url, title: title);
         },
       ),
     ],
