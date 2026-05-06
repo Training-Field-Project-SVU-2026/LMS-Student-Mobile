@@ -24,3 +24,21 @@ class PlayVideoEvent extends VideosEvent {
   @override
   List<Object> get props => [index];
 }
+
+class VideoPlayerErrorEvent extends VideosEvent {
+  final String message;
+
+  const VideoPlayerErrorEvent({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class VideoPlayerLoadingEvent extends VideosEvent {
+  final bool isLoading;
+
+  const VideoPlayerLoadingEvent({required this.isLoading});
+
+  @override
+  List<Object> get props => [isLoading];
+}

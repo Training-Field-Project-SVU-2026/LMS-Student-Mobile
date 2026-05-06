@@ -41,13 +41,46 @@ class _QuizSessionScreenState extends State<QuizSessionScreen> {
     super.dispose();
   }
 
-  void _submitQuiz() {
-    final answersList = _answersCubit.state.entries
-        .map((e) => {'question_slug': e.key, 'choice_slugs': e.value})
-        .toList();
-    context.read<QuizCourseBloc>().add(
-      SubmitQuizEvent(widget.quizSlug, answersList),
-    );
+  void _submitQuiz() async {
+    final quizState = context.read<QuizCourseBloc>().state;
+    if (quizState is GetQuestionsSuccess) {
+      final totalQuestions = quizState.uiModel?.totalQuestions ?? 0;
+      final answeredQuestionsCount = _answersCubit.state.values
+          .where((v) => v.isNotEmpty)
+          .length;
+
+      if (answeredQuestionsCount < totalQuestions) {
+        showDialog(
+          context: context,
+          builder: (context) => CustomConfirmationDialog(
+            title: context.tr('incomplete_quiz_title'),
+            description: context.tr('incomplete_quiz_msg'),
+            confirmText: context.tr('ok'),
+          ),
+        );
+        return;
+      }
+
+      final confirm =
+          await showDialog<bool>(
+            context: context,
+            builder: (context) => CustomConfirmationDialog(
+              title: context.tr('finish_quiz_title'),
+              description: context.tr('finish_quiz_msg'),
+              confirmText: context.tr('finish'),
+            ),
+          ) ??
+          false;
+
+      if (!confirm) return;
+      if (!mounted) return;
+      final answersList = _answersCubit.state.entries
+          .map((e) => {'question_slug': e.key, 'choice_slugs': e.value})
+          .toList();
+      context.read<QuizCourseBloc>().add(
+        SubmitQuizEvent(widget.quizSlug, answersList),
+      );
+    }
   }
 
   @override

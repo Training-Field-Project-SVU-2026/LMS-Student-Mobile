@@ -19,10 +19,36 @@ class ViewAllCourse extends StatefulWidget {
 }
 
 class _ViewAllCourseState extends State<ViewAllCourse> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
-    context.read<HomeBloc>().add(GetCoursesEvent());
+    context.read<HomeBloc>().add(const GetCoursesEvent(page: 1));
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      final state = context.read<HomeBloc>().state;
+      if (state.coursesStatus == RequestStatus.loaded &&
+          !state.isCoursesPaginationLoading &&
+          (state.coursesUIModel?.currentPage ?? 0) <
+              (state.coursesUIModel?.totalPages ?? 0)) {
+        context.read<HomeBloc>().add(
+          GetCoursesEvent(
+            page: (state.coursesUIModel?.currentPage ?? 0) + 1,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -46,7 +72,7 @@ class _ViewAllCourseState extends State<ViewAllCourse> {
               height: double.infinity,
               errorMessage: state.coursesErrorMessage ?? 'Error',
               onRetry: () {
-                context.read<HomeBloc>().add(GetCoursesEvent());
+                context.read<HomeBloc>().add(const GetCoursesEvent(page: 1));
               },
             );
           }
@@ -88,43 +114,64 @@ class _ViewAllCourseState extends State<ViewAllCourse> {
               );
             }
 
-            return Padding(
-              padding: EdgeInsets.all(16.w),
-              child: GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                  childAspectRatio: 0.70,
-                ),
-                itemCount: courses.length,
-                itemBuilder: (context, index) {
-                  final course = courses[index];
-                  return InkWell(
-                    onTap: () {
-                      log('Course slug: ${course.slug}');
-                      context.push(
-                        AppRoutes.courseDetailsScreen,
-                        extra: {
-                          'slug': course.slug,
-                          'isEnrolled': course.isenrolled,
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<HomeBloc>().add(const GetCoursesEvent(page: 1));
+              },
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    children: [
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 0.70,
+                        ),
+                        itemCount: courses.length,
+                        itemBuilder: (context, index) {
+                          final course = courses[index];
+                          return InkWell(
+                            onTap: () {
+                              log('Course slug: ${course.slug}');
+                              context.push(
+                                AppRoutes.courseDetailsScreen,
+                                extra: {
+                                  'slug': course.slug,
+                                  'isEnrolled': course.isenrolled,
+                                },
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(12.r),
+                            child: CourseCardVertical(
+                              title: course.title,
+                              price: course.price,
+                              imagePath: course.image,
+                              rating: course.avgRating ?? 0.0,
+                              totalStudents: course.studentsCount ?? 0,
+                              width: double.infinity,
+                              description: course.description,
+                              instructorName: course.instructorName,
+                            ),
+                          );
                         },
-                      );
-                    },
-                    borderRadius: BorderRadius.circular(12.r),
-                    child: CourseCardVertical(
-                      title: course.title,
-                      price: course.price,
-                      imagePath: course.image,
-                      rating: course.avgRating ?? 0.0,
-                      totalStudents: course.studentsCount ?? 0,
-                      width: double.infinity,
-                      description: course.description,
-                      instructorName: course.instructorName,
-                    ),
-                  );
-                },
+                      ),
+                      if (state.isCoursesPaginationLoading)
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20.h),
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             );
           }

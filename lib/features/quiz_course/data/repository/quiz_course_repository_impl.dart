@@ -30,6 +30,8 @@ class QuizCourseRepositoryImpl implements QuizCourseRepository {
         totalPages: model.data.totalPages,
         currentPage: model.data.currentPage,
         totalQuizzes: model.data.totalQuizzes,
+        overallBestScore: model.data.statistics?.overallBestScore ?? '0%',
+        completedQuizzes: model.data.statistics?.completedQuizzes ?? '0',
       )),
     );
   }

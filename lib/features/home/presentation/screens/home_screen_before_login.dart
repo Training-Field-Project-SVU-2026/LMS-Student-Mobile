@@ -96,324 +96,335 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
         elevation: 1,
         shadowColor: context.colorScheme.onSurface.withValues(alpha: 0.2),
       ),
-      body: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 580.h,
-            decoration: BoxDecoration(
-              color: context.colorScheme.primary,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30.r),
-                bottomRight: Radius.circular(30.r),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          context.read<HomeBloc>().add(const GetCoursesEvent());
+        },
+        child: ListView(
+          padding: EdgeInsets.zero,
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            Container(
+              width: double.infinity,
+              height: 580.h,
+              decoration: BoxDecoration(
+                color: context.colorScheme.primary,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30.r),
+                  bottomRight: Radius.circular(30.r),
+                ),
               ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 30.h),
-                  CustomRichText(),
-                  SizedBox(height: 20.h),
-                  Center(
-                    child: Container(
-                      width: 300.w,
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.surface.withValues(
-                          alpha: 0.04,
-                        ),
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(16.w),
-                        child: Text(
-                          context.tr('master_python_react'),
-                          maxLines: 3,
-
-                          overflow: TextOverflow.ellipsis,
-                          style: context.textTheme.bodyMedium!.copyWith(
-                            color: context.colorScheme.surface,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 30.h),
-                  Center(
-                    child: CustomPrimaryButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: context.colorScheme.onPrimary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
-                        ),
-                      ),
-                      textStyle: TextStyle(color: context.colorScheme.primary),
-
-                      text: context.tr('start_learning'),
-                      //Todo: GO TO LOGIN SCREEN
-                      onTap: () {
-                        context.push(AppRoutes.loginScreen);
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                  Center(
-                    child: CustomOutlinedButton(
-                      text: context.tr('browse_courses'),
-                      textStyle: TextStyle(color: Colors.white),
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
-                        ),
-                        side: BorderSide(
-                          width: 4,
-                          color: context.colorScheme.surface.withValues(
-                            alpha: 0.2,
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        // TODO
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 40.h),
-                  Center(
-                    child: Image.asset(
-                      AppAssets.homePng,
-                      fit: BoxFit.contain,
-                      width: 200.w,
-                      height: 120.h,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 30.h),
-
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      context.tr('featured_courses'),
-                      style: context.textTheme.titleLarge!.copyWith(
-                        color: context.colorScheme.onSurface,
+                    SizedBox(height: 30.h),
+                    CustomRichText(),
+                    SizedBox(height: 20.h),
+                    Center(
+                      child: Container(
+                        width: 300.w,
+                        decoration: BoxDecoration(
+                          color: context.colorScheme.surface.withValues(
+                            alpha: 0.04,
+                          ),
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(16.w),
+                          child: Text(
+                            context.tr('master_python_react'),
+                            maxLines: 3,
+
+                            overflow: TextOverflow.ellipsis,
+                            style: context.textTheme.bodyMedium!.copyWith(
+                              color: context.colorScheme.surface,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                    Text(
-                      context.tr('view_all'),
-                      style: context.textTheme.labelLarge!.copyWith(
-                        color: context.colorScheme.primary,
+                    SizedBox(height: 30.h),
+                    Center(
+                      child: CustomPrimaryButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: context.colorScheme.onPrimary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.r),
+                          ),
+                        ),
+                        textStyle: TextStyle(color: context.colorScheme.primary),
+
+                        text: context.tr('start_learning'),
+                        //Todo: GO TO LOGIN SCREEN
+                        onTap: () {
+                          context.push(AppRoutes.loginScreen);
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    Center(
+                      child: CustomOutlinedButton(
+                        text: context.tr('browse_courses'),
+                        textStyle: TextStyle(color: Colors.white),
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.r),
+                          ),
+                          side: BorderSide(
+                            width: 4,
+                            color: context.colorScheme.surface.withValues(
+                              alpha: 0.2,
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          // TODO
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 40.h),
+                    Center(
+                      child: Image.asset(
+                        AppAssets.homePng,
+                        fit: BoxFit.contain,
+                        width: 200.w,
+                        height: 120.h,
                       ),
                     ),
                   ],
                 ),
+              ),
+            ),
+            SizedBox(height: 30.h),
 
-                SizedBox(height: 20.h),
-                BlocBuilder<HomeBloc, HomeState>(
-                  builder: (context, state) {
-                    if (state.coursesStatus == RequestStatus.loading) {
-                      return const LoadingIndicatorWidget();
-                    }
-                    if (state.coursesStatus == RequestStatus.error) {
-                      return ErrorFeedbackWidget(
-                        errorMessage: state.coursesErrorMessage ?? 'Error',
-                        onRetry: () {
-                          context.read<HomeBloc>().add(GetCoursesEvent());
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        context.tr('featured_courses'),
+                        style: context.textTheme.titleLarge!.copyWith(
+                          color: context.colorScheme.onSurface,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          context.push(AppRoutes.viewAllCourse);
                         },
-                      );
-                    }
-                    if (state.coursesStatus == RequestStatus.loaded) {
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: IntrinsicHeight(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: state.courses.map((course) {
-                              return Padding(
-                                padding: EdgeInsets.only(right: 16.w),
-                                child: InkWell(
-                                  onTap: () {
-                                    context.push(
-                                      AppRoutes.courseDetailsScreen,
-                                      extra: {
-                                        'slug': course.slug,
-                                        'isEnrolled': course.isenrolled,
-                                      },
-                                    );
-                                  },
-                                  child: CourseCardVertical(
-                                    //Todo ::Handel nullable
-                                    title: course.title,
-                                    price: course.price,
-                                    imagePath: course.image,
-                                    rating: course.avgRating,
-                                    totalStudents: course.studentsCount,
-                                    width: 256,
-                                    description: course.description,
-                                    instructorName: course.instructorName,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                        child: Text(
+                          context.tr('view_all'),
+                          style: context.textTheme.labelLarge!.copyWith(
+                            color: context.colorScheme.primary,
                           ),
                         ),
-                      );
-                    }
-
-                    return const SizedBox.shrink();
-                  },
-                ),
-                SizedBox(height: 40.h),
-                FeatureCard(
-                  description: context.tr('test_your_knowledge'),
-                  path: "assets/icons/InteractiveQuizzes.png",
-                  title: context.tr('interactive_quizzes'),
-                ),
-                SizedBox(height: 20.h),
-                FeatureCard(
-                  description: context.tr('test_your_knowledge'),
-                  path: "assets/icons/DiscussionBoards.png",
-                  title: context.tr('discussion_boards'),
-                ),
-                SizedBox(height: 20.h),
-                FeatureCard(
-                  description: context.tr('test_your_knowledge'),
-                  path: "assets/icons/DownloadableResources.png",
-                  title: context.tr('downloadable_resources'),
-                ),
-                SizedBox(height: 40.h),
-                CustomOutlinedButton(
-                  text: context.tr('join_us_today'),
-                  textStyle: context.textTheme.labelLarge!.copyWith(
-                    color: context.colorScheme.primary,
+                      ),
+                    ],
                   ),
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.r),
+
+                  SizedBox(height: 20.h),
+                  BlocBuilder<HomeBloc, HomeState>(
+                    builder: (context, state) {
+                      if (state.coursesStatus == RequestStatus.loading) {
+                        return const LoadingIndicatorWidget();
+                      }
+                      if (state.coursesStatus == RequestStatus.error) {
+                        return ErrorFeedbackWidget(
+                          errorMessage: state.coursesErrorMessage ?? 'Error',
+                          onRetry: () {
+                            context.read<HomeBloc>().add(const GetCoursesEvent());
+                          },
+                        );
+                      }
+                      if (state.coursesStatus == RequestStatus.loaded) {
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: IntrinsicHeight(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: state.courses.map((course) {
+                                return Padding(
+                                  padding: EdgeInsets.only(right: 16.w),
+                                  child: InkWell(
+                                    onTap: () {
+                                      context.push(
+                                        AppRoutes.courseDetailsScreen,
+                                        extra: {
+                                          'slug': course.slug,
+                                          'isEnrolled': course.isenrolled,
+                                        },
+                                      );
+                                    },
+                                    child: CourseCardVertical(
+                                      //Todo ::Handel nullable
+                                      title: course.title,
+                                      price: course.price,
+                                      imagePath: course.image,
+                                      rating: course.avgRating,
+                                      totalStudents: course.studentsCount,
+                                      width: 256,
+                                      description: course.description,
+                                      instructorName: course.instructorName,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        );
+                      }
+
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                  SizedBox(height: 40.h),
+                  FeatureCard(
+                    description: context.tr('test_your_knowledge'),
+                    path: "assets/icons/InteractiveQuizzes.png",
+                    title: context.tr('interactive_quizzes'),
+                  ),
+                  SizedBox(height: 20.h),
+                  FeatureCard(
+                    description: context.tr('test_your_knowledge'),
+                    path: "assets/icons/DiscussionBoards.png",
+                    title: context.tr('discussion_boards'),
+                  ),
+                  SizedBox(height: 20.h),
+                  FeatureCard(
+                    description: context.tr('test_your_knowledge'),
+                    path: "assets/icons/DownloadableResources.png",
+                    title: context.tr('downloadable_resources'),
+                  ),
+                  SizedBox(height: 40.h),
+                  CustomOutlinedButton(
+                    text: context.tr('join_us_today'),
+                    textStyle: context.textTheme.labelLarge!.copyWith(
+                      color: context.colorScheme.primary,
                     ),
-                    backgroundColor: context.colorScheme.primary.withValues(
-                      alpha: 0.05,
-                    ),
-                    side: BorderSide(
-                      width: 1,
-                      color: context.colorScheme.primary.withValues(
+                    style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      backgroundColor: context.colorScheme.primary.withValues(
                         alpha: 0.05,
                       ),
+                      side: BorderSide(
+                        width: 1,
+                        color: context.colorScheme.primary.withValues(
+                          alpha: 0.05,
+                        ),
+                      ),
+                    ),
+                    width: 150,
+                    height: 40,
+                    onTap: () {},
+                  ),
+                  SizedBox(height: 35.h),
+                  Text(
+                    context.tr('ready_to_start_journey'),
+                    style: context.textTheme.headlineMedium!.copyWith(
+                      color: context.colorScheme.onSurface,
                     ),
                   ),
-                  width: 150,
-                  height: 40,
-                  onTap: () {},
-                ),
-                SizedBox(height: 35.h),
-                Text(
-                  context.tr('ready_to_start_journey'),
-                  style: context.textTheme.headlineMedium!.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
-                ),
-                SizedBox(height: 35.h),
-                Text(
-                  context.tr('join_10k_learners'),
-                  style: context.textTheme.bodyLarge!.copyWith(
-                    color: context.colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
-                ),
-                SizedBox(height: 35.h),
-                CustomPrimaryButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colorScheme.secondary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.r),
+                  SizedBox(height: 35.h),
+                  Text(
+                    context.tr('join_10k_learners'),
+                    style: context.textTheme.bodyLarge!.copyWith(
+                      color: context.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
-                  textStyle: TextStyle(color: context.colorScheme.onSurface),
+                  SizedBox(height: 35.h),
+                  CustomPrimaryButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: context.colorScheme.secondary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                    ),
+                    textStyle: TextStyle(color: context.colorScheme.onSurface),
 
-                  text: context.tr('create_free_account'),
-                  //Todo: GO TO REGISTER SCREEN
-                  onTap: () {
-                    context.push(AppRoutes.registerScreen);
-                  },
+                    text: context.tr('create_free_account'),
+                    //Todo: GO TO REGISTER SCREEN
+                    onTap: () {
+                      context.push(AppRoutes.registerScreen);
+                    },
+                  ),
+                  SizedBox(height: 15.h),
+                  Text(
+                    context.tr('no_credit_card_required'),
+                    style: context.textTheme.bodySmall!.copyWith(
+                      color: context.colorScheme.onSurface.withValues(alpha: 0.6),
+                    ),
+                  ),
+                  SizedBox(height: 80.h),
+                ],
+              ),
+            ),
+            Divider(color: context.colorScheme.onSurface.withValues(alpha: 0.1)),
+            SizedBox(height: 16.h),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      child: Container(
+                        width: 32.w,
+                        height: 32.h,
+                        decoration: BoxDecoration(
+                          color: context.colorScheme.primary.withValues(
+                            alpha: 0.06,
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.facebook,
+                          size: 15.w,
+                          color: context.colorScheme.primary.withValues(
+                            alpha: 0.4,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 16.w),
+                    InkWell(
+                      child: Container(
+                        width: 32.w,
+                        height: 32.h,
+                        decoration: BoxDecoration(
+                          color: context.colorScheme.primary.withValues(
+                            alpha: 0.06,
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.alternate_email,
+                          size: 15.w,
+                          color: context.colorScheme.primary.withValues(
+                            alpha: 0.4,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 15.h),
+                SizedBox(height: 16.h),
                 Text(
-                  context.tr('no_credit_card_required'),
+                  context.tr('all_rights_reserved'),
                   style: context.textTheme.bodySmall!.copyWith(
                     color: context.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
-                SizedBox(height: 80.h),
               ],
             ),
-          ),
-          Divider(color: context.colorScheme.onSurface.withValues(alpha: 0.1)),
-          SizedBox(height: 16.h),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    child: Container(
-                      width: 32.w,
-                      height: 32.h,
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.primary.withValues(
-                          alpha: 0.06,
-                        ),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.facebook,
-                        size: 15.w,
-                        color: context.colorScheme.primary.withValues(
-                          alpha: 0.4,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 16.w),
-                  InkWell(
-                    child: Container(
-                      width: 32.w,
-                      height: 32.h,
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.primary.withValues(
-                          alpha: 0.06,
-                        ),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.alternate_email,
-                        size: 15.w,
-                        color: context.colorScheme.primary.withValues(
-                          alpha: 0.4,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.h),
-              Text(
-                context.tr('all_rights_reserved'),
-                style: context.textTheme.bodySmall!.copyWith(
-                  color: context.colorScheme.onSurface.withValues(alpha: 0.6),
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

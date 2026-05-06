@@ -14,6 +14,11 @@ QuizPaginatedData _$QuizPaginatedDataFromJson(Map<String, dynamic> json) =>
       quizzes: (json['quizzes'] as List<dynamic>)
           .map((e) => QuizModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      statistics: json['statistics'] == null
+          ? null
+          : QuizStatisticsModel.fromJson(
+              json['statistics'] as Map<String, dynamic>,
+            ),
     );
 
 Map<String, dynamic> _$QuizPaginatedDataToJson(QuizPaginatedData instance) =>
@@ -22,4 +27,5 @@ Map<String, dynamic> _$QuizPaginatedDataToJson(QuizPaginatedData instance) =>
       'current_page': instance.currentPage,
       'total_quizzes': instance.totalQuizzes,
       'quizzes': instance.quizzes,
+      'statistics': instance.statistics,
     };

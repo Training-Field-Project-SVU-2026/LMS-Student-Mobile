@@ -6,19 +6,35 @@ import 'package:lms_student/core/services/remote/endpoints.dart';
 import 'package:lms_student/core/utils/api_query_params.dart';
 import 'package:lms_student/features/explore/data/model/packages_model.dart';
 import 'package:lms_student/features/explore/data/model/packages_response_model.dart';
+import 'package:lms_student/features/explore/domain/entity/package_paginated_ui_model.dart';
 
 class PackageRepositoryImpl implements PackageRepository {
   final ApiConsumer apiConsumer;
   PackageRepositoryImpl({required this.apiConsumer});
   @override
-  Future<Either<String, List<PackagesModel>>> getAllPackages({
+  Future<Either<String, PackagePaginatedUIModel>> getAllPackages({
     int? page,
     int? pageSize,
   }) async {
-    return await apiConsumer.get<List<PackagesModel>>(
+    final result = await apiConsumer.get<PackagesResponseModel>(
       EndPoint.allPackages,
-      queryParameters: ApiQueryParams.pagination(page: page, pageSize: pageSize),
-      fromJson: (json) => PackagesResponseModel.fromJson(json).data,
+      queryParameters: ApiQueryParams.pagination(
+        page: page ?? 1,
+        pageSize: pageSize ?? 10,
+      ),
+      fromJson: (json) => PackagesResponseModel.fromJson(json),
+    );
+
+    return result.fold(
+      (error) => Left(error),
+      (model) => Right(
+        PackagePaginatedUIModel(
+          packages: model.data,
+          totalPages: model.totalPages ?? 0,
+          currentPage: model.currentPage ?? 0,
+          totalPackages: model.totalPackages ?? 0,
+        ),
+      ),
     );
   }
 

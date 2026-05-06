@@ -16,10 +16,13 @@ import 'package:lms_student/features/course/presentation/screens/course_after_en
 import 'package:lms_student/features/videos/presentation/screens/course_videos_screen.dart';
 import 'package:lms_student/features/videos/presentation/bloc/videos_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/view_all_course.dart';
+import 'package:lms_student/features/explore/presentation/screens/view_all_packages.dart';
 import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart';
 import 'package:lms_student/features/package_details/presentation/bloc/package_details_bloc.dart';
-import 'package:lms_student/features/package_details/presentation/screens/package_details.dart';
+import 'package:lms_student/features/package_details/presentation/screens/package_details_screen.dart';
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
+import 'package:lms_student/features/my_courses/presentation/bloc/my_courses_bloc.dart';
+
 import 'package:lms_student/features/home/presentation/screens/home_screen_before_login.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_event.dart';
@@ -160,7 +163,7 @@ class RouterGenerator {
           log('Route received slug: $slug');
           return BlocProvider(
             create: (context) => sl<PackageDetailsBloc>(),
-            child: PackageDetails(slug: slug),
+            child: PackageDetailsScreen(slug: slug),
           );
         },
       ),
@@ -212,6 +215,16 @@ class RouterGenerator {
         },
       ),
       GoRoute(
+        path: AppRoutes.viewAllPackages,
+        name: AppRoutes.viewAllPackages,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => sl<ExploreBloc>(),
+            child: const ViewAllPackages(),
+          );
+        },
+      ),
+      GoRoute(
         path: AppRoutes.courseVideosScreen,
         name: AppRoutes.courseVideosScreen,
         builder: (context, state) {
@@ -230,10 +243,12 @@ class RouterGenerator {
             providers: [
               BlocProvider(create: (context) => sl<HomeBloc>()),
               BlocProvider(create: (context) => sl<ExploreBloc>()),
+              BlocProvider(create: (context) => sl<MyCoursesBloc>()),
               BlocProvider.value(value: sl<ProfileBloc>()),
             ],
             child: const RootAfterLogin(),
           );
+
         },
       ),
 
@@ -256,7 +271,8 @@ class RouterGenerator {
         builder: (context, state) {
           final courseSlug = state.extra as String;
           return BlocProvider(
-            create: (context) => sl<QuizCourseBloc>()..add(GetQuizzesByCourseEvent(courseSlug)),
+            create: (context) =>
+                sl<QuizCourseBloc>()..add(GetQuizzesByCourseEvent(courseSlug)),
             child: QuizListScreen(courseSlug: courseSlug),
           );
         },
@@ -267,7 +283,8 @@ class RouterGenerator {
         builder: (context, state) {
           final quizSlug = state.extra as String;
           return BlocProvider(
-            create: (context) => sl<QuizCourseBloc>()..add(GetQuizQuestionsEvent(quizSlug)),
+            create: (context) =>
+                sl<QuizCourseBloc>()..add(GetQuizQuestionsEvent(quizSlug)),
             child: QuizSessionScreen(quizSlug: quizSlug),
           );
         },
