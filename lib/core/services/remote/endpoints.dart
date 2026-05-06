@@ -59,4 +59,5 @@ class ApiKey {
   static String oldPassword = "old_password";
   static String newPassword = "new_password";
   static String image = "image";
+  static String errors = "errors";
 }
