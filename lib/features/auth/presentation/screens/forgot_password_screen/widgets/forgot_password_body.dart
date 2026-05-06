@@ -19,120 +19,121 @@ class ForgotPasswordBody extends StatelessWidget {
     final authBloc = context.read<AuthBloc>();
 
     return BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is ForgotPasswordSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: context.colorScheme.secondary,
-              ),
-            );
-
-            context.go(
-              AppRoutes.resetPasswordScreen,
-              extra: {'email': authBloc.emailController.text.trim()},
-            );
-          } else if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: context.colorScheme.error,
-              ),
-            );
-          }
-        },
-        child: Center(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: context.isDesktop ? 80 : 36.w,
-              vertical: context.isDesktop ? 80 : 56.h,
+      listener: (context, state) {
+        if (state is ForgotPasswordSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: context.colorScheme.secondary,
             ),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: context.isDesktop ? 450 : 400.w,
-              ),
-              child: Form(
-                key: authBloc.forgetPasswordFormKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      context.tr('forgot_password_question'),
-                      style: context.textTheme.displaySmall!.copyWith(
-                        color: context.colorScheme.onSurface,
-                        fontWeight: FontWeight.w800,
+          );
+
+          context.go(
+            AppRoutes.resetPasswordScreen,
+            extra: {'email': authBloc.emailController.text.trim()},
+          );
+        } else if (state is AuthError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: context.colorScheme.error,
+            ),
+          );
+        }
+      },
+      child: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: context.isDesktop ? 80 : 36.w,
+            vertical: context.isDesktop ? 80 : 56.h,
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: context.isDesktop ? 450 : 400.w,
+            ),
+            child: Form(
+              key: authBloc.forgetPasswordFormKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    context.tr('forgot_password_question'),
+                    style: context.textTheme.displaySmall!.copyWith(
+                      color: context.colorScheme.onSurface,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  Text(
+                    context.tr('no_worries_otp'),
+                    style: context.textTheme.bodyLarge!.copyWith(
+                      color: context.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  SizedBox(height: 48.h),
+
+                  CustomTextFormField(
+                    controller: authBloc.emailController,
+                    hintText: context.tr('enter_your_email'),
+                    prefixIcon: Icon(
+                      Icons.alternate_email_rounded,
+                      size: context.isDesktop ? 22 : 18.w,
+                    ),
+                    validator: (value) => validateEmail(value),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+
+                  SizedBox(height: 32.h),
+
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      final isLoading = state is AuthLoading;
+                      return CustomPrimaryButton(
+                        text: isLoading
+                            ? context.tr('sending')
+                            : context.tr('send_otp'),
+                        onTap: isLoading
+                            ? null
+                            : () {
+                                FocusScope.of(context).unfocus();
+                                authBloc.add(
+                                  ForgotPasswordEvent(
+                                    email: authBloc.emailController.text.trim(),
+                                  ),
+                                );
+                              },
+                        width: double.infinity,
+                      );
+                    },
+                  ),
+
+                  SizedBox(height: 24.h),
+
+                  Center(
+                    child: TextButton.icon(
+                      onPressed: () => context.go(AppRoutes.loginScreen),
+                      icon: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: context.isDesktop ? 14 : 12.w,
                       ),
-                    ),
-                    SizedBox(height: 12.h),
-                    Text(
-                      context.tr('no_worries_otp'),
-                      style: context.textTheme.bodyLarge!.copyWith(
-                        color: context.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    SizedBox(height: 48.h),
-
-                    CustomTextFormField(
-                      controller: authBloc.emailController,
-                      hintText: context.tr('enter_your_email'),
-                      prefixIcon: Icon(
-                        Icons.alternate_email_rounded,
-                        size: context.isDesktop ? 22 : 18.w,
-                      ),
-                      validator: (value) => validateEmail(value),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-
-                    SizedBox(height: 32.h),
-
-                    BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        final isLoading = state is AuthLoading;
-                        return CustomPrimaryButton(
-                          text: isLoading
-                              ? context.tr('sending')
-                              : context.tr('send_otp'),
-                          onTap: isLoading
-                              ? null
-                              : () {
-                                  FocusScope.of(context).unfocus();
-                                  authBloc.add(
-                                    ForgotPasswordEvent(
-                                      email: authBloc.emailController.text.trim(),
-                                    ),
-                                  );
-                                },
-                          width: double.infinity,
-                        );
-                      },
-                    ),
-
-                    SizedBox(height: 24.h),
-
-                    Center(
-                      child: TextButton.icon(
-                        onPressed: () => context.go(AppRoutes.loginScreen),
-                        icon: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          size: context.isDesktop ? 22 : 18.w,
+                      label: Text(context.tr('back_to_login')),
+                      style: TextButton.styleFrom(
+                        foregroundColor: context.colorScheme.onSecondary
+                            .withValues(alpha: 0.5),
+                        textStyle: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: context.isDesktop ? 14 : 12.sp,
                         ),
-                        label: Text(context.tr('back_to_login')),
-                        style: TextButton.styleFrom(
-                          foregroundColor: context.colorScheme.onSecondary.withValues(alpha: 0.5),
-                          textStyle: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: context.isDesktop ? 14 : 12.sp,
-                          ),
-                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
+      ),
     );
   }
 }

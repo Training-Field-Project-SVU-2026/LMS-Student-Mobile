@@ -44,7 +44,7 @@ class RouterGenerator {
         },
       ),
       GoRoute(
-        path: AppRoutes.loginScreen,
+        path: AppRoutes.loginScreen,  
         name: AppRoutes.loginScreen,
         builder: (context, state) {
           return BlocProvider(
