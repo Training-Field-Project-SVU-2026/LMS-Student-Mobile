@@ -16,5 +16,10 @@ class AppRoutes {
   static const String changePasswordScreen = '/change_password_screen';
   static const String packageDetails = '/package_details';
   static const String viewAllCourse = '/view_all_course';
+  static const String viewAllPackages = '/view_all_packages';
   static const String courseAfterEnroll = '/course_after_enroll';
+  static const String courseVideosScreen = '/course_videos_screen';
+  static const String quizList = '/quiz_list';
+  static const String quizSession = '/quiz_session';
+  static const String quizResult = '/quiz_result';
 }

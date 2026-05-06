@@ -5,6 +5,8 @@ import 'package:lms_student/core/services/remote/endpoints.dart';
 import 'package:lms_student/core/common_logic/data/model/course/course_model.dart';
 import 'package:lms_student/core/common_logic/data/model/course/response_course_model.dart';
 import 'package:lms_student/core/common_logic/domain/repositories/course_repository.dart';
+import 'package:lms_student/core/common_logic/domain/repositories/course_paginated_ui_model.dart';
+import 'package:lms_student/core/utils/api_query_params.dart';
 
 class CourseRepositoryImpl implements CourseRepository {
   final ApiConsumer apiConsumer;
@@ -12,14 +14,26 @@ class CourseRepositoryImpl implements CourseRepository {
   CourseRepositoryImpl({required this.apiConsumer});
 
   @override
-  Future<Either<String, ResponseCourseModel>> getAllCourses({
+  Future<Either<String, CoursePaginatedUIModel>> getAllCourses({
     int? page,
     int? pageSize,
   }) async {
-    return await apiConsumer.get<ResponseCourseModel>(
+    final result = await apiConsumer.get<ResponseCourseModel>(
       EndPoint.allCourses,
-      queryParameters: {'page': page, 'page_size': pageSize},
+      queryParameters: ApiQueryParams.pagination(page: page, pageSize: pageSize),
       fromJson: (json) => ResponseCourseModel.fromJson(json),
+    );
+
+    return result.fold(
+      (error) => Left(error),
+      (model) => Right(
+        CoursePaginatedUIModel(
+          courses: model.data,
+          totalPages: model.totalPages ?? 0,
+          currentPage: model.currentPage ?? 0,
+          totalCourses: model.totalCourses ?? 0,
+        ),
+      ),
     );
   }
 
@@ -39,14 +53,26 @@ class CourseRepositoryImpl implements CourseRepository {
   }
 
   @override
-  Future<Either<String, ResponseCourseModel>> getMyEnrollments({
+  Future<Either<String, CoursePaginatedUIModel>> getMyEnrollments({
     int? page,
     int? pageSize,
   }) async {
-    return await apiConsumer.get<ResponseCourseModel>(
+    final result = await apiConsumer.get<ResponseCourseModel>(
       EndPoint.myEnrollments,
-      queryParameters: {'page': page, 'page_size': pageSize},
+      queryParameters: ApiQueryParams.pagination(page: page, pageSize: pageSize),
       fromJson: (json) => ResponseCourseModel.fromJson(json),
+    );
+
+    return result.fold(
+      (error) => Left(error),
+      (model) => Right(
+        CoursePaginatedUIModel(
+          courses: model.data,
+          totalPages: model.totalPages ?? 0,
+          currentPage: model.currentPage ?? 0,
+          totalCourses: model.totalCourses ?? 0,
+        ),
+      ),
     );
   }
 

@@ -1,14 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:lms_student/core/extensions/context_extensions.dart';
-import 'package:lms_student/features/course/presentation/screens/widget/custom_img.dart';
+import 'package:lms_student/features/widgets/custom_image.dart';
 
 class CustonInstractorInformation extends StatefulWidget {
   final String insName;
-  const CustonInstractorInformation({Key? key, required this.insName})
-    : super(key: key);
+  const CustonInstractorInformation({super.key, required this.insName});
 
   @override
   State<CustonInstractorInformation> createState() =>
@@ -31,10 +29,9 @@ class _CustonInstractorInformationState
           padding: EdgeInsets.all(12.r),
           child: Row(
             children: [
-              CustomImg(
-                radius: 30,
-                height: 56.h,
-                width: 56.w,
+              CustomImage(
+                height: 56,
+                width: 56,
                 // imgUrl: "",
               ),
               SizedBox(width: 16.w),

@@ -11,7 +11,10 @@ class DioExceptionHandler {
           e.response?.data ?? {},
         );
         
-        final serverMessage = errorModel.message;
+        String serverMessage = errorModel.message;
+        if (errorModel.errors != null && errorModel.errors!.isNotEmpty) {
+          serverMessage = errorModel.errors!.join(', ');
+        }
         
         switch (e.response?.statusCode) {
           case 400:

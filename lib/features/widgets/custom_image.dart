@@ -21,30 +21,34 @@ class CustomImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: aspectRatio ?? 16 / 10,
-      child: ClipRRect(
-        borderRadius:
-            borderRadius ?? BorderRadius.vertical(top: Radius.circular(12.r)),
-        child: CachedNetworkImage(
-          imageUrl: imagePath ?? '',
+    Widget imageWidget = CachedNetworkImage(
+      imageUrl: imagePath ?? '',
+      width: width?.w,
+      height: height?.h,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => Container(
+        color: context.colorScheme.surfaceVariant,
+        child: const Center(child: CircularProgressIndicator()),
+      ),
+      errorWidget: (context, url, error) {
+        return Image.asset(
+          "assets/images/default_image.jpeg",
           width: width?.w,
           height: height?.h,
           fit: BoxFit.cover,
-          placeholder: (context, url) => Container(
-            color: context.colorScheme.surfaceVariant,
-            child: const Center(child: CircularProgressIndicator()),
-          ),
-          errorWidget: (context, url, error) {
-            return Image.asset(
-              "assets/images/default_image.jpeg",
-              width: width?.w,
-              height: height?.h,
-              fit: BoxFit.cover,
-            );
-          },
-        ),
-      ),
+        );
+      },
     );
+
+    Widget clippedImage = ClipRRect(
+      borderRadius: borderRadius ?? BorderRadius.zero,
+      child: imageWidget,
+    );
+
+    if (aspectRatio != null && aspectRatio! > 0) {
+      return AspectRatio(aspectRatio: aspectRatio!, child: clippedImage);
+    }
+
+    return clippedImage;
   }
 }

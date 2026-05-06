@@ -4,6 +4,7 @@ class EndPoint {
       "http://lms-env.eba-8nbnpx42.us-east-1.elasticbeanstalk.com/api";
 
   static String baseUrl = remoteUrl;
+  static String get mediaBaseUrl => baseUrl.replaceFirst('/api', '');
 
   // auth
   static String login = "/auth/login/"; // done
@@ -23,6 +24,7 @@ class EndPoint {
   static String courseBySlug = "/courses/";
   static String myEnrollments = "/courses/myEnrollments/";
   static String enrollCourse = "/courses/enroll/";
+  static String courseVideos(String slug) => "/courses/$slug/videos/";
 
   // packages
   static String allPackages = "/packages/all/";
@@ -31,6 +33,12 @@ class EndPoint {
   // student
   static String studentProfile(String slug) => '/students/$slug/';
   static String updateProfile(String slug) => '/students/$slug/';
+
+  // quiz
+  static String allQuizzzesByCourse(String courseSlug) =>"/courses/$courseSlug/quizzes/";
+  static String quizQuestions(String quizSlug) => "/quizzes/$quizSlug/questions/";
+  static String submitQuiz(String quizSlug) => "/quizzes/$quizSlug/submit/";
+  static String quizResults(String quizSlug) => "/quizzes/$quizSlug/my-results/";
 }
 
 class ApiKey {
@@ -52,4 +60,5 @@ class ApiKey {
   static String oldPassword = "old_password";
   static String newPassword = "new_password";
   static String image = "image";
+  static String errors = "errors";
 }

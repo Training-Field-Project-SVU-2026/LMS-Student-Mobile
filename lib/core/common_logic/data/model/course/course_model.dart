@@ -65,7 +65,8 @@ class CourseModel {
       instructorImage: json['instructor_image'],
       avgRating: double.tryParse(json['avg_rating']?.toString() ?? '') ?? 0.0,
       ratingsCount: int.tryParse(json['ratings_count']?.toString() ?? '') ?? 0,
-      studentsCount: int.tryParse(json['course_count']?.toString() ?? '') ?? 0,
+      studentsCount:
+          int.tryParse(json['students_count']?.toString() ?? '') ?? 0,
       instructorBio: json['instructor_bio'] ?? "",
       progress: json['progress'],
       enrollStatus: json['status'],

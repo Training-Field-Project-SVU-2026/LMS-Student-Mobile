@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/di/service_locator.dart';
@@ -12,11 +13,16 @@ import 'package:lms_student/features/auth/presentation/screens/reset_password_sc
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/course_after_enroll.dart';
+import 'package:lms_student/features/videos/presentation/screens/course_videos_screen.dart';
+import 'package:lms_student/features/videos/presentation/bloc/videos_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/view_all_course.dart';
+import 'package:lms_student/features/explore/presentation/screens/view_all_packages.dart';
 import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart';
 import 'package:lms_student/features/package_details/presentation/bloc/package_details_bloc.dart';
-import 'package:lms_student/features/package_details/presentation/screens/package_details.dart';
+import 'package:lms_student/features/package_details/presentation/screens/package_details_screen.dart';
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
+import 'package:lms_student/features/my_courses/presentation/bloc/my_courses_bloc.dart';
+
 import 'package:lms_student/features/home/presentation/screens/home_screen_before_login.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_event.dart';
@@ -26,12 +32,21 @@ import 'package:lms_student/features/profile/presentation/screens/change_passwor
 import 'package:lms_student/features/profile/presentation/screens/settings_screen/settings_screen.dart';
 import 'package:lms_student/features/profile/presentation/screens/student_profile_screen/student_profile_screen.dart';
 import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
+import 'package:lms_student/features/quiz_course/presentation/bloc/quiz_course_bloc.dart';
+import 'package:lms_student/features/quiz_course/presentation/screens/quiz_list_screen.dart';
+import 'package:lms_student/features/quiz_course/presentation/screens/quiz_session_screen.dart';
+import 'package:lms_student/features/quiz_course/presentation/screens/quiz_result_screen.dart';
+import 'package:lms_student/features/quiz_course/data/model/attempt_result_model.dart';
 import 'package:lms_student/root/root_after_login.dart';
 import 'package:lms_student/root/root_before_login.dart';
+
+final RouteObserver<ModalRoute<void>> homeRouteObserver =
+    RouteObserver<ModalRoute<void>>();
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
     initialLocation: AppRoutes.splashScreen,
+    observers: [homeRouteObserver],
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
@@ -148,7 +163,7 @@ class RouterGenerator {
           log('Route received slug: $slug');
           return BlocProvider(
             create: (context) => sl<PackageDetailsBloc>(),
-            child: PackageDetails(slug: slug),
+            child: PackageDetailsScreen(slug: slug),
           );
         },
       ),
@@ -180,8 +195,12 @@ class RouterGenerator {
         path: AppRoutes.courseAfterEnroll,
         name: AppRoutes.courseAfterEnroll,
         builder: (context, state) {
-          final slug = state.extra as String?;
-          log('Route received slug: $slug');
+          String? slug;
+          if (state.extra is String) {
+            slug = state.extra as String;
+          } else if (state.extra is Map<String, dynamic>) {
+            slug = (state.extra as Map<String, dynamic>)['slug'] as String?;
+          }
 
           return BlocProvider(
             create: (context) => sl<CoursedetailsBloc>(),
@@ -199,7 +218,27 @@ class RouterGenerator {
           );
         },
       ),
-
+      GoRoute(
+        path: AppRoutes.viewAllPackages,
+        name: AppRoutes.viewAllPackages,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => sl<ExploreBloc>(),
+            child: const ViewAllPackages(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.courseVideosScreen,
+        name: AppRoutes.courseVideosScreen,
+        builder: (context, state) {
+          final slug = state.extra as String;
+          return BlocProvider(
+            create: (context) => sl<VideosBloc>(),
+            child: CourseVideosScreen(slug: slug),
+          );
+        },
+      ),
       GoRoute(
         path: AppRoutes.rootAfterLogin,
         name: AppRoutes.rootAfterLogin,
@@ -208,10 +247,12 @@ class RouterGenerator {
             providers: [
               BlocProvider(create: (context) => sl<HomeBloc>()),
               BlocProvider(create: (context) => sl<ExploreBloc>()),
+              BlocProvider(create: (context) => sl<MyCoursesBloc>()),
               BlocProvider.value(value: sl<ProfileBloc>()),
             ],
             child: const RootAfterLogin(),
           );
+
         },
       ),
 
@@ -226,6 +267,38 @@ class RouterGenerator {
             ],
             child: const RootBeforeLogin(),
           );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.quizList,
+        name: AppRoutes.quizList,
+        builder: (context, state) {
+          final courseSlug = state.extra as String;
+          return BlocProvider(
+            create: (context) =>
+                sl<QuizCourseBloc>()..add(GetQuizzesByCourseEvent(courseSlug)),
+            child: QuizListScreen(courseSlug: courseSlug),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.quizSession,
+        name: AppRoutes.quizSession,
+        builder: (context, state) {
+          final quizSlug = state.extra as String;
+          return BlocProvider(
+            create: (context) =>
+                sl<QuizCourseBloc>()..add(GetQuizQuestionsEvent(quizSlug)),
+            child: QuizSessionScreen(quizSlug: quizSlug),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.quizResult,
+        name: AppRoutes.quizResult,
+        builder: (context, state) {
+          final result = state.extra as AttemptResultModel;
+          return QuizResultScreen(result: result);
         },
       ),
     ],

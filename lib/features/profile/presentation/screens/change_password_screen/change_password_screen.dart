@@ -7,8 +7,10 @@ class ChangePasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AuthLayout(
-      child: ChangePasswordBody(),
+    return const Scaffold(
+      body: AuthLayout(
+        child: ChangePasswordBody(),
+      ),
     );
   }
 }

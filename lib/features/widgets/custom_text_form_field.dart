@@ -53,44 +53,43 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       ),
       child: SizedBox(
         width: widget.width?.w,
-        child: TextFormField(
-          textAlignVertical: TextAlignVertical.center,
-          controller: widget.controller,
-          validator: widget.validator,
-          onChanged: widget.onChanged,
-          keyboardType: widget.keyboardType,
-          textInputAction: widget.textInputAction,
-          obscureText: widget.isPassword ? _obscureText : false,
-          style: context.textTheme.bodyMedium,
-
-          decoration: InputDecoration(
-            hintText: widget.hintText,
-            // hintStyle: context.textTheme.bodyMedium?.copyWith(
-            // color: context.colorScheme.primary
-            // ),
-            contentPadding: EdgeInsets.symmetric(
-              vertical: widget.height ?? (context.isDesktop ? 12 : 12.h),
-              horizontal: context.isDesktop ? 12 : 12.w,
+        child: Material(
+          type: MaterialType.transparency,
+          child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
+            controller: widget.controller,
+            validator: widget.validator,
+            onChanged: widget.onChanged,
+            keyboardType: widget.keyboardType,
+            textInputAction: widget.textInputAction,
+            obscureText: widget.isPassword ? _obscureText : false,
+            style: context.textTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: widget.hintText,
+              contentPadding: EdgeInsets.symmetric(
+                vertical: widget.height ?? (context.isDesktop ? 12 : 12.h),
+                horizontal: context.isDesktop ? 12 : 12.w,
+              ),
+              prefixIconColor: context.colorScheme.onSurfaceVariant.withValues(
+                alpha: 0.7,
+              ),
+              suffixIconColor: context.colorScheme.onSurfaceVariant.withValues(
+                alpha: 0.7,
+              ),
+              prefixIcon: widget.prefixIcon,
+              suffixIcon: widget.isPassword
+                  ? IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                      ),
+                    )
+                  : widget.suffixIcon,
             ),
-            prefixIconColor: context.colorScheme.onSurfaceVariant.withValues(
-              alpha: 0.7,
-            ),
-            suffixIconColor: context.colorScheme.onSurfaceVariant.withValues(
-              alpha: 0.7,
-            ),
-            prefixIcon: widget.prefixIcon,
-            suffixIcon: widget.isPassword
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                    icon: Icon(
-                      _obscureText ? Icons.visibility_off : Icons.visibility,
-                    ),
-                  )
-                : widget.suffixIcon,
           ),
         ),
       ),

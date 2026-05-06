@@ -1,64 +1,66 @@
 part of 'home_bloc.dart';
 
-sealed class HomeState extends Equatable {
-  const HomeState();
+enum RequestStatus { initial, loading, loaded, error }
 
-  @override
-  List<Object?> get props => [];
-}
+class HomeState extends Equatable {
+  final RequestStatus coursesStatus;
+  final CoursePaginatedUIModel? coursesUIModel;
+  final String? coursesErrorMessage;
+  final bool isCoursesPaginationLoading;
 
-class CoursesInitial extends HomeState {}
+  final RequestStatus enrollmentsStatus;
+  final CoursePaginatedUIModel? enrollmentsUIModel;
+  final String? enrollmentsErrorMessage;
+  final bool isEnrollmentsPaginationLoading;
 
-class CoursesLoading extends HomeState {}
-
-class CoursesLoaded extends HomeState {
-  final List<CourseModel> courses;
-  final int? totalCourses;
-  final int? totalPages;
-  final int? currentPage;
-
-  const CoursesLoaded({
-    required this.courses,
-    this.totalCourses,
-    this.totalPages,
-    this.currentPage,
+  const HomeState({
+    this.coursesStatus = RequestStatus.initial,
+    this.coursesUIModel,
+    this.coursesErrorMessage,
+    this.isCoursesPaginationLoading = false,
+    this.enrollmentsStatus = RequestStatus.initial,
+    this.enrollmentsUIModel,
+    this.enrollmentsErrorMessage,
+    this.isEnrollmentsPaginationLoading = false,
   });
 
-  @override
-  List<Object?> get props => [courses, totalCourses, totalPages, currentPage];
-}
+  List<CourseModel> get courses => coursesUIModel?.courses ?? [];
+  List<CourseModel> get enrollments => enrollmentsUIModel?.courses ?? [];
 
-class CoursesError extends HomeState {
-  final String message;
-
-  const CoursesError({required this.message});
-
-  @override
-  List<Object> get props => [message];
-}
-
-class MyEnrollmentsLoading extends HomeState {}
-
-class MyEnrollmentsLoaded extends HomeState {
-  final List<CourseModel> enrollments;
-  final int? totalPages;
-  final int? currentPage;
-
-  const MyEnrollmentsLoaded({
-    required this.enrollments,
-    this.totalPages,
-    this.currentPage,
-  });
-
-  @override
-  List<Object?> get props => [enrollments, totalPages, currentPage];
-}
-
-class MyEnrollmentsError extends HomeState {
-  final String message;
-
-  const MyEnrollmentsError({required this.message});
+  HomeState copyWith({
+    RequestStatus? coursesStatus,
+    CoursePaginatedUIModel? coursesUIModel,
+    String? coursesErrorMessage,
+    bool? isCoursesPaginationLoading,
+    RequestStatus? enrollmentsStatus,
+    CoursePaginatedUIModel? enrollmentsUIModel,
+    String? enrollmentsErrorMessage,
+    bool? isEnrollmentsPaginationLoading,
+  }) {
+    return HomeState(
+      coursesStatus: coursesStatus ?? this.coursesStatus,
+      coursesUIModel: coursesUIModel ?? this.coursesUIModel,
+      coursesErrorMessage: coursesErrorMessage ?? this.coursesErrorMessage,
+      isCoursesPaginationLoading:
+          isCoursesPaginationLoading ?? this.isCoursesPaginationLoading,
+      enrollmentsStatus: enrollmentsStatus ?? this.enrollmentsStatus,
+      enrollmentsUIModel: enrollmentsUIModel ?? this.enrollmentsUIModel,
+      enrollmentsErrorMessage:
+          enrollmentsErrorMessage ?? this.enrollmentsErrorMessage,
+      isEnrollmentsPaginationLoading:
+          isEnrollmentsPaginationLoading ?? this.isEnrollmentsPaginationLoading,
+    );
+  }
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [
+        coursesStatus,
+        coursesUIModel,
+        coursesErrorMessage,
+        isCoursesPaginationLoading,
+        enrollmentsStatus,
+        enrollmentsUIModel,
+        enrollmentsErrorMessage,
+        isEnrollmentsPaginationLoading,
+      ];
 }

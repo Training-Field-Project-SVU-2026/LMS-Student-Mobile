@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/course/presentation/bloc/coursedetails_bloc.dart';
 import 'package:lms_student/features/course/presentation/screens/widget/custom_course_material.dart';
-import 'package:lms_student/features/course/presentation/screens/widget/custom_img.dart';
+import 'package:lms_student/features/widgets/custom_image.dart';
+import 'package:lms_student/features/widgets/error_feedback_widget.dart';
+import 'package:lms_student/features/widgets/loading_indicator_widget.dart';
 
 class CourseAfterEnroll extends StatefulWidget {
   final String? slug;
@@ -37,31 +41,20 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
     return BlocBuilder<CoursedetailsBloc, CoursedetailsState>(
       builder: (context, state) {
         if (state is CourseLoading) {
-          return Scaffold(
-            body: const Center(child: CircularProgressIndicator()),
-          );
+          return const Scaffold(body: LoadingIndicatorWidget());
         }
 
         if (state is CourseError) {
           return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Error: ${state.message}'),
-                  SizedBox(height: 16.h),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (widget.slug != null) {
-                        context.read<CoursedetailsBloc>().add(
-                          GetCourseDetails(slug: widget.slug!),
-                        );
-                      }
-                    },
-                    child: Text(context.tr('retry')),
-                  ),
-                ],
-              ),
+            body: ErrorFeedbackWidget(
+              errorMessage: state.message,
+              onRetry: () {
+                if (widget.slug != null) {
+                  context.read<CoursedetailsBloc>().add(
+                    GetCourseDetails(slug: widget.slug!),
+                  );
+                }
+              },
             ),
           );
         }
@@ -72,11 +65,15 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text(course.title, overflow: TextOverflow.ellipsis),
+              title: Text(
+                course.title,
+                overflow: TextOverflow.ellipsis,
+                style: context.textTheme.titleLarge,
+              ),
               actions: [
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.share_outlined, size: 33.sp),
+                  icon: Icon(Icons.share_outlined, size: 22.sp),
                 ),
               ],
             ),
@@ -85,93 +82,143 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                 Expanded(
                   child: ListView(
                     children: [
-                      CustomImg(imgUrl: course.image),
+                      CustomImage(imagePath: course.image),
                       Padding(
-                        padding: EdgeInsetsGeometry.all(20.r),
+                        padding: EdgeInsets.all(20.r),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               course.title,
-                              style: context.textTheme.displayLarge!.copyWith(
-                                fontSize: 40.sp,
+                              style: context.textTheme.displaySmall!.copyWith(
                                 color: context.colorScheme.primary,
                               ),
                             ),
-                            SizedBox(height: 15.h),
+                            SizedBox(height: 10.h),
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              child: Wrap(
-                                spacing: 16.w,
+                              child: Row(
                                 children: [
                                   CustomCourseMaterial(
-                                    onTap: () {},
+                                    onTap: () {
+                                      context.push(
+                                        AppRoutes.courseVideosScreen,
+                                        extra: course.slug,
+                                      );
+                                    },
                                     text: context.tr('videos'),
                                     icon: Icons.play_circle,
+                                    width: 105.w,
                                   ),
+                                  SizedBox(width: 16.w),
                                   CustomCourseMaterial(
                                     onTap: () {},
                                     text: context.tr('files'),
                                     icon: Icons.folder,
+                                    width: 105.w,
                                   ),
+                                  SizedBox(width: 16.w),
                                   CustomCourseMaterial(
-                                    onTap: () {},
+                                    onTap: () {
+                                      context.push(AppRoutes.quizList, extra: widget.slug);
+                                    },
                                     text: context.tr('quizzes'),
                                     icon: Icons.quiz,
+                                    width: 105.w,
                                   ),
                                 ],
                               ),
                             ),
                             SizedBox(height: 10.h),
                             Text(
-                              context.tr('about_this_course'),
-                              style: context.textTheme.displayMedium!.copyWith(
-                                fontSize: 28.sp,
-                                color: context.colorScheme.onSurface.withValues(
-                                  alpha: 0.5,
+                              course.description,
+                              style: context.textTheme.bodyMedium,
+                            ),
+                            SizedBox(height: 20.h),
+                            Center(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 16.h,
+                                  horizontal: 20.w,
+                                ),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  color: context.colorScheme.primary.withValues(
+                                    alpha: 0.1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "${course.avgRating}",
+                                            style: context
+                                                .textTheme
+                                                .headlineMedium,
+                                          ),
+                                          Text(
+                                            context.tr('rating'),
+                                            style:
+                                                context.textTheme.labelMedium,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "${course.studentsCount}",
+                                            style: context
+                                                .textTheme
+                                                .headlineMedium,
+                                          ),
+                                          Text(
+                                            context.tr('students'),
+                                            style:
+                                                context.textTheme.labelMedium,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                            SizedBox(height: 15.h),
-                            Text(
-                              course.description,
-                              style: context.textTheme.titleLarge!.copyWith(
-                                color: context.colorScheme.onSurface,
-                              ),
-                            ),
-
+                            SizedBox(height: 20.h),
                             Text(
                               context.tr('instructor'),
-                              style: context.textTheme.displayMedium!.copyWith(
-                                fontSize: 26.sp,
-                                color: context.colorScheme.onSurface.withValues(
-                                  alpha: 0.5,
-                                ),
-                              ),
+                              style: context.textTheme.titleLarge,
                             ),
 
                             SizedBox(height: 15.h),
                             Column(
                               children: [
                                 Container(
-                                  width: 350.w,
-                                  height: 86.h,
+                                  width: double.infinity,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: context.colorScheme.onSurface
                                           .withValues(alpha: 0.2),
-                                      width: 2,
+                                      width: 1.w,
                                     ),
                                     borderRadius: BorderRadius.circular(16.r),
                                   ),
                                   padding: EdgeInsets.all(12.r),
                                   child: Row(
                                     children: [
-                                      CustomImg(
-                                        radius: 15,
-                                        height: 56.h,
-                                        width: 56.w,
-                                        imgUrl: course.instructorImage,
+                                      CustomImage(
+                                        imagePath: course.instructorImage,
+                                        width: 56,
+                                        height: 56,
+                                        borderRadius: BorderRadius.circular(
+                                          15.r,
+                                        ),
                                       ),
                                       SizedBox(width: 16.w),
                                       Column(
@@ -180,29 +227,22 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                                         children: [
                                           Text(
                                             course.instructorName,
-                                            style: context
-                                                .textTheme
-                                                .displayMedium!
-                                                .copyWith(
-                                                  color: context
-                                                      .colorScheme
-                                                      .primary,
-                                                ),
+                                            style: context.textTheme.titleLarge,
                                           ),
                                           Text(
                                             course.instructorBio,
-                                            style: context.textTheme.labelLarge!
-                                                .copyWith(
-                                                  color: context
-                                                      .colorScheme
-                                                      .onSurface
-                                                      .withValues(alpha: 0.3),
-                                                ),
+                                            style:
+                                                context.textTheme.labelMedium,
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
+                                ),
+                                SizedBox(height: 15.h),
+                                Text(
+                                  course.instructorBio,
+                                  style: context.textTheme.bodyMedium,
                                 ),
                                 SizedBox(height: 20.h),
                               ],
@@ -218,7 +258,7 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
           );
         }
 
-        return Scaffold(body: const Center(child: CircularProgressIndicator()));
+        return const Scaffold(body: LoadingIndicatorWidget());
       },
     );
   }
