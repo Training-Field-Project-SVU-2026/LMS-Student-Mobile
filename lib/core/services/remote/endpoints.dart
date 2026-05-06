@@ -4,6 +4,7 @@ class EndPoint {
       "http://lms-env.eba-8nbnpx42.us-east-1.elasticbeanstalk.com/api";
 
   static String baseUrl = remoteUrl;
+  static String get mediaBaseUrl => baseUrl.replaceFirst('/api', '');
 
   // auth
   static String login = "/auth/login/"; // done
