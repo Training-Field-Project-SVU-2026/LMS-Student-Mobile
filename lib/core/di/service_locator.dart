@@ -30,6 +30,8 @@ import 'package:lms_student/features/videos/presentation/bloc/videos_bloc.dart';
 import 'package:lms_student/features/quiz_course/data/repository/quiz_course_repository_impl.dart';
 import 'package:lms_student/features/quiz_course/domain/repository/quiz_course_repository.dart';
 import 'package:lms_student/features/quiz_course/presentation/bloc/quiz_course_bloc.dart';
+import 'package:lms_student/features/my_courses/presentation/bloc/my_courses_bloc.dart';
+
 
 final sl = GetIt.instance;
 
@@ -118,4 +120,8 @@ Future<void> setupServiceLocator() async {
     () => QuizCourseRepositoryImpl(apiConsumer: sl()),
   );
   sl.registerFactory(() => QuizCourseBloc(repository: sl()));
+
+  // Features - My Courses
+  sl.registerFactory(() => MyCoursesBloc(courseRepository: sl()));
 }
+

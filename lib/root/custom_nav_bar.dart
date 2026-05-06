@@ -30,13 +30,13 @@ class CustomNavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               navItem(
-                icon: CupertinoIcons.home,
+                icon: Icons.home,
                 label: context.tr("home"),
                 index: 0,
                 context: context,
               ),
               navItem(
-                icon: CupertinoIcons.compass,
+                icon: Icons.explore_outlined,
                 label: context.tr("explore"),
                 index: 1,
                 context: context,
@@ -48,7 +48,7 @@ class CustomNavBar extends StatelessWidget {
                 context: context,
               ),
               navItem(
-                icon: CupertinoIcons.person,
+                icon: Icons.person,
                 label: context.tr("profile"),
                 index: 3,
                 context: context,

@@ -87,7 +87,6 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                     ),
                   ),
                   SizedBox(height: 40.h),
-
                   CustomTextFormField(
                     controller: _oldPasswordController,
                     hintText: context.tr('old_password'),
