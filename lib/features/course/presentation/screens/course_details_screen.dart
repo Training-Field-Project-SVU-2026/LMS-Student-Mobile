@@ -1,3 +1,5 @@
+import 'dart:developer' show log;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -72,7 +74,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                 dialogContext.pop();
                 context.pushReplacement(
                   AppRoutes.courseAfterEnroll,
-                  extra: state.course.slug,
+                  extra: widget.slug,
                 );
               },
             ),
@@ -352,9 +354,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                   ],
                 );
               }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             })(),
           );
         },

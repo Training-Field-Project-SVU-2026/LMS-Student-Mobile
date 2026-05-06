@@ -195,8 +195,12 @@ class RouterGenerator {
         path: AppRoutes.courseAfterEnroll,
         name: AppRoutes.courseAfterEnroll,
         builder: (context, state) {
-          final slug = state.extra as String?;
-          log('Route received slug: $slug');
+          String? slug;
+          if (state.extra is String) {
+            slug = state.extra as String;
+          } else if (state.extra is Map<String, dynamic>) {
+            slug = (state.extra as Map<String, dynamic>)['slug'] as String?;
+          }
 
           return BlocProvider(
             create: (context) => sl<CoursedetailsBloc>(),
