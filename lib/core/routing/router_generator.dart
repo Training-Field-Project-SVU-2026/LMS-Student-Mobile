@@ -21,6 +21,8 @@ import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart
 import 'package:lms_student/features/package_details/presentation/bloc/package_details_bloc.dart';
 import 'package:lms_student/features/package_details/presentation/screens/package_details_screen.dart';
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
+import 'package:lms_student/features/my_courses/presentation/bloc/my_courses_bloc.dart';
+
 import 'package:lms_student/features/home/presentation/screens/home_screen_before_login.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_event.dart';
@@ -241,10 +243,12 @@ class RouterGenerator {
             providers: [
               BlocProvider(create: (context) => sl<HomeBloc>()),
               BlocProvider(create: (context) => sl<ExploreBloc>()),
+              BlocProvider(create: (context) => sl<MyCoursesBloc>()),
               BlocProvider.value(value: sl<ProfileBloc>()),
             ],
             child: const RootAfterLogin(),
           );
+
         },
       ),
 
