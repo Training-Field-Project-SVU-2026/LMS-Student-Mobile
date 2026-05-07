@@ -9,7 +9,6 @@ import 'package:lms_student/features/material_course/presentation/bloc/material_
 import 'package:lms_student/features/material_course/presentation/bloc/material_course_state.dart';
 import 'package:lms_student/features/material_course/presentation/screens/widgets/material_card.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
-import 'package:lms_student/core/utils/get_responsive_size.dart';
 import 'package:lms_student/features/widgets/error_feedback_widget.dart';
 import 'package:lms_student/features/widgets/loading_indicator_widget.dart';
 
@@ -29,13 +28,14 @@ class MaterialCourseScreen extends StatefulWidget {
 class _MaterialCourseScreenState extends State<MaterialCourseScreen> {
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
     context.read<CourseMaterialsBloc>().add(
-          GetCourseMaterialsEvent(slug: widget.courseSlug),
-        );
+      GetCourseMaterialsEvent(slug: widget.courseSlug),
+    );
     _scrollController.addListener(_onScroll);
   }
 
@@ -45,13 +45,14 @@ class _MaterialCourseScreenState extends State<MaterialCourseScreen> {
       final state = context.read<CourseMaterialsBloc>().state;
       if (state is CourseMaterialsLoaded) {
         final model = state.materialsListUIModel;
-        if (model.currentPage < model.totalPages && !state.isPaginationLoading) {
+        if (model.currentPage < model.totalPages &&
+            !state.isPaginationLoading) {
           context.read<CourseMaterialsBloc>().add(
-                GetCourseMaterialsEvent(
-                  slug: widget.courseSlug,
-                  page: model.currentPage + 1,
-                ),
-              );
+            GetCourseMaterialsEvent(
+              slug: widget.courseSlug,
+              page: model.currentPage + 1,
+            ),
+          );
         }
       }
     }
@@ -99,6 +100,11 @@ class _MaterialCourseScreenState extends State<MaterialCourseScreen> {
                 ),
               ),
               height: 8.h,
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value.toLowerCase();
+                });
+              },
             ),
             SizedBox(height: 24.h),
             Expanded(
@@ -113,19 +119,26 @@ class _MaterialCourseScreenState extends State<MaterialCourseScreen> {
                       errorMessage: state.message,
                       onRetry: () {
                         context.read<CourseMaterialsBloc>().add(
-                              GetCourseMaterialsEvent(slug: widget.courseSlug),
-                            );
+                          GetCourseMaterialsEvent(slug: widget.courseSlug),
+                        );
                       },
                     );
                   }
 
                   if (state is CourseMaterialsLoaded) {
-                    final materials = state.materialsListUIModel.materials;
+                    final allMaterials = state.materialsListUIModel.materials;
+                    final filteredMaterials = allMaterials.where((m) {
+                      final name = m.materialName.toLowerCase();
+                      final query = _searchQuery.toLowerCase();
+                      return name.contains(query);
+                    }).toList();
 
-                    if (materials.isEmpty) {
+                    if (filteredMaterials.isEmpty) {
                       return Center(
                         child: Text(
-                          context.tr('no_materials_found'),
+                          _searchQuery.isEmpty
+                              ? context.tr('no_materials_found')
+                              : context.tr('no_matching_materials'),
                           style: context.textTheme.bodyLarge,
                         ),
                       );
@@ -134,38 +147,16 @@ class _MaterialCourseScreenState extends State<MaterialCourseScreen> {
                     return Column(
                       children: [
                         Expanded(
-                          child: context.isMobile
-                              ? ListView.builder(
-                                  controller: _scrollController,
-                                  itemCount: materials.length,
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return MaterialCard(
-                                      material: materials[index],
-                                    );
-                                  },
-                                )
-                              : GridView.builder(
-                                  controller: _scrollController,
-                                  itemCount: materials.length,
-                                  physics: const BouncingScrollPhysics(),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: context.responsiveValue(
-                                      mobile: 1,
-                                      tablet: 2,
-                                      desktop: 3,
-                                    ),
-                                    crossAxisSpacing: 20.w,
-                                    mainAxisSpacing: 20.h,
-                                    childAspectRatio: 2.2,
-                                  ),
-                                  itemBuilder: (context, index) {
-                                    return MaterialCard(
-                                      material: materials[index],
-                                    );
-                                  },
-                                ),
+                          child: ListView.builder(
+                            controller: _scrollController,
+                            itemCount: filteredMaterials.length,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return MaterialCard(
+                                material: filteredMaterials[index],
+                              );
+                            },
+                          ),
                         ),
                         if (state.isPaginationLoading)
                           Padding(

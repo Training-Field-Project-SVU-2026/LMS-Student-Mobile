@@ -5,9 +5,5 @@ class GetCourseMaterialsEvent extends CourseMaterialsEvent {
   final int? page;
   final int? pageSize;
 
-  GetCourseMaterialsEvent({
-    required this.slug,
-    this.page,
-    this.pageSize,
-  });
+  GetCourseMaterialsEvent({required this.slug, this.page, this.pageSize});
 }

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
+import 'package:lms_student/core/utils/get_responsive_size.dart';
 import 'package:lms_student/features/material_course/domain/entity/course_materials_ui_model.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 
@@ -90,6 +91,11 @@ class MaterialCard extends StatelessWidget {
                             style: context.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: context.colorScheme.onSurface,
+                              fontSize: context.responsiveValue(
+                                mobile: 16.sp,
+                                tablet: 20,
+                                desktop: 22,
+                              ),
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -138,11 +144,20 @@ class MaterialCard extends StatelessWidget {
                   text: context.tr('view'),
                   onTap: handleView,
                   width: double.infinity,
-                  height: 44.h,
+                  height: context.responsiveValue(
+                    mobile: 35,
+                    tablet: 35,
+                    desktop: 30,
+                  ),
                   color: context.colorScheme.secondary,
                   textStyle: context.textTheme.labelLarge?.copyWith(
                     color: context.colorScheme.onSecondary,
                     fontWeight: FontWeight.bold,
+                    fontSize: context.responsiveValue(
+                      mobile: 14.sp,
+                      tablet: 16,
+                      desktop: 18,
+                    ),
                   ),
                 ),
               ],

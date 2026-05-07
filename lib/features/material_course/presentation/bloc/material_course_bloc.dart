@@ -6,21 +6,22 @@ import 'package:lms_student/features/material_course/domain/repository/material_
 import 'material_course_event.dart';
 import 'material_course_state.dart';
 
-
-class CourseMaterialsBloc extends Bloc<CourseMaterialsEvent, CourseMaterialsState>
+class CourseMaterialsBloc
+    extends Bloc<CourseMaterialsEvent, CourseMaterialsState>
     with
         PaginatedListMixin<
-            CourseMaterialsEvent,
-            CourseMaterialsState,
-            CourseMaterialItemUIModel,
-            CourseMaterialsListUIModel,
-            CourseMaterialsLoaded,
-            CourseMaterialsError,
-            CourseMaterialsLoading> {
+          CourseMaterialsEvent,
+          CourseMaterialsState,
+          CourseMaterialItemUIModel,
+          CourseMaterialsListUIModel,
+          CourseMaterialsLoaded,
+          CourseMaterialsError,
+          CourseMaterialsLoading
+        > {
   final MaterialCourseRepository repository;
 
   CourseMaterialsBloc({required this.repository})
-      : super(CourseMaterialsInitial()) {
+    : super(CourseMaterialsInitial()) {
     on<GetCourseMaterialsEvent>(_onGetCourseMaterials);
   }
 
@@ -37,7 +38,9 @@ class CourseMaterialsBloc extends Bloc<CourseMaterialsEvent, CourseMaterialsStat
         emit(CourseMaterialsLoading());
       }
     } else {
-      emit((state as CourseMaterialsLoaded).copyWith(isPaginationLoading: true));
+      emit(
+        (state as CourseMaterialsLoaded).copyWith(isPaginationLoading: true),
+      );
     }
 
     final response = await repository.getCourseMaterials(
@@ -46,22 +49,21 @@ class CourseMaterialsBloc extends Bloc<CourseMaterialsEvent, CourseMaterialsStat
       pageSize: event.pageSize,
     );
 
-    response.fold(
-      (error) => emit(CourseMaterialsError(message: error)),
-      (responseModel) {
-        handlePaginatedResponse(
-          page: pageToFetch,
-          newEntity: responseModel.toEntity(),
-          currentState: state,
-          emit: emit.call,
-          loadedStateBuilder: (model, isPaging) =>
-              CourseMaterialsLoaded(materialsListUIModel: model, isPaginationLoading: isPaging),
-          errorStateBuilder: (msg) => CourseMaterialsError(message: msg),
-          loadingStateBuilder: () => CourseMaterialsLoading(),
-        );
-      },
-    );
+    response.fold((error) => emit(CourseMaterialsError(message: error)), (
+      responseModel,
+    ) {
+      handlePaginatedResponse(
+        page: pageToFetch,
+        newEntity: responseModel.toEntity(),
+        currentState: state,
+        emit: emit.call,
+        loadedStateBuilder: (model, isPaging) => CourseMaterialsLoaded(
+          materialsListUIModel: model,
+          isPaginationLoading: isPaging,
+        ),
+        errorStateBuilder: (msg) => CourseMaterialsError(message: msg),
+        loadingStateBuilder: () => CourseMaterialsLoading(),
+      );
+    });
   }
-
-  
 }
