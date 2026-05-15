@@ -10,6 +10,7 @@ import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_event.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_state.dart';
 import 'package:lms_student/features/splash/presentation/screens/widgets/custom_error_popup.dart';
+import 'package:lms_student/core/theme/app_assets.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -135,36 +136,61 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Glassmorphic Logo Container
                       Container(
-                        padding: EdgeInsets.all(32.w),
+                        width: 170.r,
+                        height: 170.r,
                         decoration: BoxDecoration(
-                          color: context.colorScheme.surface.withValues(
-                            alpha: 0.7,
-                          ),
                           shape: BoxShape.circle,
-                          border: Border.all(
-                            color: context.colorScheme.surface,
-                            width: 2.5.w,
-                          ),
                           boxShadow: [
                             BoxShadow(
                               color: context.colorScheme.primary.withValues(
-                                alpha: 0.1,
+                                alpha: 0.15,
                               ),
                               blurRadius: 40,
-                              offset: const Offset(0, 15),
+                              offset: const Offset(0, 10),
                             ),
                           ],
                         ),
                         child: ClipOval(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                            child: Icon(
-                              Icons.code_rounded,
-                              size: 85.sp,
-                              color: context.colorScheme.primary,
-                            ),
+                          child: Stack(
+                            children: [
+                              BackdropFilter(
+                                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        context.colorScheme.surface.withValues(
+                                          alpha: 0.7,
+                                        ),
+                                        context.colorScheme.surface.withValues(
+                                          alpha: 0.3,
+                                        ),
+                                      ],
+                                    ),
+                                    border: Border.all(
+                                      color: context.colorScheme.surface,
+                                      width: 1.5.r,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // Logo
+                              Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(35.r),
+                                  child: Image.asset(
+                                    AppAssets.appLogoPng,
+                                    width: 100.r,
+                                    height: 100.r,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -186,7 +212,7 @@ class _SplashScreenState extends State<SplashScreen>
                         style: context.textTheme.labelMedium!.copyWith(
                           color: context.colorScheme.onSurfaceVariant
                               .withValues(alpha: 0.6),
-                          letterSpacing: 1.5.sp, // Adjusted from 6.0 for better readability
+                          letterSpacing: 1.5.sp,
                           fontWeight: FontWeight.w700,
                           fontSize: 12.sp,
                         ),

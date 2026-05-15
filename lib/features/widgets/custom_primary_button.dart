@@ -15,10 +15,8 @@ class CustomPrimaryButton extends StatelessWidget {
   final double? iconPadding;
   final double? iconSize;
   final TextStyle? textStyle;
-  final ButtonStyle?
-  style; // دي لو عايزين نعدل علي خاصية معينة ف الباتون مش واخدينها ك باراميتر او حتي نعدل الثيم كله بتاع الباتون
-  final Color?
-  color; // دي لو عايزين نعدل علي خاصية معينة ف الباتون مش واخدينها ك باراميتر او حتي نعدل الثيم كله بتاع الباتون
+  final ButtonStyle? style;
+  final Color? color;
 
   const CustomPrimaryButton({
     super.key,
@@ -60,7 +58,6 @@ class CustomPrimaryButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // prefix icon if exists
               if (prefixIcon != null) ...[
                 prefixIcon!,
                 SizedBox(width: iconPadding ?? (context.isDesktop ? 8 : 8.w)),
@@ -76,7 +73,6 @@ class CustomPrimaryButton extends StatelessWidget {
                 ),
               ),
 
-              // suffix icon if exists
               if (suffixIcon != null) ...[
                 SizedBox(width: iconPadding ?? (context.isDesktop ? 8 : 8.w)),
                 suffixIcon!,

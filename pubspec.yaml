@@ -39,6 +39,7 @@ dependencies:
   video_player: ^2.2.3
   youtube_player_flutter: ^9.0.0
   chewie: ^1.1.0
+  syncfusion_flutter_pdfviewer: ^28.1.33
 
 dev_dependencies:
   flutter_test:

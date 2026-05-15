@@ -39,12 +39,6 @@ class _PackageDetailsScreenState extends State<PackageDetailsScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(context.tr('package_details')),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.share_outlined, size: 33.sp),
-          ),
-        ],
       ),
       body: BlocBuilder<PackageDetailsBloc, PackageDetailsState>(
         builder: (context, state) {

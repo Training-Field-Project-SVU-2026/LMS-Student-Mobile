@@ -301,30 +301,6 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                     title: context.tr('downloadable_resources'),
                   ),
                   SizedBox(height: 40.h),
-                  CustomOutlinedButton(
-                    text: context.tr('join_us_today'),
-                    textStyle: context.textTheme.labelLarge!.copyWith(
-                      color: context.colorScheme.primary,
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.r),
-                      ),
-                      backgroundColor: context.colorScheme.primary.withValues(
-                        alpha: 0.05,
-                      ),
-                      side: BorderSide(
-                        width: 1,
-                        color: context.colorScheme.primary.withValues(
-                          alpha: 0.05,
-                        ),
-                      ),
-                    ),
-                    width: 150,
-                    height: 40,
-                    onTap: () {},
-                  ),
-                  SizedBox(height: 35.h),
                   Text(
                     context.tr('ready_to_start_journey'),
                     style: context.textTheme.headlineMedium!.copyWith(

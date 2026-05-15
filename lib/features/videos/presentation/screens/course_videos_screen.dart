@@ -47,77 +47,94 @@ class _CourseVideosScreenState extends State<CourseVideosScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.tr("course_videos"))),
       body: SafeArea(
         child: BlocBuilder<VideosBloc, VideosState>(
           builder: (context, state) {
-            if (state is VideosLoading) {
-              return const LoadingIndicatorWidget();
-            } else if (state is VideosError) {
-              return ErrorFeedbackWidget(
-                errorMessage: state.message,
-                onRetry: () {
-                  context.read<VideosBloc>().add(
-                    GetCourseVideos(slug: widget.slug),
-                  );
-                },
-              );
-            } else if (state is VideosLoaded) {
-              final videos = state.videos;
-              if (videos.isEmpty) {
-                return Center(
-                  child: Text(
-                    context.tr("no_videos_found"),
-                    style: context.textTheme.bodyLarge,
-                  ),
-                );
-              }
-
-              return CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: AspectRatio(
-                      aspectRatio: 16 / 9,
-                      child: CustomVideoPlayer(video: videos[currentIndex]),
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  title: Text(context.tr("course_videos")),
+                  floating: true,
+                  snap: true,
+                  pinned: false,
+                  elevation: 0,
+                  backgroundColor: context.colorScheme.surface,
+                  surfaceTintColor: Colors.transparent,
+                ),
+                if (state is VideosLoading)
+                  const SliverFillRemaining(
+                    child: Center(child: LoadingIndicatorWidget()),
+                  )
+                else if (state is VideosError)
+                  SliverFillRemaining(
+                    child: ErrorFeedbackWidget(
+                      errorMessage: state.message,
+                      onRetry: () {
+                        context.read<VideosBloc>().add(
+                              GetCourseVideos(slug: widget.slug),
+                            );
+                      },
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20.w,
-                        vertical: 12.h,
+                  )
+                else if (state is VideosLoaded) ...[
+                  if (state.videos.isEmpty)
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          context.tr("no_videos_found"),
+                          style: context.textTheme.bodyLarge,
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            videos[currentIndex].title,
-                            style: context.textTheme.headlineMedium,
-                          ),
-                          SizedBox(height: 16.h),
-                          Center(
-                            child: CustomPrimaryButton(
-                              text: context.tr("next_lesson"),
-                              suffixIcon: const Icon(Icons.arrow_forward),
-                              onTap: () => nextVideo(videos),
+                    )
+                  else ...[
+                    SliverToBoxAdapter(
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: CustomVideoPlayer(
+                          video: state.videos[currentIndex],
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 12.h,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              state.videos[currentIndex].title,
+                              style: context.textTheme.headlineMedium,
                             ),
-                          ),
-                        ],
+                            SizedBox(height: 16.h),
+                            Center(
+                              child: CustomPrimaryButton(
+                                text: context.tr("next_lesson"),
+                                suffixIcon: const Icon(Icons.arrow_forward),
+                                onTap: () => nextVideo(state.videos),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      return CustomCourseVideosItem(
-                        video: videos[index],
-                        onTap: () => playVideo(index, videos),
-                      );
-                    }, childCount: videos.length),
-                  ),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return CustomCourseVideosItem(
+                            video: state.videos[index],
+                            onTap: () => playVideo(index, state.videos),
+                          );
+                        },
+                        childCount: state.videos.length,
+                      ),
+                    ),
+                  ],
                 ],
-              );
-            }
-            return const SizedBox();
+              ],
+            );
           },
         ),
       ),
