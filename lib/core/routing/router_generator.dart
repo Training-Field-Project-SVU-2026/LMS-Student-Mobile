@@ -23,6 +23,7 @@ import 'package:lms_student/features/package_details/presentation/bloc/package_d
 import 'package:lms_student/features/package_details/presentation/screens/package_details_screen.dart';
 import 'package:lms_student/features/home/presentation/bloc/home_bloc.dart';
 import 'package:lms_student/features/my_courses/presentation/bloc/my_courses_bloc.dart';
+import 'package:lms_student/features/my_courses/presentation/screens/my_courses_screen.dart';
 
 import 'package:lms_student/features/home/presentation/screens/home_screen_before_login.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
@@ -328,6 +329,16 @@ class RouterGenerator {
           final url = extra['url'] as String;
           final title = extra['title'] as String;
           return PdfViewerScreen(url: url, title: title);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.myCoursesScreen,
+        name: AppRoutes.myCoursesScreen,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => sl<MyCoursesBloc>(),
+            child: const MyCoursesScreenAfterLogin(),
+          );
         },
       ),
     ],
