@@ -79,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen>
           final remainingDelay = (3000 - timeSinceStart).clamp(0, 3000);
 
           Future.delayed(Duration(milliseconds: remainingDelay), () {
-            // if (mounted) _handleNavigation(context, state);
+            if (mounted) _handleNavigation(context, state);
           });
         }
       },
