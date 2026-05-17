@@ -186,6 +186,8 @@ class _SplashScreenState extends State<SplashScreen>
                                     AppAssets.appLogoPng,
                                     width: 100.r,
                                     height: 100.r,
+                                    cacheHeight: 300,
+                                    cacheWidth: 300,
                                     fit: BoxFit.contain,
                                   ),
                                 ),

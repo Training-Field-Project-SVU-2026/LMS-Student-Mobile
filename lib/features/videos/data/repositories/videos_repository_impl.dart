@@ -16,4 +16,15 @@ class VideosRepositoryImpl implements VideosRepository {
       fromJson: (json) => ResponseVideosModel.fromJson(json),
     );
   }
+
+  @override
+  Future<Either<String, Map<String, dynamic>>> completeVideo(
+    String videoSlug,
+    double currentTime,
+  ) async {
+    return await apiConsumer.post<Map<String, dynamic>>(
+      EndPoint.videoComplete(videoSlug),
+      data: {"current_time": currentTime},
+    );
+  }
 }

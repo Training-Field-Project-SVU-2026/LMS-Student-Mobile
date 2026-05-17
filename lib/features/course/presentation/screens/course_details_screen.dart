@@ -111,12 +111,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                 context.tr('course_details'),
                 style: context.textTheme.titleLarge,
               ),
-              actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.share_outlined, size: 22.sp),
-                ),
-              ],
+              // actions: [
+              //   IconButton(
+              //     onPressed: () {},
+              //     icon: Icon(Icons.share_outlined, size: 22.sp),
+              //   ),
+              // ],
             ),
             body: (() {
               if (state is CourseLoading) {
@@ -175,14 +175,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                 SizedBox(height: 10.h),
                                 Text(
                                   context.tr('about_this_course'),
-                                  style: context.textTheme.titleLarge!.copyWith(
-                                    color: context.colorScheme.onSurface,
-                                  ),
+                                  style: context.textTheme.titleLarge,
                                 ),
                                 SizedBox(height: 15.h),
                                 Text(
                                   course.description,
-                                  style: context.textTheme.bodyMedium,
+                                  style: context.textTheme.bodyLarge,
                                 ),
                                 SizedBox(height: 15.h),
                                 Text(
@@ -195,11 +193,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                     Container(
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: context.colorScheme.onSurface
-                                              .withValues(alpha: 0.2),
-                                          width: 1.w,
-                                        ),
+                                        color:
+                                            context.colorScheme.surfaceVariant,
                                         borderRadius: BorderRadius.circular(
                                           16.r,
                                         ),
@@ -216,31 +211,29 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                             ),
                                           ),
                                           SizedBox(width: 16.w),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                course.instructorName,
-                                                style: context
-                                                    .textTheme
-                                                    .titleLarge,
-                                              ),
-                                              Text(
-                                                course.instructorBio,
-                                                style: context
-                                                    .textTheme
-                                                    .labelMedium,
-                                              ),
-                                            ],
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  course.instructorName,
+                                                  style: context
+                                                      .textTheme
+                                                      .titleLarge,
+                                                ),
+                                                SizedBox(height: 4.h),
+                                                Text(
+                                                  course.instructorBio,
+                                                  style: context
+                                                      .textTheme
+                                                      .bodyMedium,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    SizedBox(height: 15.h),
-                                    Text(
-                                      course.instructorBio,
-                                      style: context.textTheme.bodyMedium,
                                     ),
                                   ],
                                 ),
@@ -270,6 +263,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                                     .textTheme
                                                     .headlineMedium,
                                               ),
+                                              SizedBox(height: 4.h),
                                               Text(
                                                 context.tr('rating'),
                                                 style: context
@@ -288,6 +282,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                                     .textTheme
                                                     .headlineMedium,
                                               ),
+                                              SizedBox(height: 4.h),
                                               Text(
                                                 context.tr('students'),
                                                 style: context

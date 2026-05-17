@@ -100,16 +100,17 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin>
             child: Row(
               children: [
                 Container(
-                  width: 44.w,
-                  height: 44.h,
+                  width: 44.r,
+                  height: 44.r,
+                  clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: context.colorScheme.secondary,
                   ),
                   child: CustomImage(
                     imagePath: getDataFromCache(ApiKey.image),
-                    width: 44.w,
-                    height: 44.h,
+                    width: 44.r,
+                    height: 44.r,
                     borderRadius: BorderRadius.circular(22.r),
                   ),
                 ),
