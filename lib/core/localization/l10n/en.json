@@ -140,7 +140,6 @@
   "no_courses_yet": "No courses enrolled yet",
   "no_courses_found": "No courses found",
   "explore_courses_to_start": "Explore courses and start your learning journey now",
-
   "enroll_confirm_title": "Enrollment Confirmation",
   "enroll_confirm_message": "Do you want to enroll in this course?",
   "yes": "Yes",
@@ -213,5 +212,6 @@
   "course_videos": "Course Videos",
   "next_lesson": "Next Lesson",
   "search_materials_hint": "Search materials, books, or resources...",
-  "view": "View"
+  "view": "View",
+  "view_my_courses": "View My Courses"
 }

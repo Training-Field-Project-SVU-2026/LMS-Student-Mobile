@@ -16,6 +16,21 @@ class GetCourseVideos extends VideosEvent {
   List<Object> get props => [slug];
 }
 
+class WatchedVideoEvent extends VideosEvent {
+  final String courseSlug;
+  final String videoSlug;
+  final double duration;
+
+  const WatchedVideoEvent({
+    required this.courseSlug,
+    required this.videoSlug,
+    required this.duration,
+  });
+
+  @override
+  List<Object> get props => [courseSlug, videoSlug, duration];
+}
+
 class PlayVideoEvent extends VideosEvent {
   final int index;
 

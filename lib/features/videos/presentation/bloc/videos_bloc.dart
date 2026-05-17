@@ -11,6 +11,7 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
     on<PlayVideoEvent>(_onPlayVideo);
     on<VideoPlayerErrorEvent>(_onVideoPlayerError);
     on<VideoPlayerLoadingEvent>(_onVideoPlayerLoading);
+    on<WatchedVideoEvent>(_onWatchedVideoEvent);
   }
 
   Future<void> _onGetCourseVideos(
@@ -30,6 +31,60 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
     });
   }
 
+  Future<void> _onWatchedVideoEvent(
+    WatchedVideoEvent event,
+    Emitter<VideosState> emit,
+  ) async {
+    if (state is VideosLoaded) {
+      final currentState = state as VideosLoaded;
+      final videos = List.of(currentState.videos);
+
+      final videoIndex = videos.indexWhere((v) => v.slug == event.videoSlug);
+      if (videoIndex != -1) {
+        if (videos[videoIndex].isCompleted) {
+          return;
+        }
+
+        videos[videoIndex].isCompleted = true;
+        emit(currentState.copyWith(videos: videos));
+      }
+
+      final result = await videosRepository.completeVideo(
+        event.videoSlug,
+        event.duration,
+      );
+
+      await result.fold(
+        (error) async {
+        },
+        (responseMap) async {
+          final data = responseMap['data'] as Map<String, dynamic>?;
+          final isCompletedOnServer = data?['is_completed'] as bool? ?? false;
+
+          if (!isCompletedOnServer) {
+            return;
+          }
+
+          final refreshResult = await videosRepository.getCourseVideos(event.courseSlug);
+          refreshResult.fold(
+            (error) => null,
+            (response) {
+              final newVideos = response.data;
+              if (newVideos.isNotEmpty && videoIndex != -1) {
+                for (var i = 0; i < newVideos.length; i++) {
+                  if (i < currentState.videos.length) {
+                    newVideos[i].isPlaying = currentState.videos[i].isPlaying;
+                  }
+                }
+              }
+              emit(currentState.copyWith(videos: newVideos));
+            },
+          );
+        },
+      );
+    }
+  }
+
   void _onPlayVideo(PlayVideoEvent event, Emitter<VideosState> emit) {
     if (state is VideosLoaded) {
       final currentState = state as VideosLoaded;
@@ -39,7 +94,6 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
         videos[i].isPlaying = (i == event.index);
       }
 
-      // Emit a new loaded state to update the UI
       emit(VideosLoaded(videos: videos));
     }
   }

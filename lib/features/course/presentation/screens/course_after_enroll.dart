@@ -70,12 +70,12 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                 overflow: TextOverflow.ellipsis,
                 style: context.textTheme.titleLarge,
               ),
-              actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.share_outlined, size: 22.sp),
-                ),
-              ],
+              // actions: [
+              //   IconButton(
+              //     onPressed: () {},
+              //     icon: Icon(Icons.share_outlined, size: 22.sp),
+              //   ),
+              // ],
             ),
             body: Column(
               children: [
@@ -143,7 +143,7 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                             SizedBox(height: 10.h),
                             Text(
                               course.description,
-                              style: context.textTheme.bodyMedium,
+                              style: context.textTheme.bodyLarge,
                             ),
                             SizedBox(height: 20.h),
                             Center(
@@ -172,6 +172,7 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                                                 .textTheme
                                                 .headlineMedium,
                                           ),
+                                          SizedBox(height: 4.h),
                                           Text(
                                             context.tr('rating'),
                                             style:
@@ -189,6 +190,7 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                                                 .textTheme
                                                 .headlineMedium,
                                           ),
+                                          SizedBox(height: 4.h),
                                           Text(
                                             context.tr('students'),
                                             style:
@@ -210,16 +212,12 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                             SizedBox(height: 15.h),
                             Column(
                               children: [
-                                Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: context.colorScheme.onSurface
-                                          .withValues(alpha: 0.2),
-                                      width: 1.w,
+                                  Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: context.colorScheme.surfaceVariant,
+                                      borderRadius: BorderRadius.circular(16.r),
                                     ),
-                                    borderRadius: BorderRadius.circular(16.r),
-                                  ),
                                   padding: EdgeInsets.all(12.r),
                                   child: Row(
                                     children: [
@@ -232,28 +230,27 @@ class _CourseAfterEnrollState extends State<CourseAfterEnroll> {
                                         ),
                                       ),
                                       SizedBox(width: 16.w),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            course.instructorName,
-                                            style: context.textTheme.titleLarge,
-                                          ),
-                                          Text(
-                                            course.instructorBio,
-                                            style:
-                                                context.textTheme.labelMedium,
-                                          ),
-                                        ],
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              course.instructorName,
+                                              style:
+                                                  context.textTheme.titleLarge,
+                                            ),
+                                            SizedBox(height: 4.h),
+                                            Text(
+                                              course.instructorBio,
+                                              style:
+                                                  context.textTheme.bodyMedium,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                SizedBox(height: 15.h),
-                                Text(
-                                  course.instructorBio,
-                                  style: context.textTheme.bodyMedium,
                                 ),
                                 SizedBox(height: 20.h),
                               ],

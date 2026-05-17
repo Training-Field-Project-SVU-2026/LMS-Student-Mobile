@@ -27,7 +27,7 @@ class SearchMyCoursesEvent extends MyCoursesEvent {
 }
 
 class FilterMyCoursesEvent extends MyCoursesEvent {
-  final String status; // 'All', 'Ongoing', 'Completed'
+  final String status;
 
   const FilterMyCoursesEvent(this.status);
 

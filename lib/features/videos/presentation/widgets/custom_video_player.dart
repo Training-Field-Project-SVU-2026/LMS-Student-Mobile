@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
@@ -15,7 +17,9 @@ import 'package:lms_student/features/videos/presentation/widgets/video_player/pl
 
 class CustomVideoPlayer extends StatefulWidget {
   final VideoModel video;
-  const CustomVideoPlayer({super.key, required this.video});
+  final VoidCallback onVideoEnded;
+
+  const CustomVideoPlayer({super.key, required this.video, required this.onVideoEnded});
 
   @override
   State<CustomVideoPlayer> createState() => _CustomVideoPlayerState();
@@ -25,6 +29,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   YoutubePlayerController? _youtubeController;
   VideoPlayerController? _videoController;
   bool _isYoutube = false;
+  bool _isCompletionTriggered = false;
 
   @override
   void initState() {
@@ -56,10 +61,12 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
   void _initializePlayer() {
     _disposeControllers();
+    _isCompletionTriggered = false;
     _setLoading(true);
 
     final youtubeUrl = widget.video.videoUrl;
     final uploadUrl = widget.video.videoUpload;
+    log("youtubeUrl: $youtubeUrl uploadUrl: $uploadUrl");
 
     if (youtubeUrl != null && youtubeUrl.isNotEmpty) {
       _initYoutube(youtubeUrl);
@@ -68,6 +75,25 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     } else {
       _setError(context.tr('no_video_content'));
       _setLoading(false);
+    }
+  }
+
+  void _youtubeListener() {
+    if (!mounted || _youtubeController == null) return;
+
+    if (_youtubeController!.value.hasError) {
+      _setError("YouTube Error: ${_youtubeController!.value.errorCode}");
+    }
+
+    final position = _youtubeController!.value.position;
+    final duration = _youtubeController!.metadata.duration;
+
+    if (duration.inSeconds > 0 && !_isCompletionTriggered) {
+      final progress = position.inMilliseconds / duration.inMilliseconds;
+      if (progress >= 0.95) {
+        _isCompletionTriggered = true;
+        widget.onVideoEnded();
+      }
     }
   }
 
@@ -83,12 +109,27 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
         YoutubePlayerController(
           initialVideoId: id,
           flags: const YoutubePlayerFlags(autoPlay: true, mute: false),
-        )..addListener(() {
-          if (mounted && _youtubeController!.value.hasError) {
-            _setError("YouTube Error: ${_youtubeController!.value.errorCode}");
-          }
-        });
+        )..addListener(_youtubeListener);
     _setLoading(false);
+  }
+
+  void _serverVideoListener() {
+    if (!mounted || _videoController == null) return;
+
+    if (_videoController!.value.hasError) {
+      _setError(_videoController!.value.errorDescription ?? 'Video Error');
+    }
+
+    final position = _videoController!.value.position;
+    final duration = _videoController!.value.duration;
+
+    if (duration.inSeconds > 0 && !_isCompletionTriggered) {
+      final progress = position.inMilliseconds / duration.inMilliseconds;
+      if (progress >= 0.95) {
+        _isCompletionTriggered = true;
+        widget.onVideoEnded();
+      }
+    }
   }
 
   void _initServerVideo(String path) {
@@ -113,11 +154,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
           _setError(context.tr('failed_to_load_video') + error.toString());
         });
 
-    _videoController!.addListener(() {
-      if (mounted && _videoController!.value.hasError) {
-        _setError(_videoController!.value.errorDescription ?? 'Video Error');
-      }
-    });
+    _videoController!.addListener(_serverVideoListener);
   }
 
   void _setLoading(bool loading) => context.read<VideosBloc>().add(
@@ -145,6 +182,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                   key: ValueKey(widget.video.videoUrl),
                   controller: _youtubeController!,
                   onReady: () => _setLoading(false),
+                  onVideoEnded: widget.onVideoEnded,
                 )
               else if (!_isYoutube && _videoController != null)
                 ServerVideoPlayerView(

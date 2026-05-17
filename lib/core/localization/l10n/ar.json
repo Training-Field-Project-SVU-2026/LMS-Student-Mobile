@@ -140,7 +140,6 @@
   "no_courses_yet": "لا توجد كورسات مسجل فيها بعد",
   "no_courses_found": "لم يتم العثور على كورسات",
   "explore_courses_to_start": "استكشف الكورسات وابدأ رحلة التعلم الآن",
-
   "enroll_confirm_title": "تأكيد الاشتراك",
   "enroll_confirm_message": "هل تريد الاشتراك في هذا الكورس؟",
   "yes": "نعم",
@@ -213,5 +212,6 @@
   "course_videos": "فيديوهات الكورس",
   "next_lesson": "الدرس التالي",
   "search_materials_hint": "ابحث عن المواد، الكتب، أو المصادر...",
-  "view": "عرض"
+  "view": "عرض",
+  "view_my_courses": "عرض كل كورساتي"
 }

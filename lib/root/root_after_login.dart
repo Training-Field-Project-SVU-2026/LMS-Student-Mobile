@@ -10,19 +10,18 @@ class RootAfterLogin extends StatefulWidget {
   const RootAfterLogin({super.key});
 
   @override
-  State<RootAfterLogin> createState() => _RootAfterLoginState();
+  State<RootAfterLogin> createState() => RootAfterLoginState();
 }
 
-class _RootAfterLoginState extends State<RootAfterLogin> {
+class RootAfterLoginState extends State<RootAfterLogin> {
   PageController controller = PageController();
   int currentIndex = 0;
 
   List<Widget> screens = [
-    HomeScreenAfterLogin(),
+    const HomeScreenAfterLogin(),
     const ExploreScreen(),
     const MyCoursesScreenAfterLogin(),
     const SettingsScreen(),
-
   ];
 
   void changePage(int index) {

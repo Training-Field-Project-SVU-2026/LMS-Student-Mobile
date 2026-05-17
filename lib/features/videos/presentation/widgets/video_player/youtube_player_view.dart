@@ -5,11 +5,13 @@ import 'package:lms_student/core/extensions/context_extensions.dart';
 class YoutubePlayerView extends StatelessWidget {
   final YoutubePlayerController controller;
   final VoidCallback onReady;
+  final VoidCallback onVideoEnded;
 
   const YoutubePlayerView({
     super.key,
     required this.controller,
     required this.onReady,
+    required this.onVideoEnded,
   });
 
   @override
@@ -20,6 +22,7 @@ class YoutubePlayerView extends StatelessWidget {
         showVideoProgressIndicator: true,
         progressIndicatorColor: context.colorScheme.primary,
         onReady: onReady,
+        onEnded: (_) => onVideoEnded(),
         bottomActions: [
           const SizedBox(width: 8.0),
           CurrentPosition(),

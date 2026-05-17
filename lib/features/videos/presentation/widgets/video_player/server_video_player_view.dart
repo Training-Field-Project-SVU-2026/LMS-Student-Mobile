@@ -32,7 +32,7 @@ class _ServerVideoPlayerViewState extends State<ServerVideoPlayerView> {
   void _initChewie() {
     _chewieController = ChewieController(
       videoPlayerController: widget.controller,
-      aspectRatio: widget.controller.value.aspectRatio,
+      aspectRatio: 16 / 9,
       autoPlay: true,
       looping: false,
       showControls: true,
@@ -57,7 +57,7 @@ class _ServerVideoPlayerViewState extends State<ServerVideoPlayerView> {
     if (_chewieController == null) return const SizedBox.shrink();
 
     return AspectRatio(
-      aspectRatio: widget.controller.value.aspectRatio,
+      aspectRatio: 16 / 9,
       child: Chewie(controller: _chewieController!),
     );
   }
