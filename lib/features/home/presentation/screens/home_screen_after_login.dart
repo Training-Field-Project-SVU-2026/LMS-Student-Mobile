@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +17,8 @@ import 'package:lms_student/features/widgets/course_card_horizontal.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/features/widgets/custom_image.dart';
+import 'package:lms_student/features/widgets/custom_primary_button.dart';
+import 'package:lms_student/root/root_after_login.dart';
 
 class HomeScreenAfterLogin extends StatefulWidget {
   // final int completedVideos;
@@ -29,7 +30,8 @@ class HomeScreenAfterLogin extends StatefulWidget {
   State<HomeScreenAfterLogin> createState() => _HomeScreenAfterLoginState();
 }
 
-class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> with RouteAware {
+class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin>
+    with RouteAware {
   // double progress = completedVideos / totalVideos;
 
   final ScrollController _scrollController = ScrollController();
@@ -97,16 +99,17 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> with RouteA
             child: Row(
               children: [
                 Container(
-                  width: 44.w,
-                  height: 44.h,
+                  width: 44.r,
+                  height: 44.r,
+                  clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: context.colorScheme.secondary,
                   ),
                   child: CustomImage(
                     imagePath: getDataFromCache(ApiKey.image),
-                    width: 44.w,
-                    height: 44.h,
+                    width: 44.r,
+                    height: 44.r,
                     borderRadius: BorderRadius.circular(22.r),
                   ),
                 ),
@@ -150,7 +153,9 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> with RouteA
                   return ErrorFeedbackWidget(
                     errorMessage: state.enrollmentsErrorMessage ?? 'Error',
                     onRetry: () {
-                      context.read<HomeBloc>().add(const GetMyEnrollmentsEvent());
+                      context.read<HomeBloc>().add(
+                        const GetMyEnrollmentsEvent(),
+                      );
                     },
                   );
                 }
@@ -199,16 +204,15 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> with RouteA
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: state.enrollments.length,
+                              itemCount: state.enrollments.length > 4
+                                  ? 4
+                                  : state.enrollments.length,
                               itemBuilder: (context, index) {
                                 final course = state.enrollments[index];
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 5.h),
                                   child: InkWell(
                                     onTap: () {
-                                      log(
-                                        "tahaaaaaaaaaaaaaaaa22 ${course.instructorName}",
-                                      );
                                       context.push(
                                         AppRoutes.courseDetailsScreen,
                                         extra: {
@@ -219,7 +223,8 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> with RouteA
                                     },
                                     child: CourseCardHorizontal(
                                       progressPercentage: course.progress,
-                                      progressValue: course.progress!.toDouble(),
+                                      progressValue: course.progress!
+                                          .toDouble(),
                                       title: course.title,
                                       instructorName: course.instructorName,
                                       imagePath: course.image,
@@ -230,6 +235,20 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> with RouteA
                                 );
                               },
                             ),
+                            if (state.enrollments.length > 5)
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10.h),
+                                child: CustomPrimaryButton(
+                                  text: context.tr('view_my_courses'),
+                                  onTap: () {
+                                    context
+                                        .findAncestorStateOfType<
+                                          RootAfterLoginState
+                                        >()
+                                        ?.changePage(2);
+                                  },
+                                ),
+                              ),
                             if (state.isEnrollmentsPaginationLoading)
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 10.h),
@@ -265,7 +284,6 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> with RouteA
                   );
                 }
                 if (state.coursesStatus == RequestStatus.loaded) {
-                  log("courses from bloc: ${state.courses}");
                   return Column(
                     children: [
                       Padding(
@@ -308,7 +326,6 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin> with RouteA
                                 padding: EdgeInsets.only(right: 16.w),
                                 child: InkWell(
                                   onTap: () {
-                                    log('Course slugggggggggg: ${course.slug}');
                                     context.push(
                                       AppRoutes.courseDetailsScreen,
                                       extra: {

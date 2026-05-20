@@ -24,4 +24,5 @@ class AppRoutes {
   static const String quizResult = '/quiz_result';
   static const String materialCourseScreen = '/material_course_screen';
   static const String pdfViewerScreen = '/pdf_viewer_screen';
+  static const String myCoursesScreen = '/my_courses_screen';
 }

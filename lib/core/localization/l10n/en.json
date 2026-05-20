@@ -213,6 +213,7 @@
   "next_lesson": "Next Lesson",
   "search_materials_hint": "Search materials, books, or resources...",
   "view": "View",
+<<<<<<< HEAD
   "account": "Account",
   "manage_profile_desc": "Update your personal information and social links",
   "appearance": "Appearance",
@@ -231,3 +232,7 @@
   "warning": "Warning",
   "delete": "DELETE"
 }
+=======
+  "view_my_courses": "View My Courses"
+}
+>>>>>>> 74dcac574a056e4df2e6b258174d65eb50a1694e

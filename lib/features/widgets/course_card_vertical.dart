@@ -95,7 +95,7 @@ class CourseCardVertical extends StatelessWidget {
                           color: context.colorScheme.onSurfaceVariant
                               .withValues(alpha: 0.8),
                         ),
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],

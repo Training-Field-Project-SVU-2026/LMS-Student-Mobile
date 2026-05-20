@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
@@ -28,6 +30,7 @@ class CourseCardHorizontal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("progressPercentage $progressPercentage progressValue $progressValue");
     return Container(
       width: width?.w ?? double.infinity,
       padding: EdgeInsets.all(12.w),
@@ -110,7 +113,7 @@ class CourseCardHorizontal extends StatelessWidget {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10.r),
                               child: LinearProgressIndicator(
-                                value: progressValue,
+                                value: (progressValue! / 100).clamp(0.0, 1.0),
                                 minHeight: 6.h,
                                 backgroundColor: context.colorScheme.primary
                                     .withValues(alpha: 0.1),

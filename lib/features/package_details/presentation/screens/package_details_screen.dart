@@ -10,7 +10,7 @@ import 'package:lms_student/features/explore/presentation/screens/widget/custom_
 import 'package:lms_student/features/explore/presentation/screens/widget/custon_instractor_information.dart';
 import 'package:lms_student/features/package_details/presentation/bloc/package_details_bloc.dart';
 import 'package:lms_student/features/widgets/course_card_horizontal.dart';
-import 'package:lms_student/features/widgets/custom_primary_button.dart';
+// import 'package:lms_student/features/widgets/custom_primary_button.dart';
 
 class PackageDetailsScreen extends StatefulWidget {
   final String slug;
@@ -39,12 +39,6 @@ class _PackageDetailsScreenState extends State<PackageDetailsScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(context.tr('package_details')),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.share_outlined, size: 33.sp),
-          ),
-        ],
       ),
       body: BlocBuilder<PackageDetailsBloc, PackageDetailsState>(
         builder: (context, state) {
@@ -173,33 +167,34 @@ class _PackageDetailsScreenState extends State<PackageDetailsScreen> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(20.r),
-                  decoration: BoxDecoration(
-                    color: context.colorScheme.surface,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withValues(alpha: 0.2),
-                        blurRadius: 10,
-                        offset: const Offset(0, -2),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "\$${package.price}",
-                        style: context.textTheme.bodyLarge,
-                      ),
-                      const Spacer(),
-                      CustomPrimaryButton(
-                        text: context.tr('enroll_now'),
-                        onTap: () {},
-                        width: 240,
-                      ),
-                    ],
-                  ),
-                ),
+                //? enroll buttom
+                // Container(
+                //   padding: EdgeInsets.all(20.r),
+                //   decoration: BoxDecoration(
+                //     color: context.colorScheme.surface,
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.grey.withValues(alpha: 0.2),
+                //         blurRadius: 10,
+                //         offset: const Offset(0, -2),
+                //       ),
+                //     ],
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       Text(
+                //         "\$${package.price}",
+                //         style: context.textTheme.bodyLarge,
+                //       ),
+                //       const Spacer(),
+                //       CustomPrimaryButton(
+                //         text: context.tr('enroll_now'),
+                //         onTap: () {},
+                //         width: 240,
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             );
           }
