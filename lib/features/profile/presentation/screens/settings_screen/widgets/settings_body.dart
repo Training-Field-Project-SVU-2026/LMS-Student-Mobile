@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lms_student/core/di/service_locator.dart';
-import 'package:lms_student/core/services/local/cache_helper.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
@@ -147,14 +145,17 @@ class _SettingsBodyState extends State<SettingsBody> {
                         title: isLogoutLoading
                             ? context.tr('signing_out')
                             : context.tr('sign_out'),
-                        subtitle: 'Sign out of your account safely',
+                        subtitle: context.tr('sign_out_desc'),
                         titleColor: context.colorScheme.error,
                         iconColor: context.colorScheme.error,
                         onTap: isLogoutLoading
                             ? null
                             : () => showDialog(
                                 context: context,
-                                builder: (context) => const LogoutDialog(),
+                                builder: (dialogContext) => BlocProvider.value(
+                                  value: context.read<ProfileBloc>(),
+                                  child: const LogoutDialog(),
+                                ),
                               ),
                       );
                     },

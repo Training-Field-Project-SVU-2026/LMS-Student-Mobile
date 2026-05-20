@@ -213,7 +213,6 @@
   "next_lesson": "الدرس التالي",
   "search_materials_hint": "ابحث عن المواد، الكتب، أو المصادر...",
   "view": "عرض",
-<<<<<<< HEAD
   "account": "الحساب",
   "manage_profile_desc": "تحديث معلوماتك الشخصية وروابط التواصل الاجتماعي",
   "appearance": "المظهر",
@@ -230,9 +229,8 @@
   "delete_account_desc": "حذف حسابك وبياناتك نهائياً",
   "delete_account_confirmation": "هل أنت متأكد من رغبتك في حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.",
   "warning": "تحذير",
-  "delete": "حذف"
+  "delete": "حذف",
+  "view_my_courses": "عرض كل كورساتي",
+  "edit": "تعديل",
+  "joined_at": "تاريخ الانضمام"
 }
-=======
-  "view_my_courses": "عرض كل كورساتي"
-}
->>>>>>> 74dcac574a056e4df2e6b258174d65eb50a1694e
