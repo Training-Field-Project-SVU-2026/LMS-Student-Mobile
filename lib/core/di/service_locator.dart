@@ -34,6 +34,8 @@ import 'package:lms_student/features/my_courses/presentation/bloc/my_courses_blo
 import 'package:lms_student/features/material_course/data/repository/material_course_repository_impl.dart';
 import 'package:lms_student/features/material_course/domain/repository/material_course_repository.dart';
 import 'package:lms_student/features/material_course/presentation/bloc/material_course_bloc.dart';
+import 'package:lms_student/core/theme/theme_cubit.dart';
+import 'package:lms_student/core/localization/locale_cubit.dart';
 
 
 final sl = GetIt.instance;
@@ -43,6 +45,8 @@ Future<void> setupServiceLocator() async {
   final cacheHelper = CacheHelper();
   await cacheHelper.init();
   sl.registerLazySingleton<CacheHelper>(() => cacheHelper);
+  sl.registerLazySingleton(() => ThemeCubit());
+  sl.registerLazySingleton(() => LocaleCubit());
 
   // External
   sl.registerLazySingleton(() => Dio());

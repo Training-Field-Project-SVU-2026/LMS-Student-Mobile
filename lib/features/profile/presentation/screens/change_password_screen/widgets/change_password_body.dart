@@ -179,7 +179,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                       icon: Icon(Icons.arrow_back_ios_new_rounded, size: 14.w),
                       label: Text(context.tr('back')),
                       style: TextButton.styleFrom(
-                        foregroundColor: context.colorScheme.outline,
+                        foregroundColor: context.colorScheme.onSurface,
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14.sp,

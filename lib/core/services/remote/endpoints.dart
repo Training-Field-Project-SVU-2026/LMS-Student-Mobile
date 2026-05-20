@@ -41,6 +41,10 @@ class EndPoint {
   static String quizQuestions(String quizSlug) => "/quizzes/$quizSlug/questions/";
   static String submitQuiz(String quizSlug) => "/quizzes/$quizSlug/submit/";
   static String quizResults(String quizSlug) => "/quizzes/$quizSlug/my-results/";
+
+
+  // instructor
+  static String instructorProfile(String slug) => '/instructors/$slug/';
 }
 
 class ApiKey {

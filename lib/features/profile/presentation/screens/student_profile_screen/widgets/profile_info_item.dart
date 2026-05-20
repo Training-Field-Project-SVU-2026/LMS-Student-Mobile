@@ -3,48 +3,58 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 
 class ProfileInfoItem extends StatelessWidget {
+  final IconData icon;
   final String label;
   final String value;
-  final bool hasDivider;
+  final Color? iconColor;
 
   const ProfileInfoItem({
     super.key,
+    required this.icon,
     required this.label,
     required this.value,
-    this.hasDivider = true,
+    this.iconColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.symmetric(vertical: 12.h),
       decoration: BoxDecoration(
-        color: context.colorScheme.surfaceContainerHighest.withValues(
-          alpha: 0.3,
-        ),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label.toUpperCase(),
-            style: context.textTheme.labelSmall?.copyWith(
-              color: context.colorScheme.onSurfaceVariant.withValues(
-                alpha: 0.7,
-              ),
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.5,
-            ),
+        border: Border(
+          bottom: BorderSide(
+            color: context.colorScheme.outline.withValues(alpha: 0.3),
           ),
-          SizedBox(height: 8.h),
-          Text(
-            value,
-            style: context.textTheme.titleMedium?.copyWith(
-              color: context.colorScheme.primary,
-              fontWeight: FontWeight.w600,
-            ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 20.sp,
+            color: iconColor ?? context.colorScheme.primary,
+          ),
+          SizedBox(width: 16.w),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: context.textTheme.labelSmall?.copyWith(
+                  color: context.colorScheme.primary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: 2.h),
+              Text(
+                value,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.colorScheme.onSurface,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
         ],
       ),
