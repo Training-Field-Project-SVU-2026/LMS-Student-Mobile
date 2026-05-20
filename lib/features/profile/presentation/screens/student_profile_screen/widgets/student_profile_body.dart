@@ -8,6 +8,7 @@ import 'package:lms_student/features/profile/presentation/screens/student_profil
 import 'package:lms_student/features/profile/presentation/screens/student_profile_screen/widgets/profile_info_item.dart';
 import 'package:lms_student/features/widgets/loading_indicator_widget.dart';
 import 'package:lms_student/features/widgets/error_feedback_widget.dart';
+import 'package:lms_student/features/widgets/custom_user_avatar.dart';
 
 class StudentProfileBody extends StatelessWidget {
   const StudentProfileBody({super.key});
@@ -98,30 +99,10 @@ class StudentProfileBody extends StatelessWidget {
 
                       SizedBox(height: 32.h),
 
-                      Container(
-                        width: 110.r,
-                        height: 110.r,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: context.colorScheme.outline.withValues(
-                              alpha: 0.5,
-                            ),
-                            width: 4,
-                          ),
-                        ),
-                        child: CircleAvatar(
-                          backgroundColor: context.colorScheme.primary
-                              .withValues(alpha: 0.1),
-                          child: Text(
-                            '${user.firstName.isNotEmpty ? user.firstName[0] : ''}${user.lastName.isNotEmpty ? user.lastName[0] : ''}'
-                                .toUpperCase(),
-                            style: context.textTheme.displayMedium?.copyWith(
-                              color: context.colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                      CustomUserAvatar(
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        imagePath: user.image,
                       ),
 
                       SizedBox(height: 16.h),
