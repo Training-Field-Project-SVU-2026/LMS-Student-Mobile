@@ -140,7 +140,6 @@
   "no_courses_yet": "لا توجد كورسات مسجل فيها بعد",
   "no_courses_found": "لم يتم العثور على كورسات",
   "explore_courses_to_start": "استكشف الكورسات وابدأ رحلة التعلم الآن",
-
   "enroll_confirm_title": "تأكيد الاشتراك",
   "enroll_confirm_message": "هل تريد الاشتراك في هذا الكورس؟",
   "yes": "نعم",
@@ -213,5 +212,22 @@
   "course_videos": "فيديوهات الكورس",
   "next_lesson": "الدرس التالي",
   "search_materials_hint": "ابحث عن المواد، الكتب، أو المصادر...",
-  "view": "عرض"
+  "view": "عرض",
+  "account": "الحساب",
+  "manage_profile_desc": "تحديث معلوماتك الشخصية وروابط التواصل الاجتماعي",
+  "appearance": "المظهر",
+  "dark_mode": "الوضع الداكن",
+  "dark_mode_desc": "التبديل بين المظهر الفاتح والداكن",
+  "language": "اللغة",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "system": "النظام",
+  "logout": "تسجيل الخروج",
+  "logout_desc": "تسجيل الخروج من حسابك بأمان",
+  "logout_confirmation": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "delete_account": "حذف الحساب",
+  "delete_account_desc": "حذف حسابك وبياناتك نهائياً",
+  "delete_account_confirmation": "هل أنت متأكد من رغبتك في حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.",
+  "warning": "تحذير",
+  "delete": "حذف"
 }
