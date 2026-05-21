@@ -30,7 +30,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ExploreBloc>().add(const GetpackagesEvent(page: 1, pageSize: 10));
+    context.read<ExploreBloc>().add(
+      const GetpackagesEvent(page: 1, pageSize: 10),
+    );
     context.read<ExploreBloc>().add(const GetCoursesEvent(page: 1));
     _scrollController.addListener(_onScroll);
   }
@@ -44,9 +46,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
           (state.courseUIModel?.currentPage ?? 0) <
               (state.courseUIModel?.totalPages ?? 0)) {
         context.read<ExploreBloc>().add(
-          GetCoursesEvent(
-            page: (state.courseUIModel?.currentPage ?? 0) + 1,
-          ),
+          GetCoursesEvent(page: (state.courseUIModel?.currentPage ?? 0) + 1),
         );
       }
     }
@@ -63,7 +63,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
-          context.read<ExploreBloc>().add(const GetpackagesEvent(page: 1, pageSize: 10));
+          context.read<ExploreBloc>().add(
+            const GetpackagesEvent(page: 1, pageSize: 10),
+          );
           context.read<ExploreBloc>().add(const GetCoursesEvent(page: 1));
         },
         child: Padding(
@@ -73,33 +75,33 @@ class _ExploreScreenState extends State<ExploreScreen> {
             physics: const AlwaysScrollableScrollPhysics(),
             children: [
               SizedBox(height: 10.h),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 300.w,
-                    child: CustomTextFormField(
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: context.colorScheme.onSurface,
-                      ),
-                      hintText: context.tr('search_courses_instructors'),
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    width: 42.w,
-                    height: 42.h,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: context.colorScheme.onPrimary,
-                    ),
-                    child: Icon(Icons.tune, color: context.colorScheme.primary),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10.h),
-              CustomCategoryItem(),
-              SizedBox(height: 13.h),
+              // Row(
+              //   children: [
+              //     SizedBox(
+              //       width: 300.w,
+              //       child: CustomTextFormField(
+              //         prefixIcon: Icon(
+              //           Icons.search,
+              //           color: context.colorScheme.onSurface,
+              //         ),
+              //         hintText: context.tr('search_courses_instructors'),
+              //       ),
+              //     ),
+              //     const Spacer(),
+              //     Container(
+              //       width: 42.w,
+              //       height: 42.h,
+              //       decoration: BoxDecoration(
+              //         shape: BoxShape.circle,
+              //         color: context.colorScheme.onPrimary,
+              //       ),
+              //       child: Icon(Icons.tune, color: context.colorScheme.primary),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 10.h),
+              // CustomCategoryItem(),
+              // SizedBox(height: 13.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -175,7 +177,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 },
                                 child: CustomCategory(
                                   title: state.packages[index].title,
-                                  description: state.packages[index].description,
+                                  description:
+                                      state.packages[index].description,
                                   courses: state.packages[index].coursesCount,
                                   price: state.packages[index].price,
                                   category: state.packages[index].categories,
@@ -235,7 +238,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   if (state.courseStatus == ExploreStatus.failure) {
                     return SizedBox(
                       height: 280.h,
-                      child: Center(child: Text('Error : ${state.courseError}')),
+                      child: Center(
+                        child: Text('Error : ${state.courseError}'),
+                      ),
                     );
                   }
                   if (state.courseStatus == ExploreStatus.success) {
@@ -256,7 +261,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                               children: state.courses.map((course) {
                                 return InkWell(
                                   onTap: () {
-                                    log(" nammmmmmmmmmmmmmmme ${course.isenrolled}");
+                                    log(
+                                      " nammmmmmmmmmmmmmmme ${course.isenrolled}",
+                                    );
                                     context.push(
                                       AppRoutes.courseDetailsScreen,
                                       extra: {

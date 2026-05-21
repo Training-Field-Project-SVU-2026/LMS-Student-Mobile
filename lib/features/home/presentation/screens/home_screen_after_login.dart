@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +17,7 @@ import 'package:lms_student/features/widgets/course_card_horizontal.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
 import 'package:lms_student/features/widgets/custom_image.dart';
+import 'package:lms_student/features/widgets/custom_user_avatar.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/root/root_after_login.dart';
 
@@ -99,20 +99,33 @@ class _HomeScreenAfterLoginState extends State<HomeScreenAfterLogin>
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Row(
               children: [
-                Container(
-                  width: 44.r,
-                  height: 44.r,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: context.colorScheme.secondary,
-                  ),
-                  child: CustomImage(
-                    imagePath: getDataFromCache(ApiKey.image),
-                    width: 44.r,
-                    height: 44.r,
-                    borderRadius: BorderRadius.circular(22.r),
-                  ),
+                Builder(
+                  builder: (context) {
+                    final image = getDataFromCache(ApiKey.image);
+                    if (image == null || image.isEmpty) {
+                      return CustomUserAvatar(
+                        firstName: getDataFromCache(ApiKey.firstName) ?? '',
+                        lastName: getDataFromCache(ApiKey.lastName) ?? '',
+                        size: 44,
+                        borderColor: Colors.transparent,
+                      );
+                    }
+                    return Container(
+                      width: 44.r,
+                      height: 44.r,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: context.colorScheme.secondary,
+                      ),
+                      child: CustomImage(
+                        imagePath: image,
+                        width: 44.r,
+                        height: 44.r,
+                        borderRadius: BorderRadius.circular(22.r),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(width: 12.w),
                 Column(
