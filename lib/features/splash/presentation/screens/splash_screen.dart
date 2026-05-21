@@ -73,8 +73,9 @@ class _SplashScreenState extends State<SplashScreen>
     return BlocListener<SplashBloc, SplashState>(
       listener: (context, state) {
         if (state is SplashLoaded || state is SplashError) {
-          final timeSinceStart =
-              DateTime.now().difference(_startTime).inMilliseconds;
+          final timeSinceStart = DateTime.now()
+              .difference(_startTime)
+              .inMilliseconds;
           // Ensure a minimum splash duration of 3 seconds for better UX
           final remainingDelay = (3000 - timeSinceStart).clamp(0, 3000);
 
@@ -155,7 +156,10 @@ class _SplashScreenState extends State<SplashScreen>
                           child: Stack(
                             children: [
                               BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                                filter: ImageFilter.blur(
+                                  sigmaX: 12,
+                                  sigmaY: 12,
+                                ),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
@@ -252,25 +256,24 @@ class _SplashScreenState extends State<SplashScreen>
           ),
         );
       } else {
-        String msg = context.tr('authentication_failed');
-        if (state.message == "No token found") {
-          msg = context.tr('no_token_found');
-        } else if (state.message == "Session expired") {
-          msg = context.tr('session_expired');
-        } else if (state.isActive == false) {
-          msg = context.tr('account_inactive');
-        } else if (state.isVerified == false) {
-          msg = context.tr('account_unverified');
-        }
+        // String msg = context.tr('authentication_failed');
+        // if (state.message == "No token found") {
+        //   msg = context.tr('no_token_found');
+        // } else if (state.message == "Session expired") {
+        //   msg = context.tr('session_expired');
+        // } else if (state.isActive == false) {
+        //   msg = context.tr('account_inactive');
+        // } else if (state.isVerified == false) {
+        //   msg = context.tr('account_unverified');
+        // }
 
-        if (msg != context.tr('authentication_failed')) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(msg)));
-        }
+        // if (msg != context.tr('authentication_failed')) {
+        //   ScaffoldMessenger.of(
+        //     context,
+        //   ).showSnackBar(SnackBar(content: Text(msg)));
+        // }
         context.go(AppRoutes.loginScreen);
       }
     }
   }
 }
-

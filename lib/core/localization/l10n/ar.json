@@ -270,5 +270,9 @@
   "val_password_lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
   "val_password_number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
   "val_password_special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل (!@#$%^&*)",
-  "val_password_format": "يجب أن تكون كلمة المرور من 8 إلى 32 حرفاً"
+  "val_password_format": "يجب أن تكون كلمة المرور من 8 إلى 32 حرفاً",
+  "login_required_title": "تسجيل الدخول مطلوب",
+  "login_required_description": "انضم إلى مجتمع المتعلمين لدينا للاشتراك في الدورات، وتتبع تقدمك، وتخصيص ملفك الشخصي.",
+  "login_required_btn_login": "تسجيل الدخول",
+  "login_required_btn_cancel": "ليس الآن"
 }

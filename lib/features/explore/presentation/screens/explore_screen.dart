@@ -10,12 +10,9 @@ import 'package:lms_student/features/explore/presentation/bloc/explore_bloc.dart
 import 'package:lms_student/features/explore/presentation/bloc/explore_event.dart';
 import 'package:lms_student/features/explore/presentation/bloc/explore_state.dart';
 import 'package:lms_student/features/explore/presentation/screens/widget/custom_category.dart';
-import 'package:lms_student/features/explore/presentation/screens/widget/custom_category_item.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
-import 'package:lms_student/features/widgets/custom_text_form_field.dart';
 import 'package:lms_student/features/widgets/empty_state_widget.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
-
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
