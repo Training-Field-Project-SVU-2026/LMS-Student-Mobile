@@ -233,5 +233,13 @@
   "view_my_courses": "View My Courses",
   "edit": "Edit",
   "joined_at": "Joined At",
-  "sign_out_desc": "Sign out of your account safely"
+  "sign_out_desc": "Sign out of your account safely",
+  "no_packages_yet": "No learning tracks available",
+  "no_packages_desc": "Check back soon for new learning tracks",
+  "no_explore_courses_yet": "No courses available",
+  "no_explore_courses_desc": "Check back soon for new courses",
+  "no_materials_found": "No materials available",
+  "no_matching_materials": "No materials match your search",
+  "no_videos_found": "No videos available",
+  "no_quizzes_found": "No quizzes available"
 }

@@ -16,6 +16,7 @@ import 'package:lms_student/features/widgets/error_feedback_widget.dart';
 import 'package:lms_student/core/services/remote/endpoints.dart';
 import 'package:lms_student/features/home/presentation/get_data_from_cache.dart';
 import 'package:lms_student/features/widgets/custom_image.dart';
+import 'package:lms_student/features/widgets/empty_state_widget.dart';
 
 class MyCoursesScreenAfterLogin extends StatefulWidget {
   const MyCoursesScreenAfterLogin({super.key});
@@ -81,7 +82,6 @@ class _MyCoursesScreenAfterLoginState extends State<MyCoursesScreenAfterLogin> {
                       fontWeight: FontWeight.bold,
                       color: context.colorScheme.onSurface,
                     ),
-
                   ),
                   Container(
                     width: 44.w,
@@ -100,7 +100,6 @@ class _MyCoursesScreenAfterLoginState extends State<MyCoursesScreenAfterLogin> {
                 ],
               ),
               SizedBox(height: 20.h),
-              // Search Bar
               CustomTextFormField(
                 controller: _searchController,
                 hintText: context.tr('search_courses_instructors'),
@@ -163,24 +162,8 @@ class _MyCoursesScreenAfterLoginState extends State<MyCoursesScreenAfterLogin> {
                     final courses = state.filteredEnrollments;
 
                     if (courses.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.search_off,
-                              size: 64.sp,
-                              color: Colors.grey[300],
-                            ),
-                            SizedBox(height: 16.h),
-                            Text(
-                              context.tr('no_courses_found'),
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
+                      return EmptyStateWidget(
+                        title: context.tr('no_courses_found'),
                       );
                     }
 

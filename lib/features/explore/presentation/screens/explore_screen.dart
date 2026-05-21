@@ -13,7 +13,9 @@ import 'package:lms_student/features/explore/presentation/screens/widget/custom_
 import 'package:lms_student/features/explore/presentation/screens/widget/custom_category_item.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
+import 'package:lms_student/features/widgets/empty_state_widget.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
+
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -149,6 +151,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       );
                     }
                     if (state.packageStatus == ExploreStatus.success) {
+                      if (state.packages.isEmpty) {
+                        return EmptyStateWidget(
+                          title: context.tr('no_packages_yet'),
+                          subtitle: context.tr('no_packages_desc'),
+                        );
+                      }
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: state.packages.length,
@@ -170,7 +178,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                   description: state.packages[index].description,
                                   courses: state.packages[index].coursesCount,
                                   price: state.packages[index].price,
-
                                   category: state.packages[index].categories,
                                   slug: state.packages[index].slug,
                                 ),
@@ -232,6 +239,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     );
                   }
                   if (state.courseStatus == ExploreStatus.success) {
+                    if (state.courses.isEmpty) {
+                      return EmptyStateWidget(
+                        title: context.tr('no_explore_courses_yet'),
+                        subtitle: context.tr('no_explore_courses_desc'),
+                      );
+                    }
                     return Column(
                       children: [
                         LayoutBuilder(

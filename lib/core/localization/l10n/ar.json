@@ -232,5 +232,14 @@
   "delete": "حذف",
   "view_my_courses": "عرض كل كورساتي",
   "edit": "تعديل",
-  "joined_at": "تاريخ الانضمام"
+  "joined_at": "تاريخ الانضمام",
+  "sign_out_desc": "تسجيل الخروج بأمان من حسابك",
+  "no_packages_yet": "لا توجد مسارات تعليمية متاحة",
+  "no_packages_desc": "تحقق لاحقاً للاطلاع على مسارات تعليمية جديدة",
+  "no_explore_courses_yet": "لا توجد كورسات متاحة",
+  "no_explore_courses_desc": "تحقق لاحقاً للاطلاع على كورسات جديدة",
+  "no_materials_found": "لا توجد مواد متاحة",
+  "no_matching_materials": "لا توجد مواد تطابق بحثك",
+  "no_videos_found": "لا توجد فيديوهات متاحة",
+  "no_quizzes_found": "لا توجد اختبارات متاحة"
 }
