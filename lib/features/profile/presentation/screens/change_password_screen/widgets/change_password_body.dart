@@ -114,7 +114,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                       size: context.isDesktop ? 22 : 18.w,
                     ),
                     isPassword: true,
-                    validator: (value) => validatePassword(value),
+                    validator: (value) => validatePassword(value, context),
                     keyboardType: TextInputType.visiblePassword,
                   ),
 
